@@ -1,5 +1,7 @@
 import pygame
 import pygame.locals
+from board import Board
+
 
 if __name__ == '__main__':
     pygame.init()
@@ -7,16 +9,10 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(window)
     screen.fill((255, 255, 255))
 
-    background = pygame.Surface(window)
-    background.fill((50, 50, 50))
-
-    for row in range(20):
-        for col in range(20):
-            pygame.draw.rect(background, (172, 175, 181), (40+col+(35*col), 40+row+(35*row), 30, 30))
-
-    screen.blit(background, (0, 0))
-
-    # background = background.convert()
+    # Create and draw a board, then put it on the screen
+    board = Board(window)
+    board.draw()
+    screen.blit(board.board, (0, 0))
 
     pygame.display.flip()
     done = False
