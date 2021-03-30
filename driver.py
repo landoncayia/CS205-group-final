@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # Create and draw a board, then put it on the screen
     board = Board(window)
     board.draw()
-    screen.blit(board.board, (0, 0))
+    screen.blit(board.get_surface(), (0, 0))
 
     pygame.display.flip()
     done = False
