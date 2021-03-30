@@ -25,14 +25,48 @@ class Shape(IntEnum):
     N = 20
     I5 = 21
 
+
+# A Piece is a list of tiles with a center tile and various connected tiles
+# The IntEnum Shape determines what kind of piece it is
+# The top-leftmost tile is the center tile and connected tiles are added based on relative position to the center
 class Piece:
-    def __init__(self, shape, tiles):
+    def __init__(self, shape, center, color):
         self.shape = shape
-        self.tiles = tiles
+        self.tiles = list()
+        self.center = center
+        self.color = color
     def get_shape(self):
         return self.shape
     def set_shape(self, shape):
         self.shape = shape
+    def get_tiles(self):
+        return self.tiles
+    def set_tiles(self):
+        #All tiles have a center piece
+        #Connected pieces are added in reading order relative to center piece, left to right and top to bottom
+        self.tiles.append(self.center)
+        if(self.shape == Shape.TWO){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
+        }
+        elif(self.shape == Shape.V3){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+        }
+        elif(self.shape == Shape.I3){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation[1], center.getColor()))
+        }
+        elif(self.shape == Shape.T4){
+            tiles.append(Tile(center.getLocation()[0]-1, center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+        }
+        elif(self.shape == Shape.O){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+        }
+
     def get_num_tiles(self):
         if(self.shape == Shape.ONE){
             return 1
