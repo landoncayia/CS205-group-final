@@ -26,8 +26,9 @@ class Shape(IntEnum):
     I5 = 21
 
 class Piece:
-    def __init__(self, shape):
+    def __init__(self, shape, tiles):
         self.shape = shape
+        self.tiles = tiles
     def get_shape(self):
         return self.shape
     def set_shape(self, shape):
@@ -48,3 +49,4 @@ class Piece:
         else{
             return 5
         }
+
