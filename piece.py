@@ -47,46 +47,115 @@ class Piece:
         self.tiles.append(self.center)
         # 2 tiles
         if(self.shape == Shape.TWO){
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
         }
         # 3 tiles
         elif(self.shape == Shape.V3){
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
         }
         elif(self.shape == Shape.I3){
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1], center.getColor()))
         }
         # 4 tiles
         elif(self.shape == Shape.T4){
-            tiles.append(Tile(center.getLocation()[0]-1, center.getLocation[1]+1, center.getColor()))
-            tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]-1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
         }
         elif(self.shape == Shape.O){
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
-            tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
         }
         elif(self.shape == Shape.L4){
-            tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+2, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+2, center.getColor()))
         }
         elif(self.shape == Shape.I4){
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation[1], center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+3, center.getLocation[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+3, center.getLocation()[1], center.getColor()))
         }
         elif(self.shape == Shape.Z4){
-            tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
-            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+2, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+2, center.getColor()))
         }
         # 5 tiles
         elif(self.shape == Shape.F){
-
+            tiles.append(Tile(center.getLocation()[0]-1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]-1, center.getLocation()[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.X){
+            tiles.append(Tile(center.getLocation()[0]-1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.P){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.W){
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+2, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.Z5){
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.Y){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+3, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+1, center.getColor()))
+        }
+        elif(self.shape == Shape.L5){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+3, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+        }
+        elif(self.shape == Shape.U){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.T5){
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]-1, center.getLocation()[1]+2, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+2, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.V5){
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+2, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1]+2, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.N){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]-1, center.getLocation()[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0], center.getLocation()[1]+1, center.getColor()))
+        }
+        elif(self.shape == Shape.I5){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+3, center.getLocation()[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+4, center.getLocation()[1], center.getColor()))
         }
 
     def get_num_tiles(self):
