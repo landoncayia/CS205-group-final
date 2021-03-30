@@ -174,4 +174,8 @@ class Piece:
         else{
             return 5
         }
+    def draw_piece(self):
+        for t in self.tiles:
+            # ask Echo about the surface?
+            t.drawTile()
 
