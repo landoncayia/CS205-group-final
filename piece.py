@@ -45,9 +45,11 @@ class Piece:
         #All tiles have a center piece
         #Connected pieces are added in reading order relative to center piece, left to right and top to bottom
         self.tiles.append(self.center)
+        # 2 tiles
         if(self.shape == Shape.TWO){
             tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
         }
+        # 3 tiles
         elif(self.shape == Shape.V3){
             tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
             tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
@@ -56,6 +58,7 @@ class Piece:
             tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
             tiles.append(Tile(center.getLocation()[0]+2, center.getLocation[1], center.getColor()))
         }
+        # 4 tiles
         elif(self.shape == Shape.T4){
             tiles.append(Tile(center.getLocation()[0]-1, center.getLocation[1]+1, center.getColor()))
             tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
@@ -65,6 +68,25 @@ class Piece:
             tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
             tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
             tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+        }
+        elif(self.shape == Shape.L4){
+            tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+2, center.getColor()))
+        }
+        elif(self.shape == Shape.I4){
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+2, center.getLocation[1], center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+3, center.getLocation[1], center.getColor()))
+        }
+        elif(self.shape == Shape.Z4){
+            tiles.append(Tile(center.getLocation()[0], center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+1, center.getColor()))
+            tiles.append(Tile(center.getLocation()[0]+1, center.getLocation[1]+2, center.getColor()))
+        }
+        # 5 tiles
+        elif(self.shape == Shape.F){
+
         }
 
     def get_num_tiles(self):
