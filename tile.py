@@ -40,6 +40,12 @@ class Tile:
     def get_location(self):
         return self.x, self.y
 
+    def get_height(self):
+        return self.height
+
+    def get_width(self):
+        return self.width
+
     # SETTERS
     # set color
     def set_color(self, color):
