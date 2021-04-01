@@ -35,6 +35,7 @@ class Piece:
         self.tiles = list()
         self.center = center
         self.color = color
+        self.set_tiles()
     def get_shape(self):
         return self.shape
     def set_shape(self, shape):
