@@ -1,4 +1,4 @@
-# from tile import Tile
+from tile import Tile
 from enum import IntEnum
 
 #contains all possible pieces
