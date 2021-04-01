@@ -26,3 +26,5 @@ if __name__ == '__main__':
                 done = True
 
     pygame.quit()
+
+# echos thread
