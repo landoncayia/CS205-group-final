@@ -30,14 +30,14 @@ class Board:
                     if self.tiles[row][col] is None:
                         # if the position in tiles contains None, then draw a gray (empty) tile
                         pygame.draw.rect(self.surface, EMPTY_GREY, (tile_x, tile_y, 30, 30))
-                    # elif self.tiles[row][col].get_color() == 'red':
-                        # pygame.draw.rect(self.surface, RED, (tile_x, tile_y, 30, 30))
-                    # elif self.tiles[row][col].get_color() == 'green':
-                        # pygame.draw.rect(self.surface, GREEN, (tile_x, tile_y, 30, 30))
-                    # elif self.tiles[row][col].get_color() == 'yellow':
-                        # pygame.draw.rect(self.surface, YELLOW, (tile_x, tile_y, 30, 30))
-                    # elif self.tiles[row][col].get_color() == 'blue':
-                        # pygame.draw.rect(self.surface, BLUE, (tile_x, tile_y, 30, 30))
+                    elif self.tiles[row][col].get_color() == 'red':
+                        pygame.draw.rect(self.surface, RED, (tile_x, tile_y, 30, 30))
+                    elif self.tiles[row][col].get_color() == 'green':
+                        pygame.draw.rect(self.surface, GREEN, (tile_x, tile_y, 30, 30))
+                    elif self.tiles[row][col].get_color() == 'yellow':
+                        pygame.draw.rect(self.surface, YELLOW, (tile_x, tile_y, 30, 30))
+                    elif self.tiles[row][col].get_color() == 'blue':
+                        pygame.draw.rect(self.surface, BLUE, (tile_x, tile_y, 30, 30))
                     if row == 0:
                         text = font.render(COL_LETTERS[col], True, EMPTY_GREY)
                         self.surface.blit(text, (tile_x + 10, tile_y - 35))
