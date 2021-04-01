@@ -33,23 +33,23 @@ class Tile:
 
     # GETTERS
     # get color
-    def getColor(self):
+    def get_color(self):
         return self.color
 
     # get location
-    def getLocation(self):
+    def get_location(self):
         return self.x, self.y
 
     # SETTERS
     # set color
-    def setColor(self, color):
+    def set_color(self, color):
         self.color = color
 
     # set location
-    def setLocation(self, x, y):
+    def set_location(self, x, y):
         self.x = x
         self.y = y
 
     # OTHER FUNCTIONS
-    def drawTile(self, surface):
+    def draw_tile(self, surface):
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.height))
