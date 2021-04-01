@@ -64,11 +64,11 @@ class Board:
     '''
     add_piece(): adds a piece to the tiles
     origin: tuple(int, int) - contains the origin [0-19] of the placed piece; e.g., (1, 1)
-    tiles: list(tuple(int, int)) - contains the coordinates of the tiles that make up a piece, relative to its origin (x+ is right, y+ is down)
+    tiles: list(Tile) - contains the tiles that make up a piece
         NOTE: the first value in tiles should be (0, 0); e.g., [(0, 0), (1, 0), (2, 0), (0, 1), (-1, 1)] will make this shape:
           ■ ■ ■
         ■ ■
     '''
-    def add_piece(self, origin, tiles):
-        # waiting for other classes/discussion to write this
-        pass
+    def add_piece(self, piece):
+        for tile in piece.get_tiles():
+            self.tiles[tile.get_location()[0]][tile.get_location()[1]] = tile

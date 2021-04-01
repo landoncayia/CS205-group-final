@@ -1,6 +1,10 @@
 import pygame
 import pygame.locals
 from board import Board
+from piece import Piece
+from piece import Shape
+from tile import Color
+from tile import Tile
 
 
 if __name__ == '__main__':
@@ -11,6 +15,9 @@ if __name__ == '__main__':
 
     # Create and draw a board, then put it on the screen
     board = Board(window)
+    # TESTING - REMOVE AFTER
+    testpiece = Piece(Shape.Z4, Tile(10, 10, 'blue'))
+    board.add_piece(testpiece)
     board.draw()
     screen.blit(board.get_surface(), (0, 0))
 
