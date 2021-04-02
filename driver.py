@@ -6,13 +6,12 @@ from piece import Shape
 from tile import Color
 from tile import Tile
 
-
-BOARD_WIDTH, BOARD_HEIGHT = 1200, 1000
+BOARD_WIDTH, BOARD_HEIGHT = 800, 800
 
 
 if __name__ == '__main__':
     pygame.init()
-    window = (BOARD_WIDTH,BOARD_HEIGHT)
+    window = (1200, 800)
     screen = pygame.display.set_mode(window)
     screen.fill(Color.BG_GREY.value)
 
