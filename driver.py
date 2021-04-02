@@ -9,6 +9,15 @@ from tile import Tile
 BOARD_WIDTH, BOARD_HEIGHT = 800, 800
 
 
+def create_set(set_color):
+    i = 1
+    piece_list = []
+    tile_x_start = 900
+    tile_y_start = 50
+    while (i < 22):
+        piece_list.append(Piece(Shape(i), Tile(tile_x_start, tile_y_start, set_color)))
+    return piece_list
+
 if __name__ == '__main__':
     pygame.init()
     window = (1200, 800)
@@ -24,6 +33,10 @@ if __name__ == '__main__':
     screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
                                       BOARD_HEIGHT//2-board.get_surface().get_height()//2))
 
+    # DISPLAY PIECES
+    full_set = create_set(Color.BLUE)
+    i = 0
+
     pygame.display.flip()
     done = False
     while not done:
@@ -36,5 +49,3 @@ if __name__ == '__main__':
                 done = True
 
     pygame.quit()
-
-# echos thread

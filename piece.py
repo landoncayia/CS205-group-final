@@ -149,9 +149,8 @@ class Piece:
             return 4
         else:
             return 5
-            
-    def draw_piece(self):
+
+    def draw_piece(self, surface):
         for t in self.tiles:
             # ask Echo about the surface?
-            t.drawTile()
-
+            t.drawTile(surface)
