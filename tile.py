@@ -27,6 +27,9 @@ class Tile:
     height = 1
     width = 1
 
+    actual_height = 30
+    actual_width = 30
+
     def __init__(self, x, y, color):
         self.x = x
         self.y = y
@@ -39,13 +42,19 @@ class Tile:
 
     # get location
     def get_location(self):
-        return self.x, self.y
+        return self.height, self.width
 
     def get_height(self):
         return self.height
 
     def get_width(self):
         return self.width
+
+    def get_actual_height(self):
+        return self.actual_height
+
+    def get_actual_width(self):
+        return self.actual_width
 
     # SETTERS
     # set color
@@ -59,4 +68,4 @@ class Tile:
 
     # OTHER FUNCTIONS
     def draw_tile(self, surface):
-        pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(surface, self.color.value, (self.x, self.y, self.actual_height, self.actual_width))
