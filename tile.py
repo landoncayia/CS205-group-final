@@ -13,7 +13,8 @@ from enum import Enum
 
 
 class Color(Enum):
-    GREY = (50, 50, 50)
+    BG_GREY = (50, 50, 50)
+    EMPTY_GREY = (172, 175, 181)
     RED = (160, 0, 0)
     GREEN = (0, 160, 0)
     YELLOW = (220, 210, 0)
