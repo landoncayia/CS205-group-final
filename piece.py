@@ -155,3 +155,15 @@ class Piece:
             # ask Echo about the surface?
             t.drawTile()
 
+    #rotates the piece clockwise
+    #90 degree rotation: T(x,y) -> T(-y,x)
+    def rotateCW(self):
+        for tile in self.tiles:
+            tile.set_location(-1*tile.get_location()[1], tile.get_location()[0])
+    #rotates the piece counterclockwise
+    #270 degree rotation: T(x,y) -> T(y,-x)
+    def rotateCCW(self):
+        for tile in self.tiles:
+            tile.set_location(tile.get_location()[1], -1*tile.get_location()[0])
+
+
