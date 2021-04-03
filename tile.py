@@ -13,7 +13,8 @@ from enum import Enum
 
 
 class Color(Enum):
-    GREY = (50, 50, 50)
+    BG_GREY = (50, 50, 50)
+    EMPTY_GREY = (172, 175, 181)
     RED = (160, 0, 0)
     GREEN = (0, 160, 0)
     YELLOW = (220, 210, 0)
@@ -23,8 +24,8 @@ class Color(Enum):
 # each tile will have left, top, color, width, height, location
 # a rect will be made with left, top, height, width
 class Tile:
-    height = 30
-    width = 30
+    height = 1
+    width = 1
 
     def __init__(self, x, y, color):
         self.x = x
