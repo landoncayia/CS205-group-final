@@ -30,11 +30,10 @@ class Shape(IntEnum):
 # The IntEnum Shape determines what kind of piece it is
 # The top-leftmost tile is the center tile and connected tiles are added based on relative position to the center
 class Piece:
-    def __init__(self, shape, center, color):
+    def __init__(self, shape, center):
         self.shape = shape
         self.tiles = list()
         self.center = center
-        self.color = color
         self.set_tiles()
     def get_shape(self):
         return self.shape
