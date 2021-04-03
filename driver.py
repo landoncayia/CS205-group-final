@@ -40,9 +40,11 @@ if __name__ == '__main__':
         'y': Yellow
         'r': Red
         'g': Green
+    Selected: represents the piece the player will place on the board
     '''
     state = 'waiting'   # NOTE: This should be changed to 'start' later, this is just for testing
     player = 'b'        # NOTE: Blue player goes first
+    selected = None 
 
     # Game loop
     while True:
@@ -74,7 +76,7 @@ if __name__ == '__main__':
             if mouse[0]:
                 # Left-click; get position
                 x, y = pygame.mouse.get_pos() # (x, y), where x and y are the number of pixels away from the top-left corner
-                # TODO: Find out which piece the player has clicked on and highlight it
+                # TODO: Find out which piece the player has clicked on and highlight it, set selected equal to this piece
 
         elif state == 'turn':
             '''
@@ -94,9 +96,12 @@ if __name__ == '__main__':
                 # unselect function
                 state = 'waiting'
 
-            elif keys[pygame.K_R]:
-                # Rotate piece for Isabelle
-                pass
+            elif keys[pygame.K_LEFT]:
+                # Use the left arrow key to rotate counterclockwise
+                selected.rotateCCW()
+            elif keys[pygame.K_RIGHT]:
+                # Use the right arrow key to rotate clockwise
+                selected.rotateCW()
         
         elif state == 'end':
             '''
