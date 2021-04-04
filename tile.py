@@ -19,6 +19,10 @@ class Color(Enum):
     GREEN = (0, 160, 0)
     YELLOW = (220, 210, 0)
     BLUE = (0, 0, 160)
+    RED_SELECTED = (255, 100, 100)
+    GREEN_SELECTED = (100, 255, 100)
+    BLUE_SELECTED = (100, 100, 255)
+    YELLOW_SELECTED = (255, 255, 170)
 
 
 # each tile will have left, top, color, width, height, location

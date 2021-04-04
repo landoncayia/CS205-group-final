@@ -1,5 +1,6 @@
 from tile import Tile
 from enum import IntEnum
+from tile import Color
 
 
 # contains all possible pieces
@@ -37,6 +38,7 @@ class Piece:
         self.printing_tiles = list()
         self.center = center
         self.set_tiles()
+        self.selected = False
 
     def get_shape(self):
         return self.shape
@@ -46,6 +48,48 @@ class Piece:
 
     def get_tiles(self):
         return self.table_tiles
+
+    def select(self):
+        self.selected = True
+        for tile in self.table_tiles:
+            if tile.get_color() == Color.BLUE:
+                tile.set_color(Color.BLUE_SELECTED)
+            elif tile.get_color() == Color.YELLOW:
+                tile.set_color(Color.YELLOW_SELECTED)
+            elif tile.get_color() == Color.RED:
+                tile.set_color(Color.RED_SELECTED)
+            elif tile.get_color() == Color.GREEN:
+                tile.set_color(Color.GREEN_SELECTED)
+        for tile in self.printing_tiles:
+            if tile.get_color() == Color.BLUE:
+                tile.set_color(Color.BLUE_SELECTED)
+            elif tile.get_color() == Color.YELLOW:
+                tile.set_color(Color.YELLOW_SELECTED)
+            elif tile.get_color() == Color.RED:
+                tile.set_color(Color.RED_SELECTED)
+            elif tile.get_color() == Color.GREEN:
+                tile.set_color(Color.GREEN_SELECTED)
+
+    def deselect(self):
+        self.selected = False
+        for tile in self.table_tiles:
+            if tile.get_color() == Color.BLUE_SELECTED:
+                tile.set_color(Color.BLUE)
+            elif tile.get_color() == Color.YELLOW_SELECTED:
+                tile.set_color(Color.YELLOW)
+            elif tile.get_color() == Color.RED_SELECTED:
+                tile.set_color(Color.RED)
+            elif tile.get_color() == Color.GREEN_SELECTED:
+                tile.set_color(Color.GREEN)
+        for tile in self.printing_tiles:
+            if tile.get_color() == Color.BLUE_SELECTED:
+                tile.set_color(Color.BLUE)
+            elif tile.get_color() == Color.YELLOW_SELECTED:
+                tile.set_color(Color.YELLOW)
+            elif tile.get_color() == Color.RED_SELECTED:
+                tile.set_color(Color.RED)
+            elif tile.get_color() == Color.GREEN_SELECTED:
+                tile.set_color(Color.GREEN)
 
     def set_tiles(self):
         # All tiles have a center piece
@@ -468,12 +512,12 @@ class Piece:
 
     # rotates the piece clockwise
     # 90 degree rotation: T(x,y) -> T(-y,x)
-    def rotateCW(self):
+    def rotate_cw(self):
         for tile in self.table_tiles:
             tile.set_location(-1 * tile.get_location()[1], tile.get_location()[0])
 
     # rotates the piece counterclockwise
     # 270 degree rotation: T(x,y) -> T(y,-x)
-    def rotateCCW(self):
+    def rotate_ccw(self):
         for tile in self.table_tiles:
             tile.set_location(tile.get_location()[1], -1 * tile.get_location()[0])
