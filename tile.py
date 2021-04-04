@@ -24,8 +24,8 @@ class Color(Enum):
 # each tile will have left, top, color, width, height, location
 # a rect will be made with left, top, height, width
 class Tile:
-    height = 1
-    width = 1
+    height = 30
+    width = 30
 
     actual_height = 30
     actual_width = 30
