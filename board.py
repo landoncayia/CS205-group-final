@@ -19,10 +19,8 @@ class Board:
         if self.tiles[row][col] is None:
             # if the position in tiles contains None, then draw an empty gray tile (30x30 pixels)
             pygame.draw.rect(self.surface, Color.EMPTY_GREY.value, (tile_x,tile_y,30,30))
-            # self.tiles[row][col].draw_tile(self.surface)
         else:
             pygame.draw.rect(self.surface, self.tiles[row][col].get_color().value, (tile_x,tile_y,30,30))
-            # self.tiles[row][col].draw_tile(self.surface)
 
     def draw_labels(self):
         font = pygame.font.SysFont('Ubuntu', 18, bold=True)
@@ -71,4 +69,4 @@ class Board:
     '''
     def add_piece(self, piece):
         for tile in piece.get_tiles():
-            self.tiles[tile.get_location()[0]][tile.get_location()[1]] = tile
+            self.tiles[tile.get_board_location()[0]][tile.get_board_location()[1]] = tile

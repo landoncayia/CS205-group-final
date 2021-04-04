@@ -4,7 +4,6 @@ import pygame.locals
 from board import Board
 from piece import Piece
 from piece import Shape
-from piece import create_set
 from tile import Color
 from tile import Tile
 
@@ -31,7 +30,7 @@ if __name__ == '__main__':
 
     # DISPLAY PIECES
     piecesSurface.fill(Color.BG_GREY.value)
-    testpiece.draw_piece(piecesSurface)
+    testpiece.draw_piece_outside_board(piecesSurface)
     screen.blit(piecesSurface, (800, 200))
     # full_set = create_set(Color.BLUE, 900, 50)
 
