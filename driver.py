@@ -11,13 +11,39 @@ BOARD_WIDTH, BOARD_HEIGHT = 800, 800
 NEXT_PLAYER = {'b': 'y', 'y': 'r', 'r': 'g', 'g': 'b'} # dict used to go to next player in order of play: Blue -> Yellow -> Red -> Green
 
 
+def create_set(start_x, start_y, set_color):
+    set_of_tiles = list()
+    set_of_tiles.append(Piece(Shape.ONE, Tile(start_x, start_y, set_color)))
+    set_of_tiles.append(Piece(Shape.TWO, Tile(start_x + 90, start_y, set_color)))
+    set_of_tiles.append(Piece(Shape.V3, Tile(start_x + 210, start_y, set_color)))
+    set_of_tiles.append(Piece(Shape.I3, Tile(start_x, start_y + 90, set_color)))
+    set_of_tiles.append(Piece(Shape.T4, Tile(start_x + 150, start_y + 90, set_color)))
+    set_of_tiles.append(Piece(Shape.O, Tile(start_x, start_y + 180, set_color)))
+    set_of_tiles.append(Piece(Shape.L4, Tile(start_x + 120, start_y + 180, set_color)))
+    set_of_tiles.append(Piece(Shape.I4, Tile(start_x, start_y + 270, set_color)))
+    set_of_tiles.append(Piece(Shape.Z4, Tile(start_x + 180, start_y + 270, set_color)))
+    set_of_tiles.append(Piece(Shape.F, Tile(start_x + 30, start_y + 330, set_color)))
+    set_of_tiles.append(Piece(Shape.X, Tile(start_x + 300, start_y + 60, set_color)))
+    set_of_tiles.append(Piece(Shape.P, Tile(start_x + 300, start_y + 330, set_color)))
+    set_of_tiles.append(Piece(Shape.W, Tile(start_x + 270, start_y + 180, set_color)))
+    set_of_tiles.append(Piece(Shape.Z5, Tile(start_x + 120, start_y + 360, set_color)))
+    set_of_tiles.append(Piece(Shape.Y, Tile(start_x, start_y + 450, set_color)))
+    set_of_tiles.append(Piece(Shape.L5, Tile(start_x + 240, start_y + 450, set_color)))
+    set_of_tiles.append(Piece(Shape.U, Tile(start_x + 120, start_y + 510, set_color)))
+    set_of_tiles.append(Piece(Shape.T5, Tile(start_x + 30, start_y + 540, set_color)))
+    set_of_tiles.append(Piece(Shape.V5, Tile(start_x + 270, start_y + 540, set_color)))
+    set_of_tiles.append(Piece(Shape.N, Tile(start_x + 30, start_y + 660, set_color)))
+    set_of_tiles.append(Piece(Shape.I5, Tile(start_x + 180, start_y + 660, set_color)))
+    return set_of_tiles
+
+
 if __name__ == '__main__':
     pygame.init()
     window = (1200, 800)
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
     screen.fill(Color.BG_GREY.value)
-    piecesSurface = pygame.Surface((200, 200))
+    piecesSurface = pygame.Surface((400, 800))
 
     # Create and draw a board, then put it on the screen
     board = Board(window)
@@ -30,8 +56,20 @@ if __name__ == '__main__':
 
     # DISPLAY PIECES
     piecesSurface.fill(Color.BG_GREY.value)
-    testpiece.draw_piece_outside_board(piecesSurface)
-    screen.blit(piecesSurface, (800, 200))
+
+    # create set of pieces to display
+    # tiles_set = create_set(0, 50, Color.BLUE)
+    # # testpiece.draw_piece_outside_board(piecesSurface)
+
+    start_x = 10
+    start_y = 30
+    set_color = Color.BLUE
+    tiles_set = create_set(start_x, start_y, set_color)
+
+    for piece in tiles_set:
+        piece.draw_piece_outside_board(piecesSurface)
+
+    screen.blit(piecesSurface, (800, 0))
     # full_set = create_set(Color.BLUE, 900, 50)
 
     # testpiece.draw(piecesSurface)
