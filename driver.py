@@ -81,9 +81,11 @@ if __name__ == '__main__':
         'y': Yellow
         'r': Red
         'g': Green
+    Selected: represents the piece the player will place on the board
     '''
     state = 'waiting'   # NOTE: This should be changed to 'start' later, this is just for testing
     player = 'b'        # NOTE: Blue player goes first
+    selected = None 
 
     # Game loop
     while True:
@@ -130,6 +132,7 @@ if __name__ == '__main__':
                         tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
                         if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30: # Check if the mouse click location matches the range of this tile
                             piece.select() # If so, select the piece, change state to turn, and end the loop
+                            selected = piece
                             state = 'turn'
                             break
         
@@ -154,12 +157,16 @@ if __name__ == '__main__':
                     for tile in piece.printing_tiles: # Go through each tile in the piece
                         if piece.selected: # Check if the piece is selected
                             piece.deselect() # If so, deselect the piece, change state to waiting, and end the loop
+                            selected = None
                             state = 'waiting'
                             break
 
-            elif keys[pygame.K_r]:
-                # Rotate piece for Isabelle
-                pass
+            elif keys[pygame.K_LEFT]:
+                # Use the left arrow key to rotate counterclockwise
+                selected.rotate_ccw()
+            elif keys[pygame.K_RIGHT]:
+                # Use the right arrow key to rotate clockwise
+                selected.rotate_cw()
         
         elif state == 'end':
             '''
