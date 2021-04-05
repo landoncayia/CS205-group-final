@@ -19,6 +19,10 @@ class Color(Enum):
     GREEN = (0, 160, 0)
     YELLOW = (220, 210, 0)
     BLUE = (0, 0, 160)
+    RED_SELECTED = (255, 100, 100)
+    GREEN_SELECTED = (100, 255, 100)
+    BLUE_SELECTED = (100, 100, 255)
+    YELLOW_SELECTED = (255, 255, 170)
 
 
 # each tile will have left, top, color, width, height, location
@@ -30,6 +34,8 @@ class Tile:
     def __init__(self, x, y, color):
         self.x = x
         self.y = y
+        self.board_x = x
+        self.board_y = y
         self.color = color
 
     # GETTERS
@@ -40,6 +46,9 @@ class Tile:
     # get location
     def get_location(self):
         return self.x, self.y
+
+    def get_board_location(self):
+        return self.board_x, self.board_y
 
     def get_height(self):
         return self.height
@@ -59,4 +68,4 @@ class Tile:
 
     # OTHER FUNCTIONS
     def draw_tile(self, surface):
-        pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(surface, self.color.value, (self.x, self.y, self.width, self.height))

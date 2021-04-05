@@ -8,7 +8,35 @@ from tile import Color
 from tile import Tile
 
 BOARD_WIDTH, BOARD_HEIGHT = 800, 800
-NEXT_PLAYER = {'b': 'y', 'y': 'r', 'r': 'g', 'g': 'b'} # dict used to go to next player in order of play: Blue -> Yellow -> Red -> Green
+NEXT_PLAYER = {'b': 'y', 'y': 'r', 'r': 'g', 'g': 'b'}  # dict used to go to next player in order of play: Blue -> Yellow -> Red -> Green
+NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,  # dict used to go to next color in order of play, as above
+              Color.RED: Color.GREEN, Color.GREEN: Color.BLUE}
+
+
+def create_set(start_x, start_y, set_color):
+    set_of_tiles = list()
+    set_of_tiles.append(Piece(Shape.ONE, Tile(start_x, start_y, set_color)))
+    set_of_tiles.append(Piece(Shape.TWO, Tile(start_x + 90, start_y, set_color)))
+    set_of_tiles.append(Piece(Shape.V3, Tile(start_x + 210, start_y, set_color)))
+    set_of_tiles.append(Piece(Shape.I3, Tile(start_x, start_y + 90, set_color)))
+    set_of_tiles.append(Piece(Shape.T4, Tile(start_x + 150, start_y + 90, set_color)))
+    set_of_tiles.append(Piece(Shape.O, Tile(start_x, start_y + 180, set_color)))
+    set_of_tiles.append(Piece(Shape.L4, Tile(start_x + 120, start_y + 180, set_color)))
+    set_of_tiles.append(Piece(Shape.I4, Tile(start_x, start_y + 270, set_color)))
+    set_of_tiles.append(Piece(Shape.Z4, Tile(start_x + 180, start_y + 270, set_color)))
+    set_of_tiles.append(Piece(Shape.F, Tile(start_x + 30, start_y + 330, set_color)))
+    set_of_tiles.append(Piece(Shape.X, Tile(start_x + 300, start_y + 60, set_color)))
+    set_of_tiles.append(Piece(Shape.P, Tile(start_x + 300, start_y + 330, set_color)))
+    set_of_tiles.append(Piece(Shape.W, Tile(start_x + 270, start_y + 180, set_color)))
+    set_of_tiles.append(Piece(Shape.Z5, Tile(start_x + 120, start_y + 360, set_color)))
+    set_of_tiles.append(Piece(Shape.Y, Tile(start_x, start_y + 450, set_color)))
+    set_of_tiles.append(Piece(Shape.L5, Tile(start_x + 240, start_y + 450, set_color)))
+    set_of_tiles.append(Piece(Shape.U, Tile(start_x + 120, start_y + 510, set_color)))
+    set_of_tiles.append(Piece(Shape.T5, Tile(start_x + 30, start_y + 540, set_color)))
+    set_of_tiles.append(Piece(Shape.V5, Tile(start_x + 270, start_y + 540, set_color)))
+    set_of_tiles.append(Piece(Shape.N, Tile(start_x + 30, start_y + 660, set_color)))
+    set_of_tiles.append(Piece(Shape.I5, Tile(start_x + 180, start_y + 660, set_color)))
+    return set_of_tiles
 
 
 if __name__ == '__main__':
@@ -17,15 +45,40 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
     screen.fill(Color.BG_GREY.value)
+    pieces_surface = pygame.Surface((400, 800))
 
     # Create and draw a board, then put it on the screen
     board = Board(window)
     # TESTING - REMOVE AFTER
     testpiece = Piece(Shape.Z4, Tile(10,10,Color.BLUE))
     board.add_piece(testpiece)
+
     board.draw()
     screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
                                       BOARD_HEIGHT//2-board.get_surface().get_height()//2))
+    # END TESTING
+
+    # DISPLAY PIECES
+    pieces_surface.fill(Color.BG_GREY.value)
+
+    # create set of pieces to display
+    # tiles_set = create_set(0, 50, Color.BLUE)
+    # # testpiece.draw_piece_outside_board(piecesSurface)
+
+    start_x = 10
+    start_y = 30
+    set_color = Color.BLUE
+    tiles_set = create_set(start_x, start_y, set_color)
+
+    for piece in tiles_set:
+        piece.draw_piece_outside_board(pieces_surface)
+
+    screen.blit(pieces_surface, (800, 0))
+    # full_set = create_set(Color.BLUE, 900, 50)
+
+    # testpiece.draw(piecesSurface)
+    # while (i < (len(full_set) / 2)):
+    #     full_set[i].draw(piecesSurface)
 
     pygame.display.flip()
     
@@ -48,6 +101,16 @@ if __name__ == '__main__':
 
     # Game loop
     while True:
+        # Update the board every frame
+        # Add frame rate here
+        board.draw()
+        screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
+                                    BOARD_HEIGHT//2-board.get_surface().get_height()//2))
+        for piece in tiles_set:
+            piece.draw_piece_outside_board(pieces_surface)
+        screen.blit(pieces_surface, (800, 0))
+        pygame.display.flip()
+
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 pygame.quit()
@@ -76,7 +139,14 @@ if __name__ == '__main__':
             if mouse[0]:
                 # Left-click; get position
                 x, y = pygame.mouse.get_pos() # (x, y), where x and y are the number of pixels away from the top-left corner
-                # TODO: Find out which piece the player has clicked on and highlight it, set selected equal to this piece
+                for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
+                    for tile in piece.printing_tiles: # Go through each tile in the piece
+                        tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
+                        if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30: # Check if the mouse click location matches the range of this tile
+                            piece.select() # If so, select the piece, change state to turn, and end the loop
+                            state = 'turn'
+                            break
+        
 
         elif state == 'turn':
             '''
@@ -90,11 +160,16 @@ if __name__ == '__main__':
                 # Place piece
                 # Remove piece from player's pieces
                 player = NEXT_PLAYER[player] # Go to next player
+                set_color = NEXT_COLOR[set_color] # Set next color
             
             elif mouse[2]:
                 # Right-click; unselect current piece and go back to waiting state
-                # unselect function
-                state = 'waiting'
+                for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
+                    for tile in piece.printing_tiles: # Go through each tile in the piece
+                        if piece.selected: # Check if the piece is selected
+                            piece.deselect() # If so, deselect the piece, change state to waiting, and end the loop
+                            state = 'waiting'
+                            break
 
             elif keys[pygame.K_LEFT]:
                 # Use the left arrow key to rotate counterclockwise
@@ -110,5 +185,3 @@ if __name__ == '__main__':
             pass
     
     pygame.quit()
-
-# echos thread
