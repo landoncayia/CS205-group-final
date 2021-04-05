@@ -21,3 +21,5 @@ Currently, our game only has the functionality of being able to run it, and see 
 - Multiple numbers of players
 - Clean up redundant parts of the code
 - Create a simple AI for computer players
+- Use more comments
+- Use branches more effectively
