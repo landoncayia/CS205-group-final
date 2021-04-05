@@ -16,7 +16,7 @@ Currently, our game only has the functionality of being able to run it, and see 
 
 - Refine the UI
 - Game rules
-- Enable players to rotate their selected piece with the 'R' key
+- Enable players to rotate their selected piece with the left and right arrow keys
 - Actually implement true turns for each player color
 - Multiple numbers of players
 - Clean up redundant parts of the code
