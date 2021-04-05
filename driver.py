@@ -147,7 +147,6 @@ if __name__ == '__main__':
                             selected = piece
                             state = 'turn'
                             break
-        
 
         elif state == 'turn':
             '''
