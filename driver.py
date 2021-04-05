@@ -49,9 +49,6 @@ if __name__ == '__main__':
 
     # Create and draw a board, then put it on the screen
     board = Board(window)
-    # TESTING - REMOVE AFTER
-    testpiece = Piece(Shape.Z4, Tile(10,10,Color.BLUE))
-    board.add_piece(testpiece)
 
     board.draw()
     screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
@@ -60,10 +57,6 @@ if __name__ == '__main__':
 
     # DISPLAY PIECES
     pieces_surface.fill(Color.BG_GREY.value)
-
-    # create set of pieces to display
-    # tiles_set = create_set(0, 50, Color.BLUE)
-    # # testpiece.draw_piece_outside_board(piecesSurface)
 
     start_x = 10
     start_y = 30
@@ -74,11 +67,6 @@ if __name__ == '__main__':
         piece.draw_piece_outside_board(pieces_surface)
 
     screen.blit(pieces_surface, (800, 0))
-    # full_set = create_set(Color.BLUE, 900, 50)
-
-    # testpiece.draw(piecesSurface)
-    # while (i < (len(full_set) / 2)):
-    #     full_set[i].draw(piecesSurface)
 
     pygame.display.flip()
     
