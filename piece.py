@@ -513,11 +513,13 @@ class Piece:
     # rotates the piece clockwise
     # 90 degree rotation: T(x,y) -> T(-y,x)
     def rotate_cw(self):
-        for tile in self.table_tiles:
-            tile.set_location(-1 * tile.get_location()[1], tile.get_location()[0])
+        for tile in self.printing_tiles:
+            
+            tile.set_location(-1 * tile.get_location()[1]+400, tile.get_location()[0]+400)
 
     # rotates the piece counterclockwise
     # 270 degree rotation: T(x,y) -> T(y,-x)
     def rotate_ccw(self):
-        for tile in self.table_tiles:
+        for tile in self.printing_tiles:
+            original_location = tile.get_location()
             tile.set_location(tile.get_location()[1], -1 * tile.get_location()[0])
