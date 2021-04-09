@@ -39,6 +39,9 @@ class Piece:
         self.center = center
         self.set_tiles()
         self.selected = False
+        # used to determine the spacing of pieces displayed on the side of the board, determined by what type of piece it is
+        self.display_start_x = 0
+        self.display_start_y = 0
 
     def get_shape(self):
         return self.shape
@@ -90,6 +93,62 @@ class Piece:
                 tile.set_color(Color.RED)
             elif tile.get_color() == Color.GREEN_SELECTED:
                 tile.set_color(Color.GREEN)
+                
+    def set_display_start(self):
+        if self.shape == Shape.TWO:
+            self.display_start_x = 90
+        elif self.shape == Shape.V3:
+            self.display_start_x = 210
+        elif self.shape == Shape.I3:
+            self.display_start_y = 90
+        elif self.shape == Shape.T4:
+            self.display_start_x = 150
+            self.display_start_y = 90
+        elif self.shape == Shape.O:
+            self.display_start_y = 180
+        elif self.shape == Shape.L4:
+            self.display_start_x = 120
+            self.display_start_y = 180
+        elif self.shape == Shape.I4:
+            self.display_start_y = 270
+        elif self.shape == Shape.Z4:
+            self.display_start_x = 180
+            self.display_start_y = 270
+        elif self.shape == Shape.F:
+            self.display_start_x = 30
+            self.display_start_y = 330
+        elif self.shape == Shape.X:
+            self.display_start_x = 300
+            self.display_start_y = 60
+        elif self.shape == Shape.P
+            self.display_start_x = 300
+            self.display_start_y = 330
+        elif self.shape == Shape.W:
+            self.display_start_x = 270
+            self.display_start_y = 180
+        elif self.shape == Shape.Z5:
+            self.display_start_x = 120
+            self.display_start_y = 360
+        elif self.shape == Shape.Y:
+            self.display_start_y = 450
+        elif self.shape == Shape.L5:
+            self.display_start_x = 240
+            self.display_start_y = 450
+        elif self.shape == Shape.U:
+            self.display_start_x = 120
+            self.display_start_y = 510
+        elif self.shape == Shape.T5:
+            self.display_start_x = 30
+            self.display_start_y = 540
+        elif self.shape == Shape.V5:
+            self.display_start_x = 270
+            self.display_start_y = 540
+        elif self.shape == Shape.N:
+            self.display_start_x = 30
+            self.display_start_y = 660
+        elif self.shape == Shape.I5:
+            self.display_start_x = 180
+            self.display_start_y = 660
 
     def set_tiles(self):
         # All tiles have a center piece
