@@ -40,8 +40,7 @@ class Piece:
         self.set_tiles()
         self.selected = False
         # used to determine the spacing of pieces displayed on the side of the board, determined by what type of piece it is
-        self.display_start_x = 0
-        self.display_start_y = 0
+        self.set_display_start
 
     def get_shape(self):
         return self.shape
@@ -93,7 +92,7 @@ class Piece:
                 tile.set_color(Color.RED)
             elif tile.get_color() == Color.GREEN_SELECTED:
                 tile.set_color(Color.GREEN)
-                
+
     def set_display_start(self):
         if self.shape == Shape.TWO:
             self.display_start_x = 90
@@ -120,7 +119,7 @@ class Piece:
         elif self.shape == Shape.X:
             self.display_start_x = 300
             self.display_start_y = 60
-        elif self.shape == Shape.P
+        elif self.shape == Shape.P:
             self.display_start_x = 300
             self.display_start_y = 330
         elif self.shape == Shape.W:
@@ -571,14 +570,34 @@ class Piece:
 
     # rotates the piece clockwise
     # 90 degree rotation: T(x,y) -> T(-y,x)
+    #A point (a, b) rotated around a point (x, y) 90 degrees will transform to point 
+    # (-(b-y) + x, (a-x) + y)
+    
     def rotate_cw(self):
+        a = self.printing_tiles[0].get_location()[0]
+        b = self.printing_tiles[0].get_location()[1]
         for tile in self.printing_tiles:
+            #new_origin_x = tile.get_location[0]-self.display_start_x
+            #new_origin_y = tile.get_location[1]-self.display_start_y
             
-            tile.set_location(-1 * tile.get_location()[1]+400, tile.get_location()[0]+400)
+            x = tile.get_location()[0]
+            y = tile.get_location()[1]
+            #print(tile.get_location()[0])
+            #print(tile.get_location()[1])
+            
+            #print(len(self.printing_tiles))
+            #tile.set_location(-1 * (tile.get_location()[1]-180)+180, (tile.get_location()[0]-180)+180)
+            tile.set_location((-1*(b-y)), ((a-x)+y))
+            print("Tile #", self.printing_tiles.index(tile))
+            print("a: ", a)
+            print("b: ", b)
+            print("x: ", x)
+            print("y: ", y)
+            print()
 
     # rotates the piece counterclockwise
     # 270 degree rotation: T(x,y) -> T(y,-x)
     def rotate_ccw(self):
         for tile in self.printing_tiles:
             original_location = tile.get_location()
-            tile.set_location(tile.get_location()[1], -1 * tile.get_location()[0])
+            tile.set_location(tile.get_location()[1]+180, -1 * tile.get_location()[0]+180)
