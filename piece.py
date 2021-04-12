@@ -587,6 +587,11 @@ class Piece:
             
             #print(len(self.printing_tiles))
             #tile.set_location(-1 * (tile.get_location()[1]-180)+180, (tile.get_location()[0]-180)+180)
+            print("Original location Tile # ", self.printing_tiles.index(tile))
+            print("a: ", a)
+            print("b: ", b)
+            print("x: ", x)
+            print("y: ", y)
             tile.set_location((-1*(b-y)), ((a-x)+y))
             print("Tile #", self.printing_tiles.index(tile))
             print("a: ", a)

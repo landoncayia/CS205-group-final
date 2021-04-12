@@ -65,6 +65,8 @@ class Tile:
     def set_location(self, x, y):
         self.x = x
         self.y = y
+        self.board_x = x
+        self.board_y = y
 
     # OTHER FUNCTIONS
     def draw_tile(self, surface):
