@@ -59,72 +59,75 @@ class GameState:
         self.set_color = Color.BLUE     # The color value of the current player
         self.selected = None            # currently selected piece, if any
 
+
+    def start_loop(self, events):
+        '''
+        Beginning of game, in which number of players is specified. This will be part of Sprint Two
+        We could ask the player to use the number keys on their keyboard to select the number of players; this will highlight squares on-screen
+        Once they have selected their number of players, space could begin the game
+        For now, ignore this
+        '''
+        pass
+    
+
+    def waiting_loop(self, events):
+        '''
+        We are waiting on whomever's turn it currently is to select a piece for placement on the board
+        Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
+        '''
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # Left mouse button pressed, get mouse position
+            x, y = pygame.mouse.get_pos() # (x, y), where x and y are the number of pixels away from the top-left corner
+            for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
+                for tile in piece.printing_tiles: # Go through each tile in the piece
+                    tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
+                    if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30: # Check if the mouse click location matches the range of this tile
+                        piece.select() # If so, select the piece, change state to turn, and end the loop
+                        self.selected = piece
+                        self.state = 'turn'
+                    break
+
+
+    def turn_loop(self, events):
+        '''
+        We are waiting on whomever's turn it currently is to place their piece somewhere on the board
+        This will involve a calculation as to whether a move is legal or not; perhaps in board we could have 'verify_legal'?
+        Additionally, players can right-click to put their piece back and select another.
+        '''
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # Left mouse button pressed, get position
+            x, y = pygame.mouse.get_pos()
+            # Place piece
+            # Remove piece from player's pieces
+            self.player = NEXT_PLAYER[self.player] # Go to next player
+            self.set_color = NEXT_COLOR[self.set_color] # Set next color
+        
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+            # Right mouse button pressed; unselect current piece and go back to waiting state
+            for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
+                if piece.selected: # Check if the piece is selected
+                    piece.deselect() # If so, deselect the piece, change state to waiting, and end the loop
+                    self.selected = None
+                    self.state = 'waiting'
+                    break
+
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+            self.selected.rotate_ccw()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+            self.selected.rotate_cw()
+
+
+    def end_loop(self, events):
+        '''
+        The game has ended; display the winner
+        '''
+        pass
+
+
     '''
     This function will call other helper functions to handle input events accordingly, depending on the game state
     '''
     def handle_events(self, events):
-        def start_loop(events):
-            '''
-            Beginning of game, in which number of players is specified. This will be part of Sprint Two
-            We could ask the player to use the number keys on their keyboard to select the number of players; this will highlight squares on-screen
-            Once they have selected their number of players, space could begin the game
-            For now, ignore this
-            '''
-            pass
-        
-        def waiting_loop(events):
-            '''
-            We are waiting on whomever's turn it currently is to select a piece for placement on the board
-            Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
-            '''
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                # Left mouse button pressed, get mouse position
-                x, y = pygame.mouse.get_pos() # (x, y), where x and y are the number of pixels away from the top-left corner
-                for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
-                    for tile in piece.printing_tiles: # Go through each tile in the piece
-                        tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
-                        if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30: # Check if the mouse click location matches the range of this tile
-                            piece.select() # If so, select the piece, change state to turn, and end the loop
-                            self.selected = piece
-                            self.state = 'turn'
-                        break
-        
-        def turn_loop(events):
-            '''
-            We are waiting on whomever's turn it currently is to place their piece somewhere on the board
-            This will involve a calculation as to whether a move is legal or not; perhaps in board we could have 'verify_legal'?
-            Additionally, players can right-click to put their piece back and select another.
-            '''
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    # Left mouse button pressed, get position
-                    x, y = pygame.mouse.get_pos()
-                    # Place piece
-                    # Remove piece from player's pieces
-                    self.player = NEXT_PLAYER[self.player] # Go to next player
-                    self.set_color = NEXT_COLOR[self.set_color] # Set next color
-            
-                if event.button == 3:
-                    # Right mouse button pressed; unselect current piece and go back to waiting state
-                    for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
-                        if piece.selected: # Check if the piece is selected
-                            piece.deselect() # If so, deselect the piece, change state to waiting, and end the loop
-                            self.selected = None
-                            self.state = 'waiting'
-                            break
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    self.selected.rotate_ccw()
-                if event.key == pygame.K_RIGHT:
-                    self.selected.rotate_cw()
-        
-        def end_loop(events):
-            '''
-            The game has ended; display the winner
-            '''
-            pass
-        
         # Call the proper function, depending on the game state
         if self.state == 'start':
             start_loop(events)
