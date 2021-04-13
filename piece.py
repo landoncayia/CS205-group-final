@@ -34,8 +34,8 @@ class Shape(IntEnum):
 class Piece:
     def __init__(self, shape, center):
         self.shape = shape
-        self.table_tiles = list()
-        self.printing_tiles = list()
+        self.table_tiles = list()  # tiles used on board - incremented by 1
+        self.printing_tiles = list()  # tiles used to display on side - incremented by 30
         self.center = center
         self.set_tiles()
         self.selected = False
@@ -91,6 +91,9 @@ class Piece:
             elif tile.get_color() == Color.GREEN_SELECTED:
                 tile.set_color(Color.GREEN)
 
+    def is_selected(self):
+        return self.selected
+
     def set_tiles(self):
         # All tiles have a center piece
         # Connected pieces are added in reading order relative to center piece, left to right and top to bottom
@@ -100,15 +103,18 @@ class Piece:
         if self.shape == Shape.TWO:
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
                      self.center.get_color()))
+
         # 3 tiles
         elif self.shape == Shape.V3:
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
                      self.center.get_color()))
@@ -120,12 +126,14 @@ class Piece:
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 2, self.center.get_location()[1], self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
                      self.center.get_color()))
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] + 2 * self.center.get_width(), self.center.get_location()[1],
                      self.center.get_color()))
+
         # 4 tiles
         elif self.shape == Shape.T4:
             self.table_tiles.append(
@@ -134,6 +142,7 @@ class Piece:
                 Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] - self.center.get_height(),
                      self.center.get_location()[1] + self.center.get_height(),
@@ -144,6 +153,7 @@ class Piece:
             self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
                                             self.center.get_location()[1] + self.center.get_height(),
                                             self.center.get_color()))
+
         elif self.shape == Shape.O:
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
@@ -162,6 +172,7 @@ class Piece:
             self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
                                             self.center.get_location()[1],
                                             self.center.get_color()))
+
         elif self.shape == Shape.L4:
             self.table_tiles.append(
                 Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
@@ -227,6 +238,7 @@ class Piece:
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] - 1, self.center.get_location()[1] + 2, self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] - self.center.get_height(),
                      self.center.get_location()[1] + self.center.get_height(),
@@ -274,6 +286,7 @@ class Piece:
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0], self.center.get_location()[1] + 2, self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
                      self.center.get_color()))
@@ -296,6 +309,7 @@ class Piece:
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 2, self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 2, self.center.get_location()[1] + 2, self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
                      self.center.get_color()))
@@ -318,6 +332,7 @@ class Piece:
                 Tile(self.center.get_location()[0] + 2, self.center.get_location()[1] + 1, self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 2, self.center.get_location()[1] + 2, self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
                      self.center.get_color()))
@@ -340,6 +355,7 @@ class Piece:
                 Tile(self.center.get_location()[0] + 3, self.center.get_location()[1], self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
                      self.center.get_color()))
@@ -362,6 +378,7 @@ class Piece:
                 Tile(self.center.get_location()[0] + 3, self.center.get_location()[1], self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
                      self.center.get_color()))
@@ -430,6 +447,7 @@ class Piece:
                 Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 2, self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 2, self.center.get_location()[1] + 2, self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
                      self.center.get_color()))
@@ -476,6 +494,7 @@ class Piece:
                 Tile(self.center.get_location()[0] + 3, self.center.get_location()[1], self.center.get_color()))
             self.table_tiles.append(
                 Tile(self.center.get_location()[0] + 4, self.center.get_location()[1], self.center.get_color()))
+
             self.printing_tiles.append(
                 Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
                      self.center.get_color()))

@@ -13,6 +13,8 @@ NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,  # dict used to
               Color.RED: Color.GREEN, Color.GREEN: Color.BLUE}
 
 
+# creates a set of pieces for player using a start x and y, and a color
+# each set has one piece with each shape
 def create_set(start_x, start_y, set_color):
     set_of_tiles = list()
     set_of_tiles.append(Piece(Shape.ONE, Tile(start_x, start_y, set_color)))
@@ -143,12 +145,28 @@ if __name__ == '__main__':
             Additionally, players can right-click to put their piece back and select another.
             '''
             if mouse[0]:
-                # Left-click; get position
-                x, y = pygame.mouse.get_pos()
-                # Place piece
-                # Remove piece from player's pieces
-                player = NEXT_PLAYER[player] # Go to next player
-                set_color = NEXT_COLOR[set_color] # Set next color
+                while state == 'turn':
+                    # Left-click; get position
+                    x, y = pygame.mouse.get_pos()
+                    # Mouse over board hover
+                    for piece in tiles_set:
+                        if (piece.is_selected() == True):
+                            current_piece = piece
+
+                    selected_color = current_piece.get_tiles()[0].get_color()
+
+                    board_tiles = board.get_tiles()
+                    for tile in range(len(board_tiles)):
+                        while board_tiles[tile].get_x() < x < board_tiles[
+                            tile].get_x() + 30 and tile.get_y() < y < tile.get_y() + 30:
+                            tile.set_color(selected_color)
+                            screen.blit(board.get_surface(), (BOARD_WIDTH // 2 - board.get_surface().get_width() // 2,
+                                                              BOARD_HEIGHT // 2 - board.get_surface().get_height() // 2))
+
+                    # Place piece
+                    # Remove piece from player's pieces
+                    player = NEXT_PLAYER[player]  # Go to next player
+                    set_color = NEXT_COLOR[set_color]  # Set next color
             
             elif mouse[2]:
                 # Right-click; unselect current piece and go back to waiting state
