@@ -98,6 +98,10 @@ class GameState:
             # Left mouse button pressed, get position
             x, y = pygame.mouse.get_pos()
             # Place piece
+            for row in board.tiles:
+                for tile in row:
+                    if tile.x < x < tile.x + 30 and tile.y < y < tile.y + 30:
+                        board.add_piece(self.selected, tile.board_x, tile.board_y)
             # Remove piece from player's pieces
             self.player = NEXT_PLAYER[self.player] # Go to next player
             self.set_color = NEXT_COLOR[self.set_color] # Set next color
@@ -130,13 +134,13 @@ class GameState:
     def handle_events(self, events):
         # Call the proper function, depending on the game state
         if self.state == 'start':
-            start_loop(events)
+            self.start_loop(events)
         elif self.state == 'waiting':
-            waiting_loop(events)
+            self.waiting_loop(events)
         elif self.state == 'turn':
-            turn_loop(events)
+            self.turn_loop(events)
         elif self.state == 'end':
-            end_loop(events)
+            self.end_loop(events)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 import pygame
-from tile import Color
+from tile import Color, Tile
 
 COL_LETTERS = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K',
                        11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
@@ -11,18 +11,11 @@ class Board:
     # tiles is a 2-D list (20 x 20) of tile objects
     def __init__(self, window):
         self.surface = pygame.Surface((750, 750))
-        self.tiles = [[None for _ in range(20)] for _ in range(20)]  # tiles will be added here
-
-    def draw_tile(self, row, col):
-        # these represent the top-left pixel of each tile
-        tile_x, tile_y = 40+(35*col), 40+(35*row)
-        if self.tiles[row][col] is None:
-            # if the position in tiles contains None, then draw an empty gray tile (30x30 pixels)
-            pygame.draw.rect(self.surface, Color.EMPTY_GREY.value, (tile_x,tile_y,30,30))
-            # self.tiles[row][col].draw_tile(self.surface)
-        else:
-            pygame.draw.rect(self.surface, self.tiles[row][col].get_color().value, (tile_x,tile_y,30,30))
-            # self.tiles[row][col].draw_tile(self.surface)
+        self.tiles = [[None]*20 for _ in range(20)]  # initialize board 2-D list
+        for x in range(20):
+            for y in range(20):
+                # x and y are the board locations; so convert the first parameters to pixel values for the surface
+                self.tiles[x][y] = Tile(40+(35*x), 40+(35*y), Color.EMPTY_GREY, x, y)
 
     def draw_labels(self):
         font = pygame.font.SysFont('Ubuntu', 18, bold=True)
@@ -47,7 +40,7 @@ class Board:
         pygame.draw.rect(self.surface, Color.EMPTY_GREY.value, (35,35,705,705), 3)
         for row in range(20):
             for col in range(20):
-                self.draw_tile(row, col)
+                self.tiles[row][col].draw_tile(self.surface)
         self.draw_labels()
 
     # Getters
@@ -69,6 +62,7 @@ class Board:
           ■ ■ ■
         ■ ■
     '''
-    def add_piece(self, piece):
-        for tile in piece.get_tiles():
-            self.tiles[tile.get_board_location()[0]][tile.get_board_location()[1]] = tile
+    def add_piece(self, selected, x, y):
+        for tile in selected.get_tiles():
+            # Piece needs a change; currently, there are no coordinates relative to the origin, so drawing a piece won't work.
+            pass
