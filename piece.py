@@ -42,8 +42,7 @@ class Piece:
         self.color = color
         # self.table_tiles = list()  # tiles used on board - incremented by 1
         # self.printing_tiles = list()  # tiles used to display on side - incremented by 30
-        self.tiles_array = [[Tile for _ in range(MAX_TILES_WIDTH)] for _ in
-                            range(MAX_TILES_WIDTH)]  # tiles will be added here
+        self.tiles_array = [[None] * MAX_TILES_WIDTH for _ in range(MAX_TILES_WIDTH)] # tiles will be added here
         # self.center = center
         self.set_tiles()
         self.selected = False
@@ -657,13 +656,9 @@ class Piece:
             while (col < MAX_TILES_WIDTH):
                 if (self.tiles_array[row][col] != None):
                     self.tiles_array[row][col].draw_tile(surface)
-                row += 1
-            col += 1
+                col += 1
+            row += 1
 
-
-    def draw_piece_outside_board(self, surface):
-        for t in self.printing_tiles:
-            t.draw_tile(surface)
 
     # rotates the piece clockwise
     # 90 degree rotation: T(x,y) -> T(-y,x)

@@ -70,7 +70,7 @@ if __name__ == '__main__':
         screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
                                     BOARD_HEIGHT//2-board.get_surface().get_height()//2))
         for piece in tiles_set:
-            piece.draw_piece_outside_board(pieces_surface)
+            piece.draw_piece(pieces_surface)
         screen.blit(pieces_surface, (800, 0))
         pygame.display.flip()
 
