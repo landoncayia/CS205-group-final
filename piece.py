@@ -658,6 +658,7 @@ class Piece:
                     self.tiles_array[row][col].draw_tile(surface)
                 col += 1
             row += 1
+            col = 0
 
 
     # rotates the piece clockwise
