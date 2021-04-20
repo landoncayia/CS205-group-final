@@ -59,24 +59,32 @@ class Piece:
 
     def select(self):
         self.selected = True
-        for tile in self.table_tiles:
-            if tile.get_color() == Color.BLUE:
-                tile.set_color(Color.BLUE_SELECTED)
-            elif tile.get_color() == Color.YELLOW:
-                tile.set_color(Color.YELLOW_SELECTED)
-            elif tile.get_color() == Color.RED:
-                tile.set_color(Color.RED_SELECTED)
-            elif tile.get_color() == Color.GREEN:
-                tile.set_color(Color.GREEN_SELECTED)
-        for tile in self.printing_tiles:
-            if tile.get_color() == Color.BLUE:
-                tile.set_color(Color.BLUE_SELECTED)
-            elif tile.get_color() == Color.YELLOW:
-                tile.set_color(Color.YELLOW_SELECTED)
-            elif tile.get_color() == Color.RED:
-                tile.set_color(Color.RED_SELECTED)
-            elif tile.get_color() == Color.GREEN:
-                tile.set_color(Color.GREEN_SELECTED)
+        # for tile in self.table_tiles:
+        #     if tile.get_color() == Color.BLUE:
+        #         tile.set_color(Color.BLUE_SELECTED)
+        #     elif tile.get_color() == Color.YELLOW:
+        #         tile.set_color(Color.YELLOW_SELECTED)
+        #     elif tile.get_color() == Color.RED:
+        #         tile.set_color(Color.RED_SELECTED)
+        #     elif tile.get_color() == Color.GREEN:
+        #         tile.set_color(Color.GREEN_SELECTED)
+        # for tile in self.printing_tiles:
+        #     if tile.get_color() == Color.BLUE:
+        #         tile.set_color(Color.BLUE_SELECTED)
+        #     elif tile.get_color() == Color.YELLOW:
+        #         tile.set_color(Color.YELLOW_SELECTED)
+        #     elif tile.get_color() == Color.RED:
+        #         tile.set_color(Color.RED_SELECTED)
+        #     elif tile.get_color() == Color.GREEN:
+        #         tile.set_color(Color.GREEN_SELECTED)
+        if self.color == Color.BLUE:
+            self.color = Color.BLUE_SELECTED
+        elif self.color == Color.YELLOW:
+            self.color = Color.YELLOW_SELECTED
+        elif self.color == Color.RED:
+            self.color = Color.RED_SELECTED
+        elif self.color == Color.GREEN:
+            self.color = Color.GREEN_SELECTED
 
     def deselect(self):
         self.selected = False
@@ -647,7 +655,8 @@ class Piece:
         col = 0
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
-                self.tiles_array[row][col].draw_tile(surface)
+                if (self.tiles_array[row][col] != None):
+                    self.tiles_array[row][col].draw_tile(surface)
                 row += 1
             col += 1
 
