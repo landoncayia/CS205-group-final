@@ -118,11 +118,11 @@ class GameState:
 
 if __name__ == '__main__':
     pygame.init()
-    window = (1200, 800)
+    window = (1450, 800)
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
     screen.fill(Color.BG_GREY.value)
-    pieces_surface = pygame.Surface((500, 800))
+    pieces_surface = pygame.Surface((700, 800))
     timer = pygame.time.Clock()
 
     # Create the game state object

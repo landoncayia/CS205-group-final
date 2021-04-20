@@ -112,170 +112,50 @@ class Piece:
     def set_tiles(self):
         # All tiles have a center piece
         # Connected pieces are added in reading order relative to center piece, left to right and top to bottom
-        # self.table_tiles.append(self.center)
-        # self.printing_tiles.append(self.center)
         if self.shape == Shape.ONE:
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
         # 2 tiles
         elif self.shape == Shape.TWO:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+            self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
 
         # 3 tiles
         elif self.shape == Shape.V3:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+            self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
 
         elif self.shape == Shape.I3:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1], self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
 
         # 4 tiles
         elif self.shape == Shape.T4:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] - 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] - self.center.get_height(),
-            #          self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
             self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
 
         elif self.shape == Shape.O:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_height(),
-            #          self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1],
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
 
         elif self.shape == Shape.L4:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + (2 * self.center.get_width()),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
             self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
 
         elif self.shape == Shape.I4:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 3, self.center.get_location()[1], self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 3 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
             self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
 
         elif self.shape == Shape.Z4:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
@@ -283,29 +163,6 @@ class Piece:
 
         # 5 tiles
         elif self.shape == Shape.F:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] - 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] - 1, self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] - self.center.get_height(),
-            #          self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] - self.center.get_height(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[0][2] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
@@ -313,29 +170,6 @@ class Piece:
             self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
 
         elif self.shape == Shape.X:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] - 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] - self.center.get_height(),
-            #          self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 2 * self.center.get_height(),
-            #          self.center.get_color()))
-
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
@@ -343,28 +177,6 @@ class Piece:
             self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
 
         elif self.shape == Shape.P:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 2 * self.center.get_height(),
-            #          self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[0][2] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
@@ -372,28 +184,6 @@ class Piece:
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
 
         elif self.shape == Shape.W:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 2, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + 2 * self.center.get_width(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
@@ -402,28 +192,6 @@ class Piece:
 
 
         elif self.shape == Shape.Z5:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + 2 * self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + 2 * self.center.get_width(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
@@ -431,28 +199,6 @@ class Piece:
             self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
 
         elif self.shape == Shape.Y:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 3, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 3 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
@@ -460,28 +206,6 @@ class Piece:
             self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
 
         elif self.shape == Shape.L5:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 3, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 3 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
@@ -489,28 +213,6 @@ class Piece:
             self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
 
         elif self.shape == Shape.U:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + 2 * self.center.get_width(),
-            #                                 self.center.get_location()[1] + self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
@@ -518,28 +220,6 @@ class Piece:
             self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
 
         elif self.shape == Shape.T5:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] - 1, self.center.get_location()[1] + 2, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 2, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] - self.center.get_height(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 2 * self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][2] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
@@ -547,28 +227,6 @@ class Piece:
             self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
 
         elif self.shape == Shape.V5:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 2, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1] + 2, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1] + 2, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 2 * self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + self.center.get_width(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-            # self.printing_tiles.append(Tile(self.center.get_location()[0] + 2 * self.center.get_width(),
-            #                                 self.center.get_location()[1] + 2 * self.center.get_height(),
-            #                                 self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[0][2] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
@@ -576,29 +234,6 @@ class Piece:
             self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
 
         elif self.shape == Shape.N:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] - 1, self.center.get_location()[1] + 1, self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + 1, self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] - self.center.get_height(),
-            #          self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0], self.center.get_location()[1] + self.center.get_height(),
-            #          self.center.get_color()))
-
             self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
@@ -606,28 +241,6 @@ class Piece:
             self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
 
         elif self.shape == Shape.I5:
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 1, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 3, self.center.get_location()[1], self.center.get_color()))
-            # self.table_tiles.append(
-            #     Tile(self.center.get_location()[0] + 4, self.center.get_location()[1], self.center.get_color()))
-            #
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 2 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 3 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-            # self.printing_tiles.append(
-            #     Tile(self.center.get_location()[0] + 4 * self.center.get_width(), self.center.get_location()[1],
-            #          self.center.get_color()))
-
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
             self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
             self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
