@@ -26,22 +26,22 @@ class Board:
         # Draw letters along the top of the board (above each column)
         for col in range(20):
             text = font.render(COL_LETTERS[col], True, Color.EMPTY_GREY.value)
-            self.surface.blit(text, (50+(35*col),5))
+            self.surface.blit(text, (50+(35*col), 5))
         # Draw numbers along the side of the board, left of each row
         # row + 1 will be the row number
         # change position slightly for vertical alignment of numbers
         for row in range(9):
             text = font.render(str(row+1), True, Color.EMPTY_GREY.value)
-            self.surface.blit(text, (15,45+(35*row)))
-        for row in range(9,20):
+            self.surface.blit(text, (15, 45+(35*row)))
+        for row in range(9, 20):
             text = font.render(str(row+1), True, Color.EMPTY_GREY.value)
-            self.surface.blit(text, (10,45+(35*row)))
+            self.surface.blit(text, (10, 45+(35*row)))
 
     # draw() will draw the surface in the game window
     def draw(self):
         # Need .value for an enum to get the actual tuple, not the enum object
         self.surface.fill(Color.BG_GREY.value)
-        pygame.draw.rect(self.surface, Color.EMPTY_GREY.value, (35,35,705,705), 3)
+        pygame.draw.rect(self.surface, Color.EMPTY_GREY.value, (35, 35, 705, 705), 3)
         for row in range(20):
             for col in range(20):
                 self.tiles[row][col].draw_tile(self.surface)
