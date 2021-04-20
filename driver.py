@@ -105,6 +105,10 @@ if __name__ == '__main__':
                 sys.exit()
             if e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE:
                 raise SystemExit
+            if e.type == pygame.KEYDOWN and e.key == pygame.K_LEFT:
+                selected.rotate_cw()
+            if e.type == pygame.KEYDOWN and e.key == pygame.K_RIGHT:
+                selected.rotate_ccw()
 
         keys = pygame.key.get_pressed() # This is a dictionary, where each key has a value of 0 or 1 for pressed/not pressed.
         mouse = pygame.mouse.get_pressed() # This is a dictionary, where each mouse button has a value of 0 or 1 for pressed/not pressed.
@@ -160,12 +164,13 @@ if __name__ == '__main__':
                             state = 'waiting'
                             break
 
-            elif keys[pygame.K_LEFT]:
-                # Use the left arrow key to rotate counterclockwise
-                selected.rotate_ccw()
-            elif keys[pygame.K_RIGHT]:
-                # Use the right arrow key to rotate clockwise
-                selected.rotate_cw()
+            
+            # elif keys[pygame.K_LEFT]:
+            #     # Use the left arrow key to rotate counterclockwise
+            #     selected.rotate_ccw()
+            # elif keys[pygame.K_RIGHT]:
+            #     # Use the right arrow key to rotate clockwise
+            #     selected.rotate_cw()
         
         elif state == 'end':
             '''
