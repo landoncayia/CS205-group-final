@@ -60,16 +60,19 @@ class Board:
 
     '''
     add_piece(): adds a piece to the tiles
-    origin: tuple(int, int) - contains the origin [0-19] of the placed piece; e.g., (1, 1)
-    tiles: list(Tile) - contains the tiles that make up a piece
+    selected: the currently selected piece, to be added
+    board_x, board_y: clicked board location for piece to get added
         NOTE: the first value in tiles should be (0, 0); e.g., [(0, 0), (1, 0), (2, 0), (0, 1), (-1, 1)] will make this shape:
           ■ ■ ■
         ■ ■
     '''
-    def add_piece(self, selected, x, y):
-        for tile in selected.get_tiles():
-            # Piece needs a change; currently, there are no coordinates relative to the origin, so drawing a piece won't work.
-            pass
+    def add_piece(self, selected, board_x, board_y):
+        for row in range(len(selected.get_tiles())):  # Should be 5
+            for col in range(len(selected.get_tiles()[0])):  # Should be 5
+                if selected.get_tiles()[row][col] is not None:
+                    selected.get_tiles()[row][col].x = self.tiles[board_x][board_y].x
+                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y].y
+                    self.tiles[board_x][board_y] = selected.get_tiles()[row][col]
 
 
 # creates a set of pieces for player using a start x and y, and a color
