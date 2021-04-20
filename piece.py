@@ -1,7 +1,7 @@
 from tile import Tile
 from enum import IntEnum
 from tile import Color
-
+import numpy as np
 
 # contains all possible pieces
 class Shape(IntEnum):
@@ -652,9 +652,14 @@ class Piece:
         #     t.draw_tile(surface)
         row = 0
         col = 0
+        x = self.tiles_array[0][0].get_location()[0]
+        y = self.tiles_array[0][0].get_location()[1]
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
                 if (self.tiles_array[row][col] != None):
+                    x = x + 30*row
+                    y = y + 30*col
+                    self.tiles_array[row][col].set_location(x,y)
                     self.tiles_array[row][col].draw_tile(surface)
                 col += 1
             row += 1
