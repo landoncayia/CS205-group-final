@@ -46,8 +46,6 @@ class Piece:
         # self.center = center
         self.set_tiles()
         self.selected = False
-        # used to determine the spacing of pieces displayed on the side of the board, determined by what type of piece it is
-        self.set_display_start
 
     def get_shape(self):
         return self.shape
@@ -660,6 +658,7 @@ class Piece:
                     self.tiles_array[row][col].draw_tile(surface)
                 col += 1
             row += 1
+            col = 0
 
 
     # rotates the piece clockwise

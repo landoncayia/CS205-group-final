@@ -14,67 +14,6 @@ NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,  # dict used to
               Color.RED: Color.GREEN, Color.GREEN: Color.BLUE}
 
 
-if __name__ == '__main__':
-    pygame.init()
-    window = (1200, 800)
-    screen = pygame.display.set_mode(window)
-    pygame.display.set_caption('Blokus')
-    screen.fill(Color.BG_GREY.value)
-    pieces_surface = pygame.Surface((400, 800))
-
-    # Create and draw a board, then put it on the screen
-    board = Board(window)
-
-    board.draw()
-    screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
-                                      BOARD_HEIGHT//2-board.get_surface().get_height()//2))
-    # END TESTING
-
-    # DISPLAY PIECES
-    pieces_surface.fill(Color.BG_GREY.value)
-
-    start_x = 10
-    start_y = 30
-    set_color = Color.BLUE
-    tiles_set = create_set(start_x, start_y, set_color)
-
-    for piece in tiles_set:
-        piece.draw_piece(pieces_surface)
-
-    screen.blit(pieces_surface, (800, 0))
-
-    pygame.display.flip()
-    
-    '''
-    States: start, waiting, turn, end
-        start: game should begin in this state
-        waiting: waiting for a player to select a piece
-        turn: player has selected a piece, and we are waiting for them to place it on the board
-        end: the game has ended, and a player has won
-    Player: determined which player's turn it is
-        'b': Blue
-        'y': Yellow
-        'r': Red
-        'g': Green
-    Selected: represents the piece the player will place on the board
-    '''
-    state = 'waiting'   # NOTE: This should be changed to 'start' later, this is just for testing
-    player = 'b'        # NOTE: Blue player goes first
-    selected = None 
-
-    # Game loop
-    while True:
-        # Update the board every frame
-        # Add frame rate here
-        board.draw()
-        screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
-                                    BOARD_HEIGHT//2-board.get_surface().get_height()//2))
-        for piece in tiles_set:
-            piece.draw_piece(pieces_surface)
-        screen.blit(pieces_surface, (800, 0))
-        pygame.display.flip()
-
-
 class GameState:
     def __init__(self):
         '''
@@ -205,7 +144,7 @@ if __name__ == '__main__':
     tiles_set = create_set(start_x, start_y, set_color)
 
     for piece in tiles_set:
-        piece.draw_piece_outside_board(pieces_surface)
+        piece.draw_piece(pieces_surface)
 
     screen.blit(pieces_surface, (800, 0))
 
@@ -219,7 +158,7 @@ if __name__ == '__main__':
         screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
                                     BOARD_HEIGHT//2-board.get_surface().get_height()//2))
         for piece in tiles_set:
-            piece.draw_piece_outside_board(pieces_surface)
+            piece.draw_piece(pieces_surface)
         screen.blit(pieces_surface, (800, 0))
         pygame.display.flip()
 
@@ -229,9 +168,9 @@ if __name__ == '__main__':
                 raise SystemExit
             if event.type == pygame.QUIT:
                 raise SystemExit
-            if e.type == pygame.KEYDOWN and e.key == pygame.K_LEFT:
+            if event.type == pygame.KEYDOWN and e.key == pygame.K_LEFT:
                 selected.rotate_cw()
-            if e.type == pygame.KEYDOWN and e.key == pygame.K_RIGHT:
+            if event.type == pygame.KEYDOWN and e.key == pygame.K_RIGHT:
                 selected.rotate_ccw()
 
         game_state.handle_events(pygame.event.get())
