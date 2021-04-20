@@ -122,7 +122,7 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
     screen.fill(Color.BG_GREY.value)
-    pieces_surface = pygame.Surface((400, 800))
+    pieces_surface = pygame.Surface((500, 800))
     timer = pygame.time.Clock()
 
     # Create the game state object

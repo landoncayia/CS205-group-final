@@ -77,9 +77,10 @@ class Board:
 def create_set(start_x, start_y, set_color):
     MAX_PIECE_WIDTH = 150
     GAP = 10
+    MAX_PIECE_DISTANCE = MAX_PIECE_WIDTH + GAP
     set_of_pieces = list()
     set_of_pieces.append(Piece(Shape.ONE, start_x, start_y, set_color))
-    set_of_pieces.append(Piece(Shape.TWO, start_x + MAX_PIECE_WIDTH, start_y, set_color))
+    set_of_pieces.append(Piece(Shape.TWO, start_x + MAX_PIECE_DISTANCE, start_y, set_color))
     # set_of_pieces.append(Piece(Shape.V3, Tile(start_x + 210, start_y, set_color)))
     # set_of_pieces.append(Piece(Shape.I3, Tile(start_x, start_y + 90, set_color)))
     # set_of_pieces.append(Piece(Shape.T4, Tile(start_x + 150, start_y + 90, set_color)))
