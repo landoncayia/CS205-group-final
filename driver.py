@@ -44,23 +44,24 @@ class GameState:
         '''
         pass
 
-
     def waiting_loop(self, events):
-        '''
+        """
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
         Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
-        '''
+        """
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get mouse position
-            x, y = pygame.mouse.get_pos() # (x, y), where x and y are the number of pixels away from the top-left corner
-            for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
-                for tile in piece.printing_tiles: # Go through each tile in the piece
-                    tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
-                    if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30: # Check if the mouse click location matches the range of this tile
-                        piece.select() # If so, select the piece, change state to turn, and end the loop
-                        self.selected = piece
-                        self.state = 'turn'
-                    break
+            x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
+            for piece in tiles_set:  # Go through each piece in the tile set that is currently on-screen
+                for row in piece.tiles_array:  # Go through each row in the tile array
+                    for tile in row:
+                        if tile is not None:
+                            tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
+                            if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30: # Check if the mouse click location matches the range of this tile
+                                piece.select() # If so, select the piece, change state to turn, and end the loop
+                                self.selected = piece
+                                self.state = 'turn'
+                            break
 
     def turn_loop(self, events):
         '''
@@ -74,9 +75,11 @@ class GameState:
             # Place piece
             for row in board.tiles:
                 for tile in row:
-                    if tile.x < x < tile.x + 30 and tile.y < y < tile.y + 30:
+                    if 35+tile.x < x < 65+tile.x and 35+tile.y < y < 65+tile.y:
                         board.add_piece(self.selected, tile.board_x, tile.board_y)
-            # Remove piece from player's pieces
+                        tiles_set.remove(self.selected)
+                        self.selected.deselect()
+                        self.state = 'waiting'
             self.player = NEXT_PLAYER[self.player] # Go to next player
             self.set_color = NEXT_COLOR[self.set_color] # Set next color
 
@@ -156,7 +159,7 @@ if __name__ == '__main__':
         timer.tick(60)
         board.draw()
         screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
-                                    BOARD_HEIGHT//2-board.get_surface().get_height()//2))
+                                          BOARD_HEIGHT//2-board.get_surface().get_height()//2))
         for piece in tiles_set:
             piece.draw_piece(pieces_surface)
         screen.blit(pieces_surface, (800, 0))
