@@ -1,8 +1,12 @@
 import pygame
-from tile import Color, Tile
+from tile import Color
+from piece import Piece
+from tile import Tile
+from piece import Shape
 
 COL_LETTERS = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K',
                        11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
+TILE_WIDTH = 30
 
 class Board:
     # init function
@@ -66,3 +70,33 @@ class Board:
         for tile in selected.get_tiles():
             # Piece needs a change; currently, there are no coordinates relative to the origin, so drawing a piece won't work.
             pass
+
+
+# creates a set of pieces for player using a start x and y, and a color
+# each set has one piece with each shape
+def create_set(start_x, start_y, set_color):
+    MAX_PIECE_WIDTH = 150
+    GAP = 10
+    set_of_pieces = list()
+    set_of_pieces.append(Piece(Shape.ONE, start_x, start_y, set_color))
+    set_of_pieces.append(Piece(Shape.TWO, start_x + MAX_PIECE_WIDTH, start_y, set_color))
+    # set_of_pieces.append(Piece(Shape.V3, Tile(start_x + 210, start_y, set_color)))
+    # set_of_pieces.append(Piece(Shape.I3, Tile(start_x, start_y + 90, set_color)))
+    # set_of_pieces.append(Piece(Shape.T4, Tile(start_x + 150, start_y + 90, set_color)))
+    # set_of_pieces.append(Piece(Shape.O, Tile(start_x, start_y + 180, set_color)))
+    # set_of_pieces.append(Piece(Shape.L4, Tile(start_x + 120, start_y + 180, set_color)))
+    # set_of_pieces.append(Piece(Shape.I4, Tile(start_x, start_y + 270, set_color)))
+    # set_of_pieces.append(Piece(Shape.Z4, Tile(start_x + 180, start_y + 270, set_color)))
+    # set_of_pieces.append(Piece(Shape.F, Tile(start_x + 30, start_y + 330, set_color)))
+    # set_of_pieces.append(Piece(Shape.X, Tile(start_x + 300, start_y + 60, set_color)))
+    # set_of_pieces.append(Piece(Shape.P, Tile(start_x + 300, start_y + 330, set_color)))
+    # set_of_pieces.append(Piece(Shape.W, Tile(start_x + 270, start_y + 180, set_color)))
+    # set_of_pieces.append(Piece(Shape.Z5, Tile(start_x + 120, start_y + 360, set_color)))
+    # set_of_pieces.append(Piece(Shape.Y, Tile(start_x, start_y + 450, set_color)))
+    # set_of_pieces.append(Piece(Shape.L5, Tile(start_x + 240, start_y + 450, set_color)))
+    # set_of_pieces.append(Piece(Shape.U, Tile(start_x + 120, start_y + 510, set_color)))
+    # set_of_pieces.append(Piece(Shape.T5, Tile(start_x + 30, start_y + 540, set_color)))
+    # set_of_pieces.append(Piece(Shape.V5, Tile(start_x + 270, start_y + 540, set_color)))
+    # set_of_pieces.append(Piece(Shape.N, Tile(start_x + 30, start_y + 660, set_color)))
+    # set_of_pieces.append(Piece(Shape.I5, Tile(start_x + 180, start_y + 660, set_color)))
+    return set_of_pieces

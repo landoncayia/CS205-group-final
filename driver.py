@@ -2,6 +2,7 @@ import sys
 import pygame
 import pygame.locals
 from board import Board
+from board import create_set
 from piece import Piece
 from piece import Shape
 from tile import Color
@@ -11,7 +12,6 @@ BOARD_WIDTH, BOARD_HEIGHT = 800, 800
 NEXT_PLAYER = {'b': 'y', 'y': 'r', 'r': 'g', 'g': 'b'}  # dict used to go to next player in order of play: Blue -> Yellow -> Red -> Green
 NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,  # dict used to go to next color in order of play, as above
               Color.RED: Color.GREEN, Color.GREEN: Color.BLUE}
-
 
 def create_set(start_x, start_y, set_color):
     set_of_tiles = list()
@@ -37,6 +37,66 @@ def create_set(start_x, start_y, set_color):
     set_of_tiles.append(Piece(Shape.N, Tile(start_x + 30, start_y + 660, set_color)))
     set_of_tiles.append(Piece(Shape.I5, Tile(start_x + 180, start_y + 660, set_color)))
     return set_of_tiles
+
+if __name__ == '__main__':
+    pygame.init()
+    window = (1200, 800)
+    screen = pygame.display.set_mode(window)
+    pygame.display.set_caption('Blokus')
+    screen.fill(Color.BG_GREY.value)
+    pieces_surface = pygame.Surface((400, 800))
+
+    # Create and draw a board, then put it on the screen
+    board = Board(window)
+
+    board.draw()
+    screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
+                                      BOARD_HEIGHT//2-board.get_surface().get_height()//2))
+    # END TESTING
+
+    # DISPLAY PIECES
+    pieces_surface.fill(Color.BG_GREY.value)
+
+    start_x = 10
+    start_y = 30
+    set_color = Color.BLUE
+    tiles_set = create_set(start_x, start_y, set_color)
+
+    for piece in tiles_set:
+        piece.draw_piece(pieces_surface)
+
+    screen.blit(pieces_surface, (800, 0))
+
+    pygame.display.flip()
+    
+    '''
+    States: start, waiting, turn, end
+        start: game should begin in this state
+        waiting: waiting for a player to select a piece
+        turn: player has selected a piece, and we are waiting for them to place it on the board
+        end: the game has ended, and a player has won
+    Player: determined which player's turn it is
+        'b': Blue
+        'y': Yellow
+        'r': Red
+        'g': Green
+    Selected: represents the piece the player will place on the board
+    '''
+    state = 'waiting'   # NOTE: This should be changed to 'start' later, this is just for testing
+    player = 'b'        # NOTE: Blue player goes first
+    selected = None 
+
+    # Game loop
+    while True:
+        # Update the board every frame
+        # Add frame rate here
+        board.draw()
+        screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
+                                    BOARD_HEIGHT//2-board.get_surface().get_height()//2))
+        for piece in tiles_set:
+            piece.draw_piece_outside_board(pieces_surface)
+        screen.blit(pieces_surface, (800, 0))
+        pygame.display.flip()
 
 
 class GameState:
@@ -68,7 +128,7 @@ class GameState:
         For now, ignore this
         '''
         pass
-    
+
 
     def waiting_loop(self, events):
         '''
@@ -87,7 +147,6 @@ class GameState:
                         self.state = 'turn'
                     break
 
-
     def turn_loop(self, events):
         '''
         We are waiting on whomever's turn it currently is to place their piece somewhere on the board
@@ -105,7 +164,7 @@ class GameState:
             # Remove piece from player's pieces
             self.player = NEXT_PLAYER[self.player] # Go to next player
             self.set_color = NEXT_COLOR[self.set_color] # Set next color
-        
+
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             # Right mouse button pressed; unselect current piece and go back to waiting state
             for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
@@ -119,7 +178,6 @@ class GameState:
             self.selected.rotate_ccw()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
             self.selected.rotate_cw()
-
 
     def end_loop(self, events):
         '''
