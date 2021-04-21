@@ -8,15 +8,18 @@ from piece import Shape
 from tile import Color
 from tile import Tile
 
+#  dimensions of the board
 BOARD_WIDTH, BOARD_HEIGHT = 800, 800
-NEXT_PLAYER = {'b': 'y', 'y': 'r', 'r': 'g', 'g': 'b'}  # dict used to go to next player in order of play: Blue -> Yellow -> Red -> Green
-NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,  # dict used to go to next color in order of play, as above
+#  dict used to go to next player in order of play: Blue -> Yellow -> Red -> Green
+NEXT_PLAYER = {'b': 'y', 'y': 'r', 'r': 'g', 'g': 'b'}
+#  dict used to go to next color in order of play, as above
+NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,
               Color.RED: Color.GREEN, Color.GREEN: Color.BLUE}
 
 
 class GameState:
     def __init__(self):
-        '''
+        """
         States: start, waiting, turn, end
             start: game should begin in this state
             waiting: waiting for a player to select a piece
@@ -28,20 +31,19 @@ class GameState:
             'r': Red
             'g': Green
         Selected: represents the piece the player will place on the board
-        '''
+        """
         self.state = 'waiting'          # NOTE: This should be changed to 'start' later, this is just for testing
         self.player = 'b'               # NOTE: Blue player goes first
         self.set_color = Color.BLUE     # The color value of the current player
         self.selected = None            # currently selected piece, if any
 
-
     def start_loop(self, events):
-        '''
+        """
         Beginning of game, in which number of players is specified. This will be part of Sprint Two
         We could ask the player to use the number keys on their keyboard to select the number of players; this will highlight squares on-screen
         Once they have selected their number of players, space could begin the game
         For now, ignore this
-        '''
+        """
         pass
 
     def waiting_loop(self, events):
@@ -57,18 +59,20 @@ class GameState:
                     for tile in row:
                         if tile is not None:
                             tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
-                            if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30: # Check if the mouse click location matches the range of this tile
-                                piece.select() # If so, select the piece, change state to turn, and end the loop
+                            if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30:
+                                # Check if the mouse click location matches the range of this tile
+                                # If so, select the piece, change state to turn, and end the loop
+                                piece.select()
                                 self.selected = piece
                                 self.state = 'turn'
                             break
 
     def turn_loop(self, events):
-        '''
+        """
         We are waiting on whomever's turn it currently is to place their piece somewhere on the board
-        This will involve a calculation as to whether a move is legal or not; perhaps in board we could have 'verify_legal'?
+        This will involve a calculation as to whether a move is legal or not
         Additionally, players can right-click to put their piece back and select another.
-        '''
+        """
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get position
             x, y = pygame.mouse.get_pos()
@@ -80,8 +84,8 @@ class GameState:
                         tiles_set.remove(self.selected)
                         self.selected.deselect()
                         self.state = 'waiting'
-            self.player = NEXT_PLAYER[self.player] # Go to next player
-            self.set_color = NEXT_COLOR[self.set_color] # Set next color
+            self.player = NEXT_PLAYER[self.player]  # Go to next player
+            self.set_color = NEXT_COLOR[self.set_color]  # Set next color
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             # Right mouse button pressed; unselect current piece and go back to waiting state
@@ -98,15 +102,15 @@ class GameState:
             self.selected.rotate_cw()
 
     def end_loop(self, events):
-        '''
+        """
         The game has ended; display the winner
-        '''
+        """
         pass
 
 
-    '''
+    """
     This function will call other helper functions to handle input events accordingly, depending on the game state
-    '''
+    """
     def handle_events(self, events):
         # Call the proper function, depending on the game state
         if self.state == 'start':

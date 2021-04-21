@@ -83,9 +83,10 @@ def clear_set(pieces_surface):
     pygame.draw.rect(pieces_surface, Color.BG_GREY.value, (0, 0, 400, 800))
 
 
-
-# creates a set of pieces for player using a start x and y, and a color
-# each set has one piece with each shape
+"""
+creates a set of pieces for player using a start x and y, and a color
+each set has one piece with each shape
+"""
 def create_set(start_x, start_y, set_color):
     MAX_PIECE_WIDTH = 150
     GAP = 10
