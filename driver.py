@@ -2,7 +2,7 @@ import sys
 import pygame
 import pygame.locals
 from board import Board
-from board import create_set
+from board import create_set, clear_set
 from piece import Piece
 from piece import Shape
 from tile import Color
@@ -160,6 +160,7 @@ if __name__ == '__main__':
         board.draw()
         screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
                                           BOARD_HEIGHT//2-board.get_surface().get_height()//2))
+        clear_set(pieces_surface)  # clear any already-placed pieces before drawing again
         for piece in tiles_set:
             piece.draw_piece(pieces_surface)
         screen.blit(pieces_surface, (800, 0))

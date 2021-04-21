@@ -5,8 +5,9 @@ from tile import Tile
 from piece import Shape
 
 COL_LETTERS = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K',
-                       11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
+               11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
 TILE_WIDTH = 30
+
 
 class Board:
     # init function
@@ -73,6 +74,14 @@ class Board:
                     selected.get_tiles()[row][col].x = self.tiles[board_x][board_y].x
                     selected.get_tiles()[row][col].y = self.tiles[board_x][board_y].y
                     self.tiles[board_x][board_y] = selected.get_tiles()[row][col]
+
+
+"""
+Clears out any already-placed pieces from the set of selectable ones
+"""
+def clear_set(pieces_surface):
+    pygame.draw.rect(pieces_surface, Color.BG_GREY.value, (0, 0, 400, 800))
+
 
 
 # creates a set of pieces for player using a start x and y, and a color
