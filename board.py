@@ -78,39 +78,45 @@ def create_set(start_x, start_y, set_color):
     MAX_PIECE_WIDTH = 150
     GAP = 10
     MAX_PIECE_DISTANCE = MAX_PIECE_WIDTH + GAP
+
+    # get the x values for each column
     first_col_val = start_x
-    second_col_val = start_x + MAX_PIECE_DISTANCE
-    third_col_val = start_x + 2 * MAX_PIECE_DISTANCE
-    fourth_col_val = start_x + 3 * MAX_PIECE_DISTANCE
+    second_col_val = first_col_val + MAX_PIECE_DISTANCE
+    third_col_val = second_col_val + MAX_PIECE_DISTANCE
+
+    # get the y values for each row
+    first_row_val = start_y
+    second_row_val = first_row_val + MAX_PIECE_DISTANCE
+    third_row_val = second_row_val + MAX_PIECE_DISTANCE
+    fourth_row_val = third_row_val + MAX_PIECE_DISTANCE
+
+
     set_of_pieces = list()
     # first row
-    set_of_pieces.append(Piece(Shape.ONE, first_col_val, start_y, set_color))
-    set_of_pieces.append(Piece(Shape.TWO, second_col_val, start_y, set_color))
-    set_of_pieces.append(Piece(Shape.V3, third_col_val, start_y, set_color))
-    set_of_pieces.append(Piece(Shape.I3, fourth_col_val, start_y, set_color))
+    set_of_pieces.append(Piece(Shape.ONE, first_col_val, first_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.TWO, second_col_val, first_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.V3, third_col_val, first_row_val, set_color))
     # second row
-    new_y = start_y + MAX_PIECE_DISTANCE
-    set_of_pieces.append(Piece(Shape.T4, first_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.O, second_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.L4, third_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.I4, fourth_col_val, new_y, set_color))
+    set_of_pieces.append(Piece(Shape.I3, first_col_val, second_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.T4, second_col_val, second_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.O, third_col_val, second_row_val, set_color))
     # third row
-    new_y += MAX_PIECE_DISTANCE
-    set_of_pieces.append(Piece(Shape.Z4, first_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.F, second_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.X, third_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.P, fourth_col_val, new_y, set_color))
+    set_of_pieces.append(Piece(Shape.L4, first_col_val, third_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.I4, second_col_val, third_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.Z4, third_col_val, third_row_val, set_color))
     # fourth row
-    new_y += MAX_PIECE_DISTANCE
-    set_of_pieces.append(Piece(Shape.W, first_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.Z5, second_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.Y, third_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.L5, fourth_col_val, new_y, set_color))
-    # fifth row
-    new_y += MAX_PIECE_DISTANCE
-    set_of_pieces.append(Piece(Shape.U, first_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.T5, second_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.V5, third_col_val, new_y, set_color))
-    set_of_pieces.append(Piece(Shape.N, fourth_col_val, new_y, set_color))
-    # set_of_pieces.append(Piece(Shape.I5, Tile(start_x + 180, start_y + 660, set_color)))
+    set_of_pieces.append(Piece(Shape.F, first_col_val, fourth_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.X, second_col_val, fourth_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.P, third_col_val, fourth_row_val, set_color))
+    # back to first row
+    set_of_pieces.append(Piece(Shape.W, first_col_val, first_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.Z5, second_col_val, first_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.Y, third_col_val, first_row_val, set_color))
+    # second row
+    set_of_pieces.append(Piece(Shape.L5, first_col_val, second_row_val, set_color))
+    # set_of_pieces.append(Piece(Shape.U, first_col_val, second_row_val, set_color))
+    # set_of_pieces.append(Piece(Shape.T5, second_col_val, second_row_val, set_color))
+    # set_of_pieces.append(Piece(Shape.V5, third_col_val, third_row_val, set_color))
+    # set_of_pieces.append(Piece(Shape.N, fourth_col_val, third_row_val, set_color))
+    # set_of_pieces.append(Piece(Shape.I5, Tile(start_x + 180, third_row_val, set_color)))
     return set_of_pieces

@@ -142,9 +142,28 @@ if __name__ == '__main__':
     start_y = 30
     set_color = Color.BLUE
     tiles_set = create_set(start_x, start_y, set_color)
+    TILES_PER_PAGE = 12
+    tiles_page = 1
 
-    for piece in tiles_set:
-        piece.draw_piece(pieces_surface)
+    # TO DO : FIX BUTTON THING
+    # if first page of tiles, we want to show the first half of set
+    # which will be from index 0 to TILES_PER_PAGE
+    if tiles_page == 1:
+        for piece in tiles_set:
+            i = 0
+            while (i < TILES_PER_PAGE):
+                tiles_set[i].draw_piece(pieces_surface)
+                i += 1
+    # if second page, we want to print second half
+    # from index TILES_PER_PAGE + 1 to the end of list
+    elif tiles_page == 2:
+        for piece in tiles_set:
+            i = TILES_PER_PAGE + 1
+            while (i < tiles_set.size()):
+                tiles_set[i].draw_piece(pieces_surface)
+                i += 1
+
+
 
     screen.blit(pieces_surface, (800, 0))
 
@@ -157,6 +176,7 @@ if __name__ == '__main__':
         board.draw()
         screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
                                     BOARD_HEIGHT//2-board.get_surface().get_height()//2))
+
         for piece in tiles_set:
             piece.draw_piece(pieces_surface)
         screen.blit(pieces_surface, (800, 0))
