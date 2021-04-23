@@ -108,15 +108,17 @@ def create_set(start_x, start_y, set_color):
     set_of_pieces.append(Piece(Shape.F, first_col_val, fourth_row_val, set_color))
     set_of_pieces.append(Piece(Shape.X, second_col_val, fourth_row_val, set_color))
     set_of_pieces.append(Piece(Shape.P, third_col_val, fourth_row_val, set_color))
+
     # back to first row
     set_of_pieces.append(Piece(Shape.W, first_col_val, first_row_val, set_color))
     set_of_pieces.append(Piece(Shape.Z5, second_col_val, first_row_val, set_color))
     set_of_pieces.append(Piece(Shape.Y, third_col_val, first_row_val, set_color))
     # second row
     set_of_pieces.append(Piece(Shape.L5, first_col_val, second_row_val, set_color))
-    # set_of_pieces.append(Piece(Shape.U, first_col_val, second_row_val, set_color))
-    # set_of_pieces.append(Piece(Shape.T5, second_col_val, second_row_val, set_color))
-    # set_of_pieces.append(Piece(Shape.V5, third_col_val, third_row_val, set_color))
-    # set_of_pieces.append(Piece(Shape.N, fourth_col_val, third_row_val, set_color))
-    # set_of_pieces.append(Piece(Shape.I5, Tile(start_x + 180, third_row_val, set_color)))
+    set_of_pieces.append(Piece(Shape.U, second_col_val, second_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.T5, third_row_val, second_row_val, set_color))
+    # third row
+    set_of_pieces.append(Piece(Shape.V5, first_col_val, third_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.N, second_col_val, third_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.I5, third_col_val, third_row_val, set_color))
     return set_of_pieces
