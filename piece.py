@@ -48,6 +48,13 @@ class Piece:
     def get_shape(self):
         return self.shape
 
+    def set_color(self, color):
+        self.color = color
+        for row in self.tiles_array:
+            for tile in row:
+                if tile is not None:
+                    tile.set_color(color)
+
     def set_shape(self, shape):
         self.shape = shape
 
