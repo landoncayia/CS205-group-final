@@ -53,14 +53,19 @@ class GameState:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get mouse position
             x, y = pygame.mouse.get_pos() # (x, y), where x and y are the number of pixels away from the top-left corner
-            for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
-                for tile in piece.printing_tiles: # Go through each tile in the piece
-                    tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
-                    if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30: # Check if the mouse click location matches the range of this tile
-                        piece.select() # If so, select the piece, change state to turn, and end the loop
-                        self.selected = piece
-                        self.state = 'turn'
-                    break
+            if next_button.x < x < next_button.x + next_button.width and next_button.y < y < next_button.y + next_button.height:
+                tiles_page = 2
+            elif back_button.x < x < back_button.x + back_button.width and back_button.y < y < next_button.y + next_button.height:
+                tiles_page = 1
+            else:
+                for piece in tiles_set:  # Go through each piece in the tile set that is currently on-screen
+                    for tile in piece.printing_tiles:  # Go through each tile in the piece
+                        tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
+                        if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:  # Check if the mouse click location matches the range of this tile
+                            piece.select()  # If so, select the piece, change state to turn, and end the loop
+                            self.selected = piece
+                            self.state = 'turn'
+                        break
 
     def turn_loop(self, events):
         '''
