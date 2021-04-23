@@ -260,9 +260,6 @@ class Piece:
             return 5
 
     def draw_piece(self, surface):
-        # for t in self.table_tiles:
-        #     # ask Echo about the surface?
-        #     t.draw_tile(surface)
         row = 0
         col = 0
         while (row < MAX_TILES_WIDTH):

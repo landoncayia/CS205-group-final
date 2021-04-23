@@ -75,6 +75,7 @@ class Board:
 # creates a set of pieces for player using a start x and y, and a color
 # each set has one piece with each shape
 def create_set(start_x, start_y, set_color):
+    # set the distance each piece will be apart from each other
     MAX_PIECE_WIDTH = 150
     GAP = 10
     MAX_PIECE_DISTANCE = MAX_PIECE_WIDTH + GAP
@@ -90,8 +91,8 @@ def create_set(start_x, start_y, set_color):
     third_row_val = second_row_val + MAX_PIECE_DISTANCE
     fourth_row_val = third_row_val + MAX_PIECE_DISTANCE
 
-
     set_of_pieces = list()
+
     # first row
     set_of_pieces.append(Piece(Shape.ONE, first_col_val, first_row_val, set_color))
     set_of_pieces.append(Piece(Shape.TWO, second_col_val, first_row_val, set_color))
@@ -109,6 +110,7 @@ def create_set(start_x, start_y, set_color):
     set_of_pieces.append(Piece(Shape.X, second_col_val, fourth_row_val, set_color))
     set_of_pieces.append(Piece(Shape.P, third_col_val, fourth_row_val, set_color))
 
+    # tiles for second page
     # back to first row
     set_of_pieces.append(Piece(Shape.W, first_col_val, first_row_val, set_color))
     set_of_pieces.append(Piece(Shape.Z5, second_col_val, first_row_val, set_color))
