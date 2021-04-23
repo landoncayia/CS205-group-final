@@ -245,22 +245,45 @@ class Piece:
         else:
             return 5
 
-    def draw_piece(self, surface):
+    def reset_distances(self):
         row = 0
         col = 0
-        x = self.tiles_array[0][0].get_location()[0]
-        y = self.tiles_array[0][0].get_location()[1]
+        x = self.get_first_tile().get_location()[0]
+        y = self.get_first_tile().get_location()[1]
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
                 if (self.tiles_array[row][col] != None):
                     x = x + 30*row
                     y = y + 30*col
                     self.tiles_array[row][col].set_location(x,y)
+                col += 1
+            row += 1
+            col = 0
+
+
+    def draw_piece(self, surface):
+        row = 0
+        col = 0
+        while (row < MAX_TILES_WIDTH):
+            while (col < MAX_TILES_WIDTH):
+                if (self.tiles_array[row][col] != None):
                     self.tiles_array[row][col].draw_tile(surface)
                 col += 1
             row += 1
             col = 0
 
+    def get_first_tile(self):
+        #look for first entry in array
+        i = 0;
+        j = 0;
+        while i < MAX_TILES_WIDTH:
+            while j < MAX_TILES_WIDTH:
+                if self.tiles_array[i][j] != None:
+                    return self.tiles_array[i][j]
+                else:
+                    j += 1;
+            i += 1;
+            j = 0;
 
     # rotates the piece clockwise
     # 90 degree rotation: T(x,y) -> T(-y,x)
@@ -270,44 +293,12 @@ class Piece:
     def rotate_cw(self):
         print(self.tiles_array)
         self.tiles_array = np.rot90(self.tiles_array)
+        self.reset_distances()
         print(self.tiles_array)
-        '''
-        a = self.printing_tiles[0].get_location()[0]
-        b = self.printing_tiles[0].get_location()[1]
-        for tile in self.printing_tiles:
-            #new_origin_x = tile.get_location[0]-self.display_start_x
-            #new_origin_y = tile.get_location[1]-self.display_start_y
 
-            x = tile.get_location()[0]
-            y = tile.get_location()[1]
-            #print(tile.get_location()[0])
-            #print(tile.get_location()[1])
-            
-            #print(len(self.printing_tiles))
-            #tile.set_location(-1 * (tile.get_location()[1]-180)+180, (tile.get_location()[0]-180)+180)
-            print("Original location Tile # ", self.printing_tiles.index(tile))
-            print("a: ", a)
-            print("b: ", b)
-            print("x: ", x)
-            print("y: ", y)
-            tile.set_location((-(b-y)), ((a-x)+y))
-            print("Tile #", self.printing_tiles.index(tile))
-            print("a: ", a)
-            print("b: ", b)
-            print("x: ", x)
-            print("y: ", y)
-            print()
-            '''
     # rotates the piece counterclockwise
     # 270 degree rotation: T(x,y) -> T(y,-x)
     # 
     def rotate_ccw(self):
         self.tiles_array = np.rot90(self.tiles_array, 3)
-        '''
-        a = self.printing_tiles[0].get_location()[0]
-        b = self.printing_tiles[0].get_location()[1]
-        for tile in self.printing_tiles:
-            x = tile.get_location()[0]
-            y = tile.get_location()[1]
-            tile.set_location((b-y)+x, -(a-x)+y)
-        '''
+        self.reset_distances()
