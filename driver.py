@@ -107,10 +107,12 @@ class GameState:
                     self.state = 'waiting'
                     break
 
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-            self.selected.rotate_ccw()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-            self.selected.rotate_cw()
+        if event.type == pygame.KEYUP: 
+            if event.key == pygame.K_LEFT:
+                self.selected.rotate_ccw()
+            if event.key == pygame.K_RIGHT:
+                self.selected.rotate_cw()
+            
 
     def end_loop(self, events):
         """

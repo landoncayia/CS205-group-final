@@ -291,9 +291,11 @@ class Piece:
     # (-(b-y) + x, (a-x) + y)
     
     def rotate_cw(self):
+        print("Original array:")
         print(self.tiles_array)
         self.tiles_array = np.rot90(self.tiles_array)
         self.reset_distances()
+        print("Rotated array:")
         print(self.tiles_array)
 
     # rotates the piece counterclockwise
