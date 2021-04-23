@@ -261,12 +261,16 @@ class Piece:
     # (-(b-y) + x, (a-x) + y)
     
     def rotate_cw(self):
+        print(self.tiles_array)
+        self.tiles_array = np.rot90(self.tiles_array)
+        print(self.tiles_array)
+        '''
         a = self.printing_tiles[0].get_location()[0]
         b = self.printing_tiles[0].get_location()[1]
         for tile in self.printing_tiles:
             #new_origin_x = tile.get_location[0]-self.display_start_x
             #new_origin_y = tile.get_location[1]-self.display_start_y
-            
+
             x = tile.get_location()[0]
             y = tile.get_location()[1]
             #print(tile.get_location()[0])
@@ -286,14 +290,17 @@ class Piece:
             print("x: ", x)
             print("y: ", y)
             print()
-
+            '''
     # rotates the piece counterclockwise
     # 270 degree rotation: T(x,y) -> T(y,-x)
     # 
     def rotate_ccw(self):
+        self.tiles_array = np.rot90(self.tiles_array, 3)
+        '''
         a = self.printing_tiles[0].get_location()[0]
         b = self.printing_tiles[0].get_location()[1]
         for tile in self.printing_tiles:
             x = tile.get_location()[0]
             y = tile.get_location()[1]
             tile.set_location((b-y)+x, -(a-x)+y)
+        '''

@@ -171,10 +171,7 @@ if __name__ == '__main__':
                 raise SystemExit
             if event.type == pygame.QUIT:
                 raise SystemExit
-            if event.type == pygame.KEYDOWN and e.key == pygame.K_LEFT:
-                selected.rotate_cw()
-            if event.type == pygame.KEYDOWN and e.key == pygame.K_RIGHT:
-                selected.rotate_ccw()
+
 
         game_state.handle_events(pygame.event.get())
     
