@@ -58,24 +58,6 @@ class Piece:
 
     def select(self):
         self.selected = True
-        # for tile in self.table_tiles:
-        #     if tile.get_color() == Color.BLUE:
-        #         tile.set_color(Color.BLUE_SELECTED)
-        #     elif tile.get_color() == Color.YELLOW:
-        #         tile.set_color(Color.YELLOW_SELECTED)
-        #     elif tile.get_color() == Color.RED:
-        #         tile.set_color(Color.RED_SELECTED)
-        #     elif tile.get_color() == Color.GREEN:
-        #         tile.set_color(Color.GREEN_SELECTED)
-        # for tile in self.printing_tiles:
-        #     if tile.get_color() == Color.BLUE:
-        #         tile.set_color(Color.BLUE_SELECTED)
-        #     elif tile.get_color() == Color.YELLOW:
-        #         tile.set_color(Color.YELLOW_SELECTED)
-        #     elif tile.get_color() == Color.RED:
-        #         tile.set_color(Color.RED_SELECTED)
-        #     elif tile.get_color() == Color.GREEN:
-        #         tile.set_color(Color.GREEN_SELECTED)
         if self.color == Color.BLUE:
             self.color = Color.BLUE_SELECTED
         elif self.color == Color.YELLOW:
@@ -87,24 +69,15 @@ class Piece:
 
     def deselect(self):
         self.selected = False
-        for tile in self.table_tiles:
-            if tile.get_color() == Color.BLUE_SELECTED:
-                tile.set_color(Color.BLUE)
-            elif tile.get_color() == Color.YELLOW_SELECTED:
-                tile.set_color(Color.YELLOW)
-            elif tile.get_color() == Color.RED_SELECTED:
-                tile.set_color(Color.RED)
-            elif tile.get_color() == Color.GREEN_SELECTED:
-                tile.set_color(Color.GREEN)
-        for tile in self.printing_tiles:
-            if tile.get_color() == Color.BLUE_SELECTED:
-                tile.set_color(Color.BLUE)
-            elif tile.get_color() == Color.YELLOW_SELECTED:
-                tile.set_color(Color.YELLOW)
-            elif tile.get_color() == Color.RED_SELECTED:
-                tile.set_color(Color.RED)
-            elif tile.get_color() == Color.GREEN_SELECTED:
-                tile.set_color(Color.GREEN)
+        if self.color == Color.BLUE_SELECTED:
+            self.color = Color.BLUE
+        elif self.color == Color.YELLOW_SELECTED:
+            self.color = Color.YELLOW
+        elif self.color == Color.RED_SELECTED:
+            self.color = Color.RED
+        elif self.color == Color.GREEN_SELECTED:
+            self.color = Color.GREEN
+
 
     def is_selected(self):
         return self.selected

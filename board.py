@@ -54,6 +54,25 @@ class Board:
     def get_tiles(self):
         return self.tiles
 
+    def get_score(self):
+        blue_count = 0
+        red_count = 0
+        green_count = 0
+        yellow_count = 0
+        for x in range(20):
+            for y in range(20):
+                current_tile = self.tiles[x][y]
+                if current_tile.get_color() == Color.BLUE:
+                    blue_count += 1
+                elif current_tile.get_color() == Color.RED:
+                    red_count += 1
+                elif current_tile.get_color() == Color.GREEN:
+                    green_count += 1
+                elif current_tile.get_color() == Color.YELLOW:
+                    yellow_count += 1
+        # may want to get rid of 4 - tuple in future
+        return blue_count, red_count, green_count, yellow_count
+
     # Setters
     def set_tiles(self, tiles):
         self.tiles = tiles
