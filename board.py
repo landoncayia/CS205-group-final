@@ -90,10 +90,9 @@ class Board:
     '''
     def is_valid(self, player_pieces, selected, board_x, board_y):
         #first piece placed must be in a corner
-        #TODO: make sure piece placed doesn't go out of bounds
+        #TODO: make sure first piece placed doesn't go out of bounds
         valid = False
         if(len(player_pieces) == MAX_PLAYER_PIECES):
-            #TODO: make this work for pieces that don't start in the top left
             if board_x == 0:
                 if board_y == 0:
                     valid = True
@@ -107,7 +106,6 @@ class Board:
         #all pieces afterward
         else:
             #create new array with extra rows and columns to prevent array out of bounds errors
-            #TODO: move this somewhere else?
             check_tiles = [[Tile(0,0,Color.EMPTY_GREY)]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
             for row in range(1,NUM_ROWS+1):
                 for col in range(1, NUM_COLS+1):
@@ -119,17 +117,18 @@ class Board:
             for i in range(len(selected.get_tiles())):
                 for j in range(len(selected.get_tiles()[i])):
                     if(selected.get_tiles()[i][j] is not None):
+                        check_x = board_x+1+i
+                        check_y = board_y+1+j
                         #check that it does touch piece of same color diagonally
                         if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
                             valid = True
+                        #check that it doesn't overlap with anything
+                        if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY:
+                            valid = False
                         #check that it does not touch a piece of same color edgewise
                         if selected.get_color() == check_tiles[check_x-1][check_y].get_color() or selected.get_color() == check_tiles[check_x+1][check_y].get_color() or selected.get_color() == check_tiles[check_x][check_y-1].get_color() or selected.get_color() == check_tiles[check_x][check_y+1].get_color():
                             valid = False
-                    if(check_y < 20):
-                        check_y +=1
-                if(check_x < 20):
-                    check_x += 1
-                check_y = board_y+1
+                    
 
         return valid
 
