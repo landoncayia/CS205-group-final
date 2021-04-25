@@ -106,7 +106,7 @@ class Piece:
         # 2 tiles
         elif self.shape == Shape.TWO:
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
 
         # 3 tiles
         elif self.shape == Shape.V3:
