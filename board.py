@@ -74,8 +74,8 @@ class Board:
         for row in range(len(selected.get_tiles())):  # Should be 5
             for col in range(len(selected.get_tiles()[0])):  # Should be 5
                 if selected.get_tiles()[row][col] is not None:
-                    selected.get_tiles()[row][col].x = self.tiles[board_x+row][board_y+row].x
-                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y].y
+                    selected.get_tiles()[row][col].x = self.tiles[board_x+col][board_y+col].x
+                    selected.get_tiles()[row][col].y = self.tiles[board_x+row][board_y+row].y
                     selected.get_tiles()[row][col].board_x = board_x+row
                     selected.get_tiles()[row][col].board_y = board_y+col
                     self.tiles[board_x+row][board_y+col] = selected.get_tiles()[row][col]
@@ -119,6 +119,8 @@ class Board:
             #check that it does not touch a piece of same color edgewise
             if selected.get_color() == check_tiles[board_x-1][board_y].get_color() or selected.get_color() == check_tiles[board_x+1][board_y].get_color() or selected.get_color() == check_tiles[board_x][board_y-1].get_color() or selected.get_color() == check_tiles[board_x][board_y+1].get_color():
                 valid = False
+            board_x -= 1
+            board_y -= 1
 
         return valid
 
