@@ -107,7 +107,7 @@ class GameState:
                     self.state = 'waiting'
                     break
 
-        if event.type == pygame.KEYUP: 
+        if event.type == pygame.KEYDOWN: 
             if event.key == pygame.K_LEFT:
                 self.selected.rotate_ccw()
             if event.key == pygame.K_RIGHT:
@@ -208,8 +208,6 @@ if __name__ == '__main__':
                 raise SystemExit
             if event.type == pygame.QUIT:
                 raise SystemExit
-
-
-        game_state.handle_events(pygame.event.get())
+            game_state.handle_events(pygame.event.get())
     
     pygame.quit()

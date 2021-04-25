@@ -103,7 +103,7 @@ class Piece:
         # 2 tiles
         elif self.shape == Shape.TWO:
             self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+            self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
 
         # 3 tiles
         elif self.shape == Shape.V3:
@@ -245,14 +245,14 @@ class Piece:
         else:
             return 5
 
-    def reset_distances(self):
+    def reset_distances(self, orig_x, orig_y):
         row = 0
         col = 0
-        x = self.get_first_tile().get_location()[0]
-        y = self.get_first_tile().get_location()[1]
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
                 if (self.tiles_array[row][col] != None):
+                    x = self.tiles_array[row][col].get_location()[0]
+                    y = self.tiles_array[row][col].get_location()[1]
                     x = x + 30*row
                     y = y + 30*col
                     self.tiles_array[row][col].set_location(x,y)
@@ -293,8 +293,8 @@ class Piece:
     def rotate_cw(self):
         print("Original array:")
         print(self.tiles_array)
-        self.tiles_array = np.rot90(self.tiles_array)
-        self.reset_distances()
+        self.tiles_array = np.rot90(self.tiles_array).tolist()
+        self.reset_distances(self.get_first_tile().get_location()[0],self.get_first_tile().get_location()[1])
         print("Rotated array:")
         print(self.tiles_array)
 
@@ -302,5 +302,5 @@ class Piece:
     # 270 degree rotation: T(x,y) -> T(y,-x)
     # 
     def rotate_ccw(self):
-        self.tiles_array = np.rot90(self.tiles_array, 3)
-        self.reset_distances()
+        self.tiles_array = np.rot90(self.tiles_array, 3).tolist()
+        self.reset_distances(self.get_first_tile().get_location()[0],self.get_first_tile().get_location()[1])
