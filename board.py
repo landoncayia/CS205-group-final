@@ -110,7 +110,6 @@ class Board:
             for row in range(1,NUM_ROWS+1):
                 for col in range(1, NUM_COLS+1):
                     check_tiles[row][col] = self.tiles[row-1][col-1]
-            print(check_tiles)
             
             check_x = board_x+1
             check_y = board_y+1
