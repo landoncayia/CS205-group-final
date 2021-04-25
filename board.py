@@ -104,12 +104,19 @@ class Board:
         else:
             #create new array with extra rows and columns to prevent array out of bounds errors
             #TODO: move this somewhere else
-            check_tiles = [[None]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
+            check_tiles = [[Tile(0,0,Color.EMPTY_GREY)]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
             for row in range(1,NUM_ROWS+1):
                 for col in range(1, NUM_COLS+1):
                     check_tiles[row][col] = self.tiles[row-1][col-1]
             #check that it does touch piece of same color diagonally
-            if 
+            board_x+=1
+            board_y+=1
+            if selected.get_color() == check_tiles[board_x-1][board_y-1].get_color() or selected.get_color() == check_tiles[board_x+1][board_y-1].get_color() or selected.get_color() == check_tiles[board_x-1][board_y+1].get_color() or selected.get_color() == check_tiles[board_x+1][board_y+1].get_color():
+                valid = True
+            
+            #check that it does not touch a piece of same color edgewise
+            if selected.get_color() == check_tiles[board_x-1][board_y].get_color() or selected.get_color() == check_tiles[board_x+1][board_y].get_color() or selected.get_color() == check_tiles[board_x][board_y-1].get_color() or selected.get_color() == check_tiles[board_x][board_y+1].get_color():
+                valid = False
 
         return valid
 
