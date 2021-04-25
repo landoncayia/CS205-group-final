@@ -93,7 +93,7 @@ class GameState:
             for row in board.tiles:
                 for tile in row:
                     if 30+tile.x < x < 60+tile.x and 30+tile.y < y < 60+tile.y and not placed:
-                        if True: #board.is_valid(self.player.tiles_set, self.selected, tile.board_x, tile.board_y):
+                        if board.is_valid(self.player.tiles_set, self.selected, tile.board_x, tile.board_y):
                             board.add_piece(self.selected, tile.board_x, tile.board_y)
                             self.player.tiles_set.remove(self.selected)
                             self.selected.deselect()
