@@ -74,6 +74,22 @@ class Board:
                     selected.get_tiles()[row][col].x = self.tiles[board_x][board_y].x
                     selected.get_tiles()[row][col].y = self.tiles[board_x][board_y].y
                     self.tiles[board_x][board_y] = selected.get_tiles()[row][col]
+    
+    '''
+    This function will implement the following rules:
+    1) The first tile played by each player must be placed in one of the four corners
+    2) After the first play, pieces must be placed so at least one of the corners touches another of the same color and there is no edge-to-edge contact
+    3) Edge-to-edge contact is allowed between pieces of different colors
+    4) Pieces cannot overlap
+    '''
+    def is_valid(self, player_pieces, selected, board_x, board_y):
+        #player_pieces is player.tile_set
+        #first tile placed
+        valid = False
+        if(len(player_pieces) == 0):
+            if board_x < 
+
+
 
 
 """
