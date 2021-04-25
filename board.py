@@ -7,7 +7,8 @@ from piece import Shape
 COL_LETTERS = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K',
                11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
 TILE_WIDTH = 30
-
+#TODO: update when more pieces are available from create_set
+MAX_PLAYER_PIECES = 2
 
 class Board:
     # init function
@@ -86,8 +87,19 @@ class Board:
         #player_pieces is player.tile_set
         #first tile placed
         valid = False
-        if(len(player_pieces) == 0):
-            if board_x < 
+        if(len(player_pieces) == 2):
+            print(len(player_pieces))
+            if board_x == 0:
+                if board_y == 0:
+                    valid = True
+                elif board_y == 19:
+                    valid = True
+            elif board_x == 19:
+                if board_y == 0:
+                    valid = True
+                elif board_y == 19:
+                    valid = True
+        return valid
 
 
 
