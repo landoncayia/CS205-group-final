@@ -7,7 +7,10 @@ from piece import Shape
 COL_LETTERS = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K',
                11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
 TILE_WIDTH = 30
-
+NUM_ROWS = 20
+NUM_COLS = 20
+#TODO: update when more pieces are available from create_set
+MAX_PLAYER_PIECES = 2
 
 class Board:
     # init function
@@ -16,7 +19,7 @@ class Board:
     # tiles is a 2-D list (20 x 20) of tile objects
     def __init__(self, window):
         self.surface = pygame.Surface((750, 750))
-        self.tiles = [[None]*20 for _ in range(20)]  # initialize board 2-D list
+        self.tiles = [[None]*NUM_COLS for _ in range(NUM_ROWS)]  # initialize board 2-D list
         for x in range(20):
             for y in range(20):
                 # x and y are the board locations; so convert the first parameters to pixel values for the surface
@@ -76,6 +79,53 @@ class Board:
                     selected.get_tiles()[row][col].board_x = board_x+row
                     selected.get_tiles()[row][col].board_y = board_y+col
                     self.tiles[board_x+row][board_y+col] = selected.get_tiles()[row][col]
+
+
+    '''
+    This function will implement the following rules:
+    1) The first tile played by each player must be placed in one of the four corners
+    2) After the first play, pieces must be placed so at least one of the corners touches another of the same color and there is no edge-to-edge contact
+    3) Edge-to-edge contact is allowed between pieces of different colors
+    4) Pieces cannot overlap
+    '''
+    def is_valid(self, player_pieces, selected, board_x, board_y):
+        #first piece placed must be in a corner
+        valid = False
+        if(len(player_pieces) == MAX_PLAYER_PIECES):
+            #print(len(player_pieces))
+            if board_x == 0:
+                if board_y == 0:
+                    valid = True
+                elif board_y == 19:
+                    valid = True
+            elif board_x == 19:
+                if board_y == 0:
+                    valid = True
+                elif board_y == 19:
+                    valid = True
+        #all pieces afterward
+        else:
+            #create new array with extra rows and columns to prevent array out of bounds errors
+            #TODO: move this somewhere else
+            check_tiles = [[Tile(0,0,Color.EMPTY_GREY)]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
+            for row in range(1,NUM_ROWS+1):
+                for col in range(1, NUM_COLS+1):
+                    check_tiles[row][col] = self.tiles[row-1][col-1]
+            #check that it does touch piece of same color diagonally
+            board_x+=1
+            board_y+=1
+            if selected.get_color() == check_tiles[board_x-1][board_y-1].get_color() or selected.get_color() == check_tiles[board_x+1][board_y-1].get_color() or selected.get_color() == check_tiles[board_x-1][board_y+1].get_color() or selected.get_color() == check_tiles[board_x+1][board_y+1].get_color():
+                valid = True
+            
+            #check that it does not touch a piece of same color edgewise
+            if selected.get_color() == check_tiles[board_x-1][board_y].get_color() or selected.get_color() == check_tiles[board_x+1][board_y].get_color() or selected.get_color() == check_tiles[board_x][board_y-1].get_color() or selected.get_color() == check_tiles[board_x][board_y+1].get_color():
+                valid = False
+            board_x -= 1
+            board_y -= 1
+
+        return valid
+
+
 
 
 """
