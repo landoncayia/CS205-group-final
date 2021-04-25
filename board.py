@@ -79,8 +79,7 @@ class Board:
                     selected.get_tiles()[row][col].board_x = board_x+row
                     selected.get_tiles()[row][col].board_y = board_y+col
                     self.tiles[board_x+row][board_y+col] = selected.get_tiles()[row][col]
-                    #self.tiles[board_x][board_y] = selected.get_tiles()[row][col]
-    
+
     '''
     This function will implement the following rules:
     1) The first tile played by each player must be placed in one of the four corners
