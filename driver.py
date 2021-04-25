@@ -89,15 +89,17 @@ class GameState:
             # Left mouse button pressed, get position
             x, y = pygame.mouse.get_pos()
             # Place piece
+            placed = False
             for row in board.tiles:
                 for tile in row:
-                    if 30+tile.x < x < 60+tile.x and 30+tile.y < y < 60+tile.y:
+                    if 30+tile.x < x < 60+tile.x and 30+tile.y < y < 60+tile.y and not placed:
                         if board.is_valid(self.player.tiles_set, self.selected, tile.board_x, tile.board_y):
                             board.add_piece(self.selected, tile.board_x, tile.board_y)
                             self.player.tiles_set.remove(self.selected)
                             self.selected.deselect()
                             self.state = 'waiting'
                             self.next_player()  # Go to next player
+                            placed = True
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             # Right mouse button pressed; unselect current piece and go back to waiting state
