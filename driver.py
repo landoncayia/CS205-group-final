@@ -8,15 +8,30 @@ from piece import Shape
 from tile import Color
 from tile import Tile
 
+# dimensions of the board
 BOARD_WIDTH, BOARD_HEIGHT = 800, 800
-NEXT_PLAYER = {'b': 'y', 'y': 'r', 'r': 'g', 'g': 'b'}  # dict used to go to next player in order of play: Blue -> Yellow -> Red -> Green
-NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,  # dict used to go to next color in order of play, as above
+# order of play: 1 (Blue) -> 2 (Yellow) -> 3 (Red) -> 4 (Green)
+# dict used to go to next color in order of play, as above
+NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,
               Color.RED: Color.GREEN, Color.GREEN: Color.BLUE}
 
 
+class Player:
+    def __init__(self, number, color):
+        """
+        An instance of a player; each player has a number, a color, and a set of tiles that they can place on the board
+        1: Blue, 2: Yellow, 3: Red, 4: Green
+        """
+        #  These are the starting positions (in pixels) for the set of pieces that the player can select from
+        start_x = 10
+        start_y = 30
+        self.number = number
+        self.color = color
+        self.tiles_set = create_set(start_x, start_y, color)
+
 class GameState:
     def __init__(self):
-        '''
+        """
         States: start, waiting, turn, end
             start: game should begin in this state
             waiting: waiting for a player to select a piece
@@ -28,28 +43,27 @@ class GameState:
             'r': Red
             'g': Green
         Selected: represents the piece the player will place on the board
-        '''
+        """
         self.state = 'waiting'          # NOTE: This should be changed to 'start' later, this is just for testing
-        self.player = 'b'               # NOTE: Blue player goes first
-        self.set_color = Color.BLUE     # The color value of the current player
+        self.player = None  # NOTE: Blue player goes first
         self.selected = None            # currently selected piece, if any
 
 
     def start_loop(self, events):
-        '''
+        """
         Beginning of game, in which number of players is specified. This will be part of Sprint Two
         We could ask the player to use the number keys on their keyboard to select the number of players; this will highlight squares on-screen
         Once they have selected their number of players, space could begin the game
         For now, ignore this
-        '''
+        """
         pass
 
 
     def waiting_loop(self, events):
-        '''
+        """
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
         Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
-        '''
+        """
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get mouse position
             x, y = pygame.mouse.get_pos() # (x, y), where x and y are the number of pixels away from the top-left corner
@@ -58,38 +72,43 @@ class GameState:
             elif back_button.x < x < back_button.x + back_button.width and back_button.y < y < next_button.y + next_button.height:
                 tiles_page = 1
             else:
-                for piece in tiles_set:  # Go through each piece in the tile set that is currently on-screen
-                    for tile in piece.printing_tiles:  # Go through each tile in the piece
-                        tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
-                        if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:  # Check if the mouse click location matches the range of this tile
-                            piece.select()  # If so, select the piece, change state to turn, and end the loop
-                            self.selected = piece
-                            self.state = 'turn'
-                        break
+                for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
+                    for row in piece.tiles_array:  # Go through each row in the tile array
+                        for tile in row:
+                            if tile is not None:
+                                tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
+                                if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:
+                                    # Check if the mouse click location matches the range of this tile
+                                    # If so, select the piece, change state to turn, and end the loop
+                                    piece.select()
+                                    self.selected = piece
+                                    self.state = 'turn'
+                                break
 
     def turn_loop(self, events):
-        '''
+        """
         We are waiting on whomever's turn it currently is to place their piece somewhere on the board
-        This will involve a calculation as to whether a move is legal or not; perhaps in board we could have 'verify_legal'?
+        This will involve a calculation as to whether a move is legal or not
         Additionally, players can right-click to put their piece back and select another.
-        '''
+        """
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get position
             x, y = pygame.mouse.get_pos()
             # Place piece
             for row in board.tiles:
                 for tile in row:
-                    if tile.x < x < tile.x + 30 and tile.y < y < tile.y + 30:
+                    if 30 + tile.x < x < 60 + tile.x and 30 + tile.y < y < 60 + tile.y:
                         board.add_piece(self.selected, tile.board_x, tile.board_y)
-            # Remove piece from player's pieces
-            self.player = NEXT_PLAYER[self.player] # Go to next player
-            self.set_color = NEXT_COLOR[self.set_color] # Set next color
+                        self.player.tiles_set.remove(self.selected)
+                        self.selected.deselect()
+                        self.state = 'waiting'
+                        self.next_player()  # Go to next player
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             # Right mouse button pressed; unselect current piece and go back to waiting state
-            for piece in tiles_set: # Go through each piece in the tile set that is currently on-screen
-                if piece.selected: # Check if the piece is selected
-                    piece.deselect() # If so, deselect the piece, change state to waiting, and end the loop
+            for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
+                if piece.selected:  # Check if the piece is selected
+                    piece.deselect()  # If so, deselect the piece, change state to waiting, and end the loop
                     self.selected = None
                     self.state = 'waiting'
                     break
@@ -100,15 +119,28 @@ class GameState:
             self.selected.rotate_cw()
 
     def end_loop(self, events):
-        '''
+        """
         The game has ended; display the winner
-        '''
+        """
         pass
 
+    """
+    Advances to the next player
+    """
 
-    '''
+    def next_player(self):
+        if self.player.number == 1:
+            self.player = player_2
+        elif self.player.number == 2:
+            self.player = player_3
+        elif self.player.number == 3:
+            self.player = player_4
+        elif self.player.number == 4:
+            self.player = player_1
+
+    """
     This function will call other helper functions to handle input events accordingly, depending on the game state
-    '''
+    """
     def handle_events(self, events):
         # Call the proper function, depending on the game state
         if self.state == 'start':
@@ -120,7 +152,6 @@ class GameState:
         elif self.state == 'end':
             self.end_loop(events)
 
-
 if __name__ == '__main__':
     pygame.init()
     window = (1450, 800)
@@ -129,6 +160,8 @@ if __name__ == '__main__':
     screen.fill(Color.BG_GREY.value)
     pieces_surface = pygame.Surface((700, 800))
     timer = pygame.time.Clock()
+    tiles_page = 1
+    TILES_PER_PAGE = 12
 
     # Create the game state object
     game_state = GameState()
@@ -143,12 +176,30 @@ if __name__ == '__main__':
     # DISPLAY PIECES
     pieces_surface.fill(Color.BG_GREY.value)
 
-    start_x = 10
-    start_y = 30
-    set_color = Color.BLUE
-    tiles_set = create_set(start_x, start_y, set_color)
-    TILES_PER_PAGE = 12
-    tiles_page = 1
+    # Create players
+    player_1 = Player(1, Color.BLUE)
+    player_2 = Player(2, Color.YELLOW)
+    player_3 = Player(3, Color.RED)
+    player_4 = Player(4, Color.GREEN)
+
+    # The player whose turn it currently is
+    game_state.player = player_1
+
+    # Draw player 1's pieces; they go first
+    if tiles_page == 1:
+        for piece in game_state.player.tiles_set:
+            i = 0
+            while (i < TILES_PER_PAGE):
+                game_state.player.tiles_set[i].draw_piece(pieces_surface)
+                i += 1
+    # if second page, we want to print second half
+    # from index TILES_PER_PAGE + 1 to the end of list
+    elif tiles_page == 2:
+        for piece in game_state.player.tiles_set:
+            i = TILES_PER_PAGE + 1
+            while (i < len(game_state.player.tiles_set)):
+                game_state.player.tiles_set[i].draw_piece(pieces_surface)
+                i += 1
 
     next_button = pygame.draw.rect(pieces_surface, Color.EMPTY_GREY.value, (210, 675, 100, 30))
     back_button = pygame.draw.rect(pieces_surface, Color.EMPTY_GREY.value, (90, 675, 100, 30))
@@ -165,23 +216,25 @@ if __name__ == '__main__':
         screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
                                     BOARD_HEIGHT//2-board.get_surface().get_height()//2))
 
+        # clear_set(pieces_surface)  # clear any already-placed pieces before drawing again
         # TO DO : FIX BUTTON THING
         # if first page of tiles, we want to show the first half of set
         # which will be from index 0 to TILES_PER_PAGE
         if tiles_page == 1:
-            for piece in tiles_set:
+            for piece in game_state.player.tiles_set:
                 i = 0
                 while (i < TILES_PER_PAGE):
-                    tiles_set[i].draw_piece(pieces_surface)
+                    game_state.player.tiles_set[i].draw_piece(pieces_surface)
                     i += 1
         # if second page, we want to print second half
         # from index TILES_PER_PAGE + 1 to the end of list
         elif tiles_page == 2:
-            for piece in tiles_set:
+            for piece in game_state.player.tiles_set:
                 i = TILES_PER_PAGE + 1
-                while (i < len(tiles_set)):
-                    tiles_set[i].draw_piece(pieces_surface)
+                while (i < len(game_state.player.tiles_set)):
+                    game_state.player.tiles_set[i].draw_piece(pieces_surface)
                     i += 1
+
         screen.blit(pieces_surface, (800, 0))
         pygame.display.flip()
 

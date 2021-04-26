@@ -86,139 +86,202 @@ class Piece:
         # All tiles have a center piece
         # Connected pieces are added in reading order relative to center piece, left to right and top to bottom
         if self.shape == Shape.ONE:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+            self.set_shape_ONE()
         # 2 tiles
         elif self.shape == Shape.TWO:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+            self.set_shape_TWO()
 
         # 3 tiles
         elif self.shape == Shape.V3:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+            self.set_shape_V3()
 
         elif self.shape == Shape.I3:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
+            self.set_shape_I3()
 
         # 4 tiles
         elif self.shape == Shape.T4:
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+            self.set_shape_T4()
 
         elif self.shape == Shape.O:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+            self.set_shape_O()
 
         elif self.shape == Shape.L4:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+            self.set_shape_L4()
 
         elif self.shape == Shape.I4:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
-            self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+            self.set_shape_I4()
 
         elif self.shape == Shape.Z4:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[1][2] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
+            self.set_shape_Z4()
 
         # 5 tiles
         elif self.shape == Shape.F:
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[0][2] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+            self.set_shape_F()
 
         elif self.shape == Shape.X:
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][2] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
-            self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+            self.set_shape_X()
 
         elif self.shape == Shape.P:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[0][2] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+            self.set_shape_P()
 
         elif self.shape == Shape.W:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][2] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
-            self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
+            self.set_shape_W()
 
 
         elif self.shape == Shape.Z5:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
-            self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
+            self.set_shape_Z5()
 
         elif self.shape == Shape.Y:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
-            self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+            self.set_shape_Y()
 
         elif self.shape == Shape.L5:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
-            self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+            self.set_shape_L5()
 
         elif self.shape == Shape.U:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
-            self.tiles_array[2][1] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+            self.set_shape_U()
 
         elif self.shape == Shape.T5:
-            self.tiles_array[0][2] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][2] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
-            self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
+            self.set_shape_T5()
 
         elif self.shape == Shape.V5:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[0][2] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
-            self.tiles_array[1][2] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
-            self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
+            self.set_shape_V5()
 
         elif self.shape == Shape.N:
-            self.tiles_array[0][1] = Tile(self.x, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
-            self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
-            self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+            self.set_shape_N()
 
         elif self.shape == Shape.I5:
-            self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
-            self.tiles_array[1][0] = Tile(self.x + TILE_WIDTH, self.y, self.color)
-            self.tiles_array[2][0] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
-            self.tiles_array[3][0] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
-            self.tiles_array[4][0] = Tile(self.x + (4 * TILE_WIDTH), self.y, self.color)
+            self.set_shape_I5()
+
+    def set_shape_ONE(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+
+    def set_shape_TWO(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+
+    def set_shape_V3(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+
+    def set_shape_I3(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[0][2] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
+
+    def set_shape_T4(self):
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+
+    def set_shape_O(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+
+    def set_shape_L4(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+
+    def set_shape_I4(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[0][2] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
+        self.tiles_array[0][3] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+
+    def set_shape_Z4(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[2][1] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
+
+    def set_shape_F(self):
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[2][0] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+
+    def set_shape_X(self):
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[2][1] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
+        self.tiles_array[1][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+
+    def set_shape_P(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[2][0] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+
+    def set_shape_W(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[2][1] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
+        self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
+
+    def set_shape_Z5(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[1][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+        self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
+
+    def set_shape_Y(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[0][2] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
+        self.tiles_array[0][3] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+
+    def set_shape_L5(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[0][2] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
+        self.tiles_array[0][3] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+
+    def set_shape_U(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[0][2] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
+        self.tiles_array[1][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + TILE_WIDTH, self.color)
+
+    def set_shape_T5(self):
+        self.tiles_array[2][1] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[2][1] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
+        self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
+
+    def set_shape_V5(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[2][0] = Tile(self.x, self.y + (2 * TILE_WIDTH), self.color)
+        self.tiles_array[2][1] = Tile(self.x + TILE_WIDTH, self.y + (2 * TILE_WIDTH), self.color)
+        self.tiles_array[2][2] = Tile(self.x + (2 * TILE_WIDTH), self.y + (2 * TILE_WIDTH), self.color)
+
+    def set_shape_N(self):
+        self.tiles_array[1][0] = Tile(self.x, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[1][1] = Tile(self.x + TILE_WIDTH, self.y + TILE_WIDTH, self.color)
+        self.tiles_array[0][2] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
+        self.tiles_array[0][3] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+
+    def set_shape_I5(self):
+        self.tiles_array[0][0] = Tile(self.x, self.y, self.color)
+        self.tiles_array[0][1] = Tile(self.x + TILE_WIDTH, self.y, self.color)
+        self.tiles_array[0][2] = Tile(self.x + (2 * TILE_WIDTH), self.y, self.color)
+        self.tiles_array[0][3] = Tile(self.x + (3 * TILE_WIDTH), self.y, self.color)
+        self.tiles_array[0][4] = Tile(self.x + (4 * TILE_WIDTH), self.y, self.color)
 
     def get_num_tiles(self):
         if self.shape == Shape.ONE:
