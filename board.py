@@ -10,11 +10,13 @@ TILE_WIDTH = 30
 
 
 class Board:
-    # init function
-    # window is the game window
-    # surface is the game surface object
-    # tiles is a 2-D list (20 x 20) of tile objects
-    def __init__(self, window):
+    def __init__(self):
+        """
+        init function
+        window is the game window
+        surface is the game surface object
+        tiles is a 2-D list (20 x 20) of tile objects
+        """
         self.surface = pygame.Surface((750, 750))
         self.tiles = [[None]*20 for _ in range(20)]  # initialize board 2-D list
         for x in range(20):
@@ -23,6 +25,9 @@ class Board:
                 self.tiles[x][y] = Tile(40+(35*x), 40+(35*y), Color.EMPTY_GREY, x, y)
 
     def draw_labels(self):
+        """
+        This function draws the letter and number labels along the axes of the board
+        """
         font = pygame.font.SysFont('Ubuntu', 18, bold=True)
         # Draw letters along the top of the board (above each column)
         for col in range(20):
@@ -38,8 +43,8 @@ class Board:
             text = font.render(str(row+1), True, Color.EMPTY_GREY.value)
             self.surface.blit(text, (10, 45+(35*row)))
 
-    # draw() will draw the surface in the game window
     def draw(self):
+        # draw() will draw the surface in the game window
         # Need .value for an enum to get the actual tuple, not the enum object
         self.surface.fill(Color.BG_GREY.value)
         pygame.draw.rect(self.surface, Color.EMPTY_GREY.value, (35, 35, 705, 705), 3)
@@ -59,15 +64,16 @@ class Board:
     def set_tiles(self, tiles):
         self.tiles = tiles
 
-    '''
-    add_piece(): adds a piece to the tiles
-    selected: the currently selected piece, to be added
-    board_x, board_y: clicked board location for piece to get added
-        NOTE: the first value in tiles should be (0, 0); e.g., [(0, 0), (1, 0), (2, 0), (0, 1), (-1, 1)] will make this shape:
-          ■ ■ ■
-        ■ ■
-    '''
     def add_piece(self, selected, board_x, board_y):
+        """
+        add_piece(): adds a piece to the tiles
+        selected: the currently selected piece, to be added
+        board_x, board_y: clicked board location for piece to get added
+            NOTE: the first value in tiles should be (0, 0); e.g., [(0, 0), (1, 0), (2, 0), (0, 1), (-1, 1)] will make
+            this shape:
+              ■ ■ ■
+            ■ ■
+        """
         for row in range(len(selected.get_tiles())):  # Should be 5
             for col in range(len(selected.get_tiles()[0])):  # Should be 5
                 if selected.get_tiles()[row][col] is not None:
@@ -78,23 +84,16 @@ class Board:
                     self.tiles[board_x+row][board_y+col] = selected.get_tiles()[row][col]
 
 
-"""
-Clears out any already-placed pieces from the set of selectable ones
-"""
-def clear_set(pieces_surface):
-    pygame.draw.rect(pieces_surface, Color.BG_GREY.value, (0, 0, 400, 800))
-
-
-"""
-creates a set of pieces for player using a start x and y, and a color
-each set has one piece with each shape
-"""
 def create_set(start_x, start_y, set_color):
-    MAX_PIECE_WIDTH = 150
-    GAP = 10
+    """
+    creates a set of pieces for player using a start x and y, and a color
+    each set has one piece with each shape
+    """
+    max_piece_width = 150
+    gap = 10
     set_of_pieces = list()
     set_of_pieces.append(Piece(Shape.ONE, start_x, start_y, set_color))
-    set_of_pieces.append(Piece(Shape.TWO, start_x + MAX_PIECE_WIDTH, start_y, set_color))
+    set_of_pieces.append(Piece(Shape.TWO, start_x + max_piece_width, start_y, set_color))
     # set_of_pieces.append(Piece(Shape.V3, Tile(start_x + 210, start_y, set_color)))
     # set_of_pieces.append(Piece(Shape.I3, Tile(start_x, start_y + 90, set_color)))
     # set_of_pieces.append(Piece(Shape.T4, Tile(start_x + 150, start_y + 90, set_color)))

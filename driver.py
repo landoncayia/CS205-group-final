@@ -2,7 +2,7 @@ import sys
 import pygame
 import pygame.locals
 from board import Board
-from board import create_set, clear_set
+from board import create_set
 from piece import Piece
 from piece import Shape
 from tile import Color
@@ -19,8 +19,12 @@ NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,
 class Player:
     def __init__(self, number, color):
         """
-        An instance of a player; each player has a number, a color, and a set of tiles that they can place on the board
-        1: Blue, 2: Yellow, 3: Red, 4: Green
+        An instance of a player; each player has:
+        * Number
+        * Color
+            1: Blue, 2: Yellow, 3: Red, 4: Green
+        * Set of tiles that they can place on the board
+        * Score
         """
         #  These are the starting positions (in pixels) for the set of pieces that the player can select from
         start_x = 10
@@ -28,6 +32,7 @@ class Player:
         self.number = number
         self.color = color
         self.tiles_set = create_set(start_x, start_y, color)
+        self.score = -89  # Players start with -89 points, which goes up as pieces are played
 
 
 class GameState:
@@ -94,6 +99,7 @@ class GameState:
                 for tile in row:
                     if 30+tile.x < x < 60+tile.x and 30+tile.y < y < 60+tile.y and not placed:
                         board.add_piece(self.selected, tile.board_x, tile.board_y)
+                        self.player.score += self.selected.get_num_tiles()
                         self.player.tiles_set.remove(self.selected)
                         self.selected.deselect()
                         self.state = 'waiting'
@@ -150,42 +156,70 @@ class GameState:
             self.end_loop(events)
 
 
+def draw_scores():
+    """
+    This function draws each player's scores above the board
+    """
+    font = pygame.font.SysFont('Ubuntu', 24)
+    for p in range(len(all_players)):
+        #  Should run four times, because there are four players
+        text_score = font.render("Player "+str(p+1)+": "+str(all_players[p].score), True, all_players[p].color.value)
+        #  Draw along the bottom of the board, moving 200 pixels for each player
+        score_surface.blit(text_score, (p*200, 0))
+
+
+def clear_window():
+    """
+    This function runs every frame to wipe out what was on the board before with a grey rectangle
+    """
+    pygame.draw.rect(pieces_surface, Color.BG_GREY.value, (0, 0, 400, 800))
+    pygame.draw.rect(score_surface, Color.BG_GREY.value, (0, 0, 1200, 50))
+
+
 if __name__ == '__main__':
     pygame.init()
-    window = (1200, 800)
+    window = (1200, 900)
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
+
+    #  Main screen
     screen.fill(Color.BG_GREY.value)
+
+    #  Create other surfaces
     pieces_surface = pygame.Surface((400, 800))
+    #  TODO: We might need to rethink how we do coordinate handling if we want this because it pushes everything down
+    # top_banner_surface = pygame.Surface((1200, 50))
+    score_surface = pygame.Surface((1200, 50))
+
+    #  Fill surfaces with grey color
+    pieces_surface.fill(Color.BG_GREY.value)
+    score_surface.fill(Color.BG_GREY.value)
+
     timer = pygame.time.Clock()
 
-    # Create the game state object
+    #  Create the game state object
     game_state = GameState()
 
-    # Create and draw a board, then put it on the screen
-    board = Board(window)
-
+    #  Create and draw a board, then put it on the screen
+    board = Board()
     board.draw()
-    screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
-                                      BOARD_HEIGHT//2-board.get_surface().get_height()//2))
 
-    # DISPLAY PIECES
-    pieces_surface.fill(Color.BG_GREY.value)
-
-    # Create players
+    #  Create players
     player_1 = Player(1, Color.BLUE)
     player_2 = Player(2, Color.YELLOW)
     player_3 = Player(3, Color.RED)
     player_4 = Player(4, Color.GREEN)
+    all_players = [player_1, player_2, player_3, player_4]  # list of all players to make score updating simpler
 
-    # The player whose turn it currently is
+    #  The player whose turn it currently is
     game_state.player = player_1
 
     # Draw player 1's pieces; they go first
     for piece in game_state.player.tiles_set:
         piece.draw_piece(pieces_surface)
 
-    screen.blit(pieces_surface, (800, 0))
+    screen.blit(board.get_surface(), (25, 25))
+    screen.blit(pieces_surface, (800, 0))  # NOTE: increased to 50 to make room for
 
     pygame.display.flip()
 
@@ -193,13 +227,14 @@ if __name__ == '__main__':
     while True:
         # Update the board every frame
         timer.tick(60)
+        clear_window()  # clear the board every frame
         board.draw()
-        screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
-                                          BOARD_HEIGHT//2-board.get_surface().get_height()//2))
-        clear_set(pieces_surface)  # clear any already-placed pieces before drawing again
+        screen.blit(board.get_surface(), (25, 25))
         for piece in game_state.player.tiles_set:
             piece.draw_piece(pieces_surface)
+        draw_scores()
         screen.blit(pieces_surface, (800, 0))
+        screen.blit(score_surface, (30, 825))  # Scores below board
         pygame.display.flip()
 
         # Escape quits the game
