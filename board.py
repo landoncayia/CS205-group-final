@@ -89,20 +89,28 @@ class Board:
     4) Pieces cannot overlap
     '''
     def is_valid(self, player_pieces, selected, board_x, board_y):
-        #first piece placed must be in a corner
-        #TODO: make sure first piece placed doesn't go out of bounds
         valid = False
+        #first piece placed must be in a corner
         if(len(player_pieces) == MAX_PLAYER_PIECES):
-            if board_x == 0:
-                if board_y == 0:
-                    valid = True
-                elif board_y == 19:
-                    valid = True
-            elif board_x == 19:
-                if board_y == 0:
-                    valid = True
-                elif board_y == 19:
-                    valid = True
+            for i in range(len(selected.get_tiles())):
+                for j in range(len(selected.get_tiles()[i])):
+                    if(selected.get_tiles()[i][j] is not None):
+                        check_x = board_x+i
+                        check_y = board_y+j
+                        #check that nothing is out of bounds
+                        if check_x < 0 or check_y < 0 or check_x > 19 or check_y > 19:
+                            return False
+                        #check each corner
+                        if check_x == 0:
+                            if check_y == 0:
+                                valid = True
+                            elif check_y == 19:
+                                valid = True
+                        elif check_x == 19:
+                            if check_y == 0:
+                                valid = True
+                            elif check_y == 19:
+                                valid = True
         #all pieces afterward
         else:
             #create new array with extra rows and columns to prevent array out of bounds errors
@@ -118,17 +126,18 @@ class Board:
                     if(selected.get_tiles()[i][j] is not None):
                         check_x = board_x+1+i
                         check_y = board_y+1+j
+                        #check that nothing is out of bounds
+                        if check_x < 0 or check_y < 0 or check_x > 21 or check_y > 21:
+                            return False
                         #check that it does touch piece of same color diagonally
                         if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
                             valid = True
                         #check that it doesn't overlap with anything
                         if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY:
-                            valid = False
+                            return False
                         #check that it does not touch a piece of same color edgewise
                         if selected.get_color() == check_tiles[check_x-1][check_y].get_color() or selected.get_color() == check_tiles[check_x+1][check_y].get_color() or selected.get_color() == check_tiles[check_x][check_y-1].get_color() or selected.get_color() == check_tiles[check_x][check_y+1].get_color():
-                            valid = False
-                    
-
+                            return False
         return valid
 
 
