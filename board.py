@@ -5,15 +5,18 @@ from tile import Tile
 from piece import Shape
 
 COL_LETTERS = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K',
-                       11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
+               11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
 TILE_WIDTH = 30
 
+
 class Board:
-    # init function
-    # window is the game window
-    # surface is the game surface object
-    # tiles is a 2-D list (20 x 20) of tile objects
-    def __init__(self, window):
+    def __init__(self):
+        """
+        init function
+        window is the game window
+        surface is the game surface object
+        tiles is a 2-D list (20 x 20) of tile objects
+        """
         self.surface = pygame.Surface((750, 750))
         self.tiles = [[None]*20 for _ in range(20)]  # initialize board 2-D list
         for x in range(20):
@@ -22,6 +25,9 @@ class Board:
                 self.tiles[x][y] = Tile(40+(35*x), 40+(35*y), Color.EMPTY_GREY, x, y)
 
     def draw_labels(self):
+        """
+        This function draws the letter and number labels along the axes of the board
+        """
         font = pygame.font.SysFont('Ubuntu', 18, bold=True)
         # Draw letters along the top of the board (above each column)
         for col in range(20):
@@ -37,8 +43,8 @@ class Board:
             text = font.render(str(row+1), True, Color.EMPTY_GREY.value)
             self.surface.blit(text, (10, 45+(35*row)))
 
-    # draw() will draw the surface in the game window
     def draw(self):
+        # draw() will draw the surface in the game window
         # Need .value for an enum to get the actual tuple, not the enum object
         self.surface.fill(Color.BG_GREY.value)
         pygame.draw.rect(self.surface, Color.EMPTY_GREY.value, (35, 35, 705, 705), 3)
@@ -77,20 +83,33 @@ class Board:
     def set_tiles(self, tiles):
         self.tiles = tiles
 
-    '''
-    add_piece(): adds a piece to the tiles
-    origin: tuple(int, int) - contains the origin [0-19] of the placed piece; e.g., (1, 1)
-    tiles: list(Tile) - contains the tiles that make up a piece
-        NOTE: the first value in tiles should be (0, 0); e.g., [(0, 0), (1, 0), (2, 0), (0, 1), (-1, 1)] will make this shape:
-          ■ ■ ■
-        ■ ■
-    '''
-    def add_piece(self, selected, x, y):
-        for tile in selected.get_tiles():
-            # Piece needs a change; currently, there are no coordinates relative to the origin, so drawing a piece won't work.
-            pass
+    def add_piece(self, selected, board_x, board_y):
+        """
+        add_piece(): adds a piece to the tiles
+        selected: the currently selected piece, to be added
+        board_x, board_y: clicked board location for piece to get added
+            NOTE: the first value in tiles should be (0, 0); e.g., [(0, 0), (1, 0), (2, 0), (0, 1), (-1, 1)] will make
+            this shape:
+              ■ ■ ■
+            ■ ■
+        """
+        for row in range(len(selected.get_tiles())):  # Should be 5
+            for col in range(len(selected.get_tiles()[0])):  # Should be 5
+                if selected.get_tiles()[row][col] is not None:
+                    selected.get_tiles()[row][col].x = self.tiles[board_x+row][board_y+row].x
+                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y].y
+                    selected.get_tiles()[row][col].board_x = board_x+row
+                    selected.get_tiles()[row][col].board_y = board_y+col
+                    self.tiles[board_x+row][board_y+col] = selected.get_tiles()[row][col]
 
 
+def create_set(start_x, start_y, set_color):
+    """
+    creates a set of pieces for player using a start x and y, and a color
+    each set has one piece with each shape
+    """
+    max_piece_width = 150
+    gap = 10
 # creates a set of pieces for player using a start x and y, and a color
 # each set has one piece with each shape
 def create_set(start_x, start_y, set_color):
