@@ -104,13 +104,14 @@ class GameState:
             for row in board.tiles:
                 for tile in row:
                     if 30+tile.x < x < 60+tile.x and 30+tile.y < y < 60+tile.y and not placed:
-                        board.add_piece(self.selected, tile.board_x, tile.board_y)
-                        self.player.score += self.selected.get_num_tiles()
-                        self.player.tiles_set.remove(self.selected)
-                        self.selected.deselect()
-                        self.state = 'waiting'
-                        self.next_player()  # Go to next player
-                        placed = True
+                        if board.is_valid(self.player.tiles_set, self.selected, tile.board_x, tile.board_y):
+                            board.add_piece(self.selected, tile.board_x, tile.board_y)
+                            self.player.score += self.selected.get_num_tiles()
+                            self.player.tiles_set.remove(self.selected)
+                            self.selected.deselect()
+                            self.state = 'waiting'
+                            self.next_player()  # Go to next player
+                            placed = True
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             # Right mouse button pressed; unselect current piece and go back to waiting state
@@ -121,10 +122,12 @@ class GameState:
                     self.state = 'waiting'
                     break
 
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-            self.selected.rotate_ccw()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-            self.selected.rotate_cw()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                self.selected.rotate_ccw()
+            if event.key == pygame.K_RIGHT:
+                self.selected.rotate_cw()
+
 
     def end_loop(self, events):
         """
@@ -294,7 +297,6 @@ if __name__ == '__main__':
                 raise SystemExit
             if event.type == pygame.QUIT:
                 raise SystemExit
-
-        game_state.handle_events(pygame.event.get())
+            game_state.handle_events(pygame.event.get())
     
     pygame.quit()

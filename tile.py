@@ -35,10 +35,10 @@ class Tile:
     def __init__(self, x, y, color, board_x=None, board_y=None):
         self.x = x
         self.y = y
-        if board_x is not None:
-            self.board_x = board_x
-        if board_y is not None:
-            self.board_y = board_y
+        #if board_x is not None:
+        self.board_x = board_x
+        #if board_y is not None:
+        self.board_y = board_y
         self.color = color
 
     # GETTERS
@@ -68,6 +68,10 @@ class Tile:
     def set_location(self, x, y):
         self.x = x
         self.y = y
+
+    def set_board_location(self, board_x, board_y):
+        self.board_x = board_x
+        self.board_y = board_y
 
     # OTHER FUNCTIONS
     def draw_tile(self, surface):

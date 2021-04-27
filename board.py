@@ -7,7 +7,10 @@ from piece import Shape
 COL_LETTERS = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K',
                11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T'}
 TILE_WIDTH = 30
-
+NUM_ROWS = 20
+NUM_COLS = 20
+#TODO: update when more pieces are available from create_set
+MAX_PLAYER_PIECES = 2
 
 class Board:
     def __init__(self):
@@ -18,7 +21,7 @@ class Board:
         tiles is a 2-D list (20 x 20) of tile objects
         """
         self.surface = pygame.Surface((750, 750))
-        self.tiles = [[None]*20 for _ in range(20)]  # initialize board 2-D list
+        self.tiles = [[None]*NUM_COLS for _ in range(NUM_ROWS)]  # initialize board 2-D list
         for x in range(20):
             for y in range(20):
                 # x and y are the board locations; so convert the first parameters to pixel values for the surface
@@ -96,11 +99,71 @@ class Board:
         for row in range(len(selected.get_tiles())):  # Should be 5
             for col in range(len(selected.get_tiles()[0])):  # Should be 5
                 if selected.get_tiles()[row][col] is not None:
-                    selected.get_tiles()[row][col].x = self.tiles[board_x+row][board_y+row].x
-                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y].y
+                    selected.get_tiles()[row][col].x = self.tiles[board_x+row][board_y].x
+                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y+col].y
                     selected.get_tiles()[row][col].board_x = board_x+row
                     selected.get_tiles()[row][col].board_y = board_y+col
                     self.tiles[board_x+row][board_y+col] = selected.get_tiles()[row][col]
+
+
+    '''
+    This function will implement the following rules:
+    1) The first tile played by each player must be placed in one of the four corners
+    2) After the first play, pieces must be placed so at least one of the corners touches another of the same color and there is no edge-to-edge contact
+    3) Edge-to-edge contact is allowed between pieces of different colors
+    4) Pieces cannot overlap
+    '''
+    def is_valid(self, player_pieces, selected, board_x, board_y):
+        valid = False
+        #first piece placed must be in a corner
+        if(len(player_pieces) == MAX_PLAYER_PIECES):
+            for i in range(len(selected.get_tiles())):
+                for j in range(len(selected.get_tiles()[i])):
+                    if(selected.get_tiles()[i][j] is not None):
+                        check_x = board_x+i
+                        check_y = board_y+j
+                        #check that nothing is out of bounds
+                        if check_x < 0 or check_y < 0 or check_x > 19 or check_y > 19:
+                            return False
+                        #check each corner
+                        if check_x == 0:
+                            if check_y == 0:
+                                valid = True
+                            elif check_y == 19:
+                                valid = True
+                        elif check_x == 19:
+                            if check_y == 0:
+                                valid = True
+                            elif check_y == 19:
+                                valid = True
+        #all pieces afterward
+        else:
+            #create new array with extra rows and columns to prevent array out of bounds errors
+            check_tiles = [[Tile(0,0,Color.EMPTY_GREY)]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
+            for row in range(1,NUM_ROWS+1):
+                for col in range(1, NUM_COLS+1):
+                    check_tiles[row][col] = self.tiles[row-1][col-1]
+
+            check_x = board_x+1
+            check_y = board_y+1
+            for i in range(len(selected.get_tiles())):
+                for j in range(len(selected.get_tiles()[i])):
+                    if(selected.get_tiles()[i][j] is not None):
+                        check_x = board_x+1+i
+                        check_y = board_y+1+j
+                        #check that nothing is out of bounds
+                        if check_x < 0 or check_y < 0 or check_x > 21 or check_y > 21:
+                            return False
+                        #check that it does touch piece of same color diagonally
+                        if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
+                            valid = True
+                        #check that it doesn't overlap with anything
+                        if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY:
+                            return False
+                        #check that it does not touch a piece of same color edgewise
+                        if selected.get_color() == check_tiles[check_x-1][check_y].get_color() or selected.get_color() == check_tiles[check_x+1][check_y].get_color() or selected.get_color() == check_tiles[check_x][check_y-1].get_color() or selected.get_color() == check_tiles[check_x][check_y+1].get_color():
+                            return False
+        return valid
 
 
 def create_set(start_x, start_y, set_color):
