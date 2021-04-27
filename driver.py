@@ -102,6 +102,13 @@ class GameState:
                             board.add_piece(self.selected, tile.board_x, tile.board_y)
                             self.player.score += self.selected.get_num_tiles()
                             self.player.tiles_set.remove(self.selected)
+                            # Below are some additional scoring rules
+                            if not self.player.tiles_set:
+                                # If player has placed all their pieces (list empty), +15 points
+                                self.player.score += 15
+                                if self.selected.shape == Shape.ONE:
+                                    # If the last piece played is the single square piece, +5 points
+                                    self.player.score += 5
                             self.selected.deselect()
                             self.state = 'waiting'
                             self.next_player()  # Go to next player
@@ -122,18 +129,12 @@ class GameState:
             if event.key == pygame.K_RIGHT:
                 self.selected.rotate_cw()
 
-
     def end_loop(self, events):
-        """
-        The game has ended; display the winner
-        """
+        # The game has ended; display the winner
         pass
 
-
-    """
-    Advances to the next player
-    """
     def next_player(self):
+        # Advances to the next player
         if self.player.number == 1:
             self.player = player_2
         elif self.player.number == 2:
@@ -143,11 +144,8 @@ class GameState:
         elif self.player.number == 4:
             self.player = player_1
 
-
-    """
-    This function will call other helper functions to handle input events accordingly, depending on the game state
-    """
     def handle_events(self, events):
+        # This function will call other helper functions to handle input events accordingly, depending on the game state
         # Call the proper function, depending on the game state
         if self.state == 'start':
             self.start_loop(events)
