@@ -71,7 +71,7 @@ class Board:
                 elif current_tile.get_color() == Color.YELLOW:
                     yellow_count += 1
         # may want to get rid of 4 - tuple in future
-        return blue_count, red_count, green_count, yellow_count
+        return blue_count, yellow_count, red_count, green_count
 
     # Setters
     def set_tiles(self, tiles):

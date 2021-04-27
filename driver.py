@@ -122,6 +122,13 @@ class GameState:
         """
         The game has ended; display the winner
         """
+        # check pieces left in set
+        # for piece in self.player.tiles_set()
+        # TODO: write check valid moves function
+        # check if there are valid moves
+        # if no valid moves, game over
+        # display score
+        # display who won
         pass
 
     """
