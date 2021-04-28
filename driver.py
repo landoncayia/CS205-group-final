@@ -245,12 +245,8 @@ if __name__ == '__main__':
         board.draw()
         screen.blit(board.get_surface(), (25, 25))
         draw_scores()
-        screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
-                                    BOARD_HEIGHT//2-board.get_surface().get_height()//2))
-
         for piece in game_state.player.tiles_set:
             piece.draw_piece(pieces_surface)
-
         screen.blit(pieces_surface, (800, 0))
         screen.blit(score_surface, (30, 825))  # Scores below board
         pygame.display.flip()
