@@ -323,17 +323,15 @@ class Piece:
         #moves the tiles as far up and to the left as they can go
         self.tiles_array = np.roll(self.tiles_array, -shift_rows, axis=0).tolist()
         self.tiles_array = np.roll(self.tiles_array, -shift_cols, axis=1).tolist()
-        orig_x = self.get_first_tile().get_location()[0]
-        orig_y = self.get_first_tile().get_location()[1]
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
         #all pixel values are relative to first tile in the array
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
-                if (self.tiles_array[col][row] != None):
-                    x = self.tiles_array[col][row].get_location()[0]
-                    y = self.tiles_array[col][row].get_location()[1]
-                    orig_x += 30*col
-                    orig_y += 30*row
-                    self.tiles_array[col][row].set_location(orig_x,orig_y)
+                if (self.tiles_array[row][col] != None):
+                    new_x = orig_x + 30*col
+                    new_y = orig_y + 30*row
+                    self.tiles_array[row][col].set_location(new_x,new_y)
                 col += 1
             row += 1
             col = 0
