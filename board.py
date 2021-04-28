@@ -99,11 +99,11 @@ class Board:
         for row in range(len(selected.get_tiles())):  # Should be 5
             for col in range(len(selected.get_tiles()[0])):  # Should be 5
                 if selected.get_tiles()[row][col] is not None:
-                    selected.get_tiles()[row][col].x = self.tiles[board_x+row][board_y].x
-                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y+col].y
-                    selected.get_tiles()[row][col].board_x = board_x+row
-                    selected.get_tiles()[row][col].board_y = board_y+col
-                    self.tiles[board_x+row][board_y+col] = selected.get_tiles()[row][col]
+                    selected.get_tiles()[row][col].x = self.tiles[board_x+col][board_y].x
+                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y+row].y
+                    selected.get_tiles()[row][col].board_x = board_x+col
+                    selected.get_tiles()[row][col].board_y = board_y+row
+                    self.tiles[board_x+col][board_y+row] = selected.get_tiles()[row][col]
 
 
     '''
