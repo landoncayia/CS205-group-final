@@ -68,7 +68,6 @@ class GameState:
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
         Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
         """
-
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get mouse position
             x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
@@ -103,6 +102,13 @@ class GameState:
                             board.add_piece(self.selected, tile.board_x, tile.board_y)
                             self.player.score += self.selected.get_num_tiles()
                             self.player.tiles_set.remove(self.selected)
+                            # Below are some additional scoring rules
+                            if not self.player.tiles_set:
+                                # If player has placed all their pieces (list empty), +15 points
+                                self.player.score += 15
+                                if self.selected.shape == Shape.ONE:
+                                    # If the last piece played is the single square piece, +5 points
+                                    self.player.score += 5
                             self.selected.deselect()
                             self.state = 'waiting'
                             self.next_player()  # Go to next player
@@ -127,14 +133,10 @@ class GameState:
         """
         The game has ended; display the winner
         """
-
         pass
 
-    """
-    Advances to the next player
-    """
-
     def next_player(self):
+        # Advances to the next player
         if self.player.number == 1:
             self.player = player_2
         elif self.player.number == 2:
@@ -144,10 +146,8 @@ class GameState:
         elif self.player.number == 4:
             self.player = player_1
 
-    """
-    This function will call other helper functions to handle input events accordingly, depending on the game state
-    """
     def handle_events(self, events):
+        # This function will call other helper functions to handle input events accordingly, depending on the game state
         # Call the proper function, depending on the game state
         if self.state == 'start':
             self.start_loop(events)
@@ -198,9 +198,9 @@ if __name__ == '__main__':
 
     #  Main screen
     screen.fill(Color.BG_GREY.value)
-    pieces_surface = pygame.Surface((700, 800))
 
     #  Create other surfaces
+    pieces_surface = pygame.Surface((700, 800))
     #  TODO: We might need to rethink how we do coordinate handling if we want this because it pushes everything down
     # top_banner_surface = pygame.Surface((1200, 50))
     score_surface = pygame.Surface((1200, 50))
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     #  The player whose turn it currently is
     game_state.player = player_1
 
-    # print the tiles
+    # Draw player 1's pieces; they go first
     for piece in game_state.player.tiles_set:
         piece.draw_piece(pieces_surface)
 
@@ -244,9 +244,9 @@ if __name__ == '__main__':
         clear_window()  # clear the board every frame
         board.draw()
         screen.blit(board.get_surface(), (25, 25))
-        draw_scores()
         for piece in game_state.player.tiles_set:
             piece.draw_piece(pieces_surface)
+        draw_scores()
         screen.blit(pieces_surface, (800, 0))
         screen.blit(score_surface, (30, 825))  # Scores below board
         pygame.display.flip()
