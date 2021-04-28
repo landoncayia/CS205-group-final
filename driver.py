@@ -121,6 +121,10 @@ class GameState:
                 self.selected.rotate_ccw()
             if event.key == pygame.K_RIGHT:
                 self.selected.rotate_cw()
+            if event.key == pygame.K_UP:
+                self.selected.flip_vert()
+            if event.key == pygame.K_DOWN:
+                self.selected.flip_horiz()
 
 
     def end_loop(self, events):
