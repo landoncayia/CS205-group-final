@@ -83,6 +83,9 @@ class GameState:
                                 self.selected = piece
                                 self.state = 'turn'
                             break
+            if 1050 < x < 1150 and 675 < y < 725:
+                # Pass button was pressed
+                self.next_player()
 
     def turn_loop(self, events):
         """
@@ -182,6 +185,17 @@ def draw_scores():
         score_surface.blit(text_score, (p*200, 0))
 
 
+def draw_pass_button():
+    """
+    Draws the pass button after all the pieces, so that a player may choose to pass.
+    """
+    font = pygame.font.SysFont('Ubuntu', 28, bold=True)
+    button_text = font.render('PASS', True, game_state.player.color.value)
+    pygame.draw.rect(pieces_surface, Color.EMPTY_GREY.value, (250, 675, 100, 50))
+    pieces_surface.blit(button_text, (270, 685))
+
+
+
 def clear_window():
     """
     This function runs every frame to wipe out what was on the board before with a grey rectangle
@@ -192,7 +206,7 @@ def clear_window():
 
 if __name__ == '__main__':
     pygame.init()
-    window = (1450, 800)
+    window = (1450, 900)
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
 
@@ -247,6 +261,7 @@ if __name__ == '__main__':
         for piece in game_state.player.tiles_set:
             piece.draw_piece(pieces_surface)
         draw_scores()
+        draw_pass_button()
         screen.blit(pieces_surface, (800, 0))
         screen.blit(score_surface, (30, 825))  # Scores below board
         pygame.display.flip()
