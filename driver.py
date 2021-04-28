@@ -196,7 +196,7 @@ def clear_window():
 
 if __name__ == '__main__':
     pygame.init()
-    window = (1450, 800)
+    window = (1450, 900)
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
 

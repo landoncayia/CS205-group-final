@@ -120,8 +120,8 @@ class Board:
                 if(selected.get_tiles()[i][j] is not None):
                     #first piece placed
                     if(len(player_pieces) == MAX_PLAYER_PIECES):
-                        check_x = board_x+i
-                        check_y = board_y+j
+                        check_x = board_x+j
+                        check_y = board_y+i
                         #check that nothing is out of bounds
                         if check_x < 0 or check_y < 0 or check_x > 19 or check_y > 19:
                             return False
@@ -143,8 +143,8 @@ class Board:
                         for row in range(1,NUM_ROWS+1):
                             for col in range(1, NUM_COLS+1):
                                 check_tiles[row][col] = self.tiles[row-1][col-1]
-                        check_x = board_x+1+i
-                        check_y = board_y+1+j
+                        check_x = board_x+1+j
+                        check_y = board_y+1+i
                         #check that nothing is out of bounds
                         if check_x < 0 or check_y < 0 or check_x > 21 or check_y > 21:
                             return False
