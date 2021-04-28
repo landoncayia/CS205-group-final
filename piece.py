@@ -41,10 +41,7 @@ class Piece:
         self.x = x
         self.y = y
         self.color = color
-        # self.table_tiles = list()  # tiles used on board - incremented by 1
-        # self.printing_tiles = list()  # tiles used to display on side - incremented by 30
         self.tiles_array = [[None] * MAX_TILES_WIDTH for _ in range(MAX_TILES_WIDTH)] # tiles will be added here
-        # self.center = center
         self.set_tiles()
         self.selected = False
 

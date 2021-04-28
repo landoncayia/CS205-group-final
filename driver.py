@@ -68,21 +68,24 @@ class GameState:
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
         Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
         """
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            # Left mouse button pressed, get mouse position
-            x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
-            for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
-                for row in piece.tiles_array:  # Go through each row in the tile array
-                    for tile in row:
-                        if tile is not None:
-                            tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
-                            if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:
-                                # Check if the mouse click location matches the range of this tile
-                                # If so, select the piece, change state to turn, and end the loop
-                                piece.select()
-                                self.selected = piece
-                                self.state = 'turn'
-                            break
+        if self.valid_moves_left():
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                # Left mouse button pressed, get mouse position
+                x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
+                for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
+                    for row in piece.tiles_array:  # Go through each row in the tile array
+                        for tile in row:
+                            if tile is not None:
+                                tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
+                                if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:
+                                    # Check if the mouse click location matches the range of this tile
+                                    # If so, select the piece, change state to turn, and end the loop
+                                    piece.select()
+                                    self.selected = piece
+                                    self.state = 'turn'
+                                break
+        else:
+            self.state = 'end'
 
     def turn_loop(self, events):
         """
@@ -161,12 +164,12 @@ class GameState:
     """
     This function will determine if there are any valid moves left for the player
     """
-
     def valid_moves_left(self):
         for piece in self.player.tiles_set:
-            for tile in board.get_tiles():
-                if board.is_valid(self.player.tiles_set, piece, tile.get_location()[0], tile.get_location()[1]):
-                    return True
+            for row in board.tiles:
+                for tile in row:
+                    if board.is_valid(self.player.tiles_set, piece, tile.board_x, tile.board_y):
+                        return True
         return False
 
 
@@ -192,7 +195,7 @@ def clear_window():
 
 if __name__ == '__main__':
     pygame.init()
-    window = (1450, 800)
+    window = (1450, 900)
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
 
