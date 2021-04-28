@@ -53,7 +53,6 @@ class GameState:
         self.player = None              # The current player
         self.selected = None            # currently selected piece, if any
 
-
     def start_loop(self, events):
         """
         Beginning of game, in which number of players is specified. This will be part of Sprint Two
@@ -63,7 +62,6 @@ class GameState:
         """
         pass
 
-
     def waiting_loop(self, events):
         """
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
@@ -71,24 +69,19 @@ class GameState:
         """
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get mouse position
-            x, y = pygame.mouse.get_pos() # (x, y), where x and y are the number of pixels away from the top-left corner
-            if next_button.x < x < next_button.x + next_button.width and next_button.y < y < next_button.y + next_button.height:
-                tiles_page = 2
-            elif back_button.x < x < back_button.x + back_button.width and back_button.y < y < next_button.y + next_button.height:
-                tiles_page = 1
-            else:
-                for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
-                    for row in piece.tiles_array:  # Go through each row in the tile array
-                        for tile in row:
-                            if tile is not None:
-                                tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
-                                if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:
-                                    # Check if the mouse click location matches the range of this tile
-                                    # If so, select the piece, change state to turn, and end the loop
-                                    piece.select()
-                                    self.selected = piece
-                                    self.state = 'turn'
-                                break
+            x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
+            for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
+                for row in piece.tiles_array:  # Go through each row in the tile array
+                    for tile in row:
+                        if tile is not None:
+                            tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
+                            if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:
+                                # Check if the mouse click location matches the range of this tile
+                                # If so, select the piece, change state to turn, and end the loop
+                                piece.select()
+                                self.selected = piece
+                                self.state = 'turn'
+                            break
 
     def turn_loop(self, events):
         """
@@ -127,7 +120,6 @@ class GameState:
                 self.selected.rotate_ccw()
             if event.key == pygame.K_RIGHT:
                 self.selected.rotate_cw()
-
 
     def end_loop(self, events):
         """
@@ -211,8 +203,6 @@ if __name__ == '__main__':
     score_surface.fill(Color.BG_GREY.value)
 
     timer = pygame.time.Clock()
-    tiles_page = 1
-    TILES_PER_PAGE = 12
 
     #  Create the game state object
     game_state = GameState()
@@ -231,24 +221,9 @@ if __name__ == '__main__':
     #  The player whose turn it currently is
     game_state.player = player_1
 
-    # Draw player 1's pieces; they go first
-    if tiles_page == 1:
-        for piece in game_state.player.tiles_set:
-            i = 0
-            while (i < TILES_PER_PAGE):
-                game_state.player.tiles_set[i].draw_piece(pieces_surface)
-                i += 1
-    # if second page, we want to print second half
-    # from index TILES_PER_PAGE + 1 to the end of list
-    elif tiles_page == 2:
-        for piece in game_state.player.tiles_set:
-            i = TILES_PER_PAGE + 1
-            while (i < len(game_state.player.tiles_set)):
-                game_state.player.tiles_set[i].draw_piece(pieces_surface)
-                i += 1
-
-    next_button = pygame.draw.rect(pieces_surface, Color.EMPTY_GREY.value, (210, 675, 100, 30))
-    back_button = pygame.draw.rect(pieces_surface, Color.EMPTY_GREY.value, (90, 675, 100, 30))
+    # print the tiles
+    for piece in game_state.player.tiles_set:
+        piece.draw_piece(pieces_surface)
 
     screen.blit(board.get_surface(), (25, 25))
     screen.blit(pieces_surface, (800, 0))  # NOTE: increased to 50 to make room for
@@ -262,30 +237,12 @@ if __name__ == '__main__':
         clear_window()  # clear the board every frame
         board.draw()
         screen.blit(board.get_surface(), (25, 25))
-        for piece in game_state.player.tiles_set:
-            piece.draw_piece(pieces_surface)
         draw_scores()
         screen.blit(board.get_surface(), (BOARD_WIDTH//2-board.get_surface().get_width()//2,
                                     BOARD_HEIGHT//2-board.get_surface().get_height()//2))
 
-        # clear_set(pieces_surface)  # clear any already-placed pieces before drawing again
-        # TO DO : FIX BUTTON THING
-        # if first page of tiles, we want to show the first half of set
-        # which will be from index 0 to TILES_PER_PAGE
-        if tiles_page == 1:
-            for piece in game_state.player.tiles_set:
-                i = 0
-                while (i < TILES_PER_PAGE):
-                    game_state.player.tiles_set[i].draw_piece(pieces_surface)
-                    i += 1
-        # if second page, we want to print second half
-        # from index TILES_PER_PAGE + 1 to the end of list
-        elif tiles_page == 2:
-            for piece in game_state.player.tiles_set:
-                i = TILES_PER_PAGE + 1
-                while (i < len(game_state.player.tiles_set)):
-                    game_state.player.tiles_set[i].draw_piece(pieces_surface)
-                    i += 1
+        for piece in game_state.player.tiles_set:
+            piece.draw_piece(pieces_surface)
 
         screen.blit(pieces_surface, (800, 0))
         screen.blit(score_surface, (30, 825))  # Scores below board
