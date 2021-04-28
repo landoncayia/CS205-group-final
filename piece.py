@@ -248,17 +248,25 @@ class Piece:
         else:
             return 5
 
-    def reset_distances(self, orig_x, orig_y):
+    def reset_distances(self):
         row = 0
         col = 0
+        xcounter = 0
+        ycounter = 0
+        shift_rows = self.get_first_tile()[0]
+        shift_cols = self.get_leftmost_tile()[1]
+        self.tiles_array = np.roll(self.tiles_array, -shift_rows, axis=0).tolist()
+        self.tiles_array = np.roll(self.tiles_array, -shift_cols, axis=1).tolist()
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
                 if (self.tiles_array[row][col] != None):
                     x = self.tiles_array[row][col].get_location()[0]
                     y = self.tiles_array[row][col].get_location()[1]
-                    x = x + 30*row
-                    y = y + 30*col
+                    x += 30*row
+                    y += 30*col
                     self.tiles_array[row][col].set_location(x,y)
+                    xcounter += 1
+                    ycounter += 1
                 col += 1
             row += 1
             col = 0
@@ -282,11 +290,23 @@ class Piece:
         while i < MAX_TILES_WIDTH:
             while j < MAX_TILES_WIDTH:
                 if self.tiles_array[i][j] != None:
-                    return self.tiles_array[i][j]
+                    return (i,j)
                 else:
                     j += 1;
             i += 1;
             j = 0;
+    def get_leftmost_tile(self):
+        i = 0;
+        j = 0;
+        while i < MAX_TILES_WIDTH:
+            while j < MAX_TILES_WIDTH:
+                if self.tiles_array[i][j] != None:
+                    return (i,j)
+                else:
+                    i += 1;
+            j += 1;
+            i = 0;
+        
 
     # rotates the piece clockwise
     # 90 degree rotation: T(x,y) -> T(-y,x)
@@ -297,7 +317,7 @@ class Piece:
         print("Original array:")
         print(self.tiles_array)
         self.tiles_array = np.rot90(self.tiles_array).tolist()
-        self.reset_distances(self.get_first_tile().get_location()[0],self.get_first_tile().get_location()[1])
+        self.reset_distances()
         print("Rotated array:")
         print(self.tiles_array)
 
@@ -306,4 +326,4 @@ class Piece:
     # 
     def rotate_ccw(self):
         self.tiles_array = np.rot90(self.tiles_array, 3).tolist()
-        self.reset_distances(self.get_first_tile().get_location()[0],self.get_first_tile().get_location()[1])
+        self.reset_distances()
