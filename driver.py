@@ -52,6 +52,7 @@ class GameState:
         self.state = 'waiting'          # NOTE: This should be changed to 'start' later, this is just for testing
         self.player = None              # The current player
         self.selected = None            # currently selected piece, if any
+        self.valid_moves = True
 
     def start_loop(self, events):
         """
@@ -67,6 +68,7 @@ class GameState:
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
         Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
         """
+
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get mouse position
             x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
@@ -125,13 +127,7 @@ class GameState:
         """
         The game has ended; display the winner
         """
-        # check pieces left in set
-        # for piece in self.player.tiles_set()
-        # TODO: write check valid moves function
-        # check if there are valid moves
-        # if no valid moves, game over
-        # display score
-        # display who won
+
         pass
 
     """
@@ -161,6 +157,17 @@ class GameState:
             self.turn_loop(events)
         elif self.state == 'end':
             self.end_loop(events)
+
+    """
+    This function will determine if there are any valid moves left for the player
+    """
+
+    def valid_moves_left(self):
+        for piece in self.player.tiles_set:
+            for tile in board.get_tiles():
+                if board.is_valid(self.player.tiles_set, piece, tile.get_location()[0], tile.get_location()[1]):
+                    return True
+        return False
 
 
 def draw_scores():
