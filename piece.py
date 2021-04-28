@@ -251,22 +251,22 @@ class Piece:
     def reset_distances(self):
         row = 0
         col = 0
-        xcounter = 0
-        ycounter = 0
-        shift_rows = self.get_first_tile()[0]
-        shift_cols = self.get_leftmost_tile()[1]
+        
+        
+        shift_rows = self.get_first_row()
+        shift_cols = self.get_first_col()
         self.tiles_array = np.roll(self.tiles_array, -shift_rows, axis=0).tolist()
         self.tiles_array = np.roll(self.tiles_array, -shift_cols, axis=1).tolist()
+        orig_x = self.get_first_tile().get_location()[0]
+        orig_y = self.get_first_tile().get_location()[1]
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
-                if (self.tiles_array[row][col] != None):
-                    x = self.tiles_array[row][col].get_location()[0]
-                    y = self.tiles_array[row][col].get_location()[1]
-                    x += 30*row
-                    y += 30*col
-                    self.tiles_array[row][col].set_location(x,y)
-                    xcounter += 1
-                    ycounter += 1
+                if (self.tiles_array[col][row] != None):
+                    x = self.tiles_array[col][row].get_location()[0]
+                    y = self.tiles_array[col][row].get_location()[1]
+                    orig_x += 30*row
+                    orig_y += 30*col
+                    self.tiles_array[col][row].set_location(orig_x,orig_y)
                 col += 1
             row += 1
             col = 0
@@ -283,6 +283,30 @@ class Piece:
             row += 1
             col = 0
 
+    def get_first_row(self):
+        #look for first entry in array
+        i = 0;
+        j = 0;
+        while i < MAX_TILES_WIDTH:
+            while j < MAX_TILES_WIDTH:
+                if self.tiles_array[i][j] != None:
+                    return i
+                else:
+                    j += 1;
+            i += 1;
+            j = 0;
+
+    def get_first_col(self):
+        i = 0;
+        j = 0;
+        while j < MAX_TILES_WIDTH:
+            while i < MAX_TILES_WIDTH:
+                if self.tiles_array[i][j] != None:
+                    return j
+                else:
+                    i += 1;
+            j += 1;
+            i = 0;
     def get_first_tile(self):
         #look for first entry in array
         i = 0;
@@ -290,22 +314,11 @@ class Piece:
         while i < MAX_TILES_WIDTH:
             while j < MAX_TILES_WIDTH:
                 if self.tiles_array[i][j] != None:
-                    return (i,j)
+                    return self.tiles_array[i][j]
                 else:
                     j += 1;
             i += 1;
             j = 0;
-    def get_leftmost_tile(self):
-        i = 0;
-        j = 0;
-        while i < MAX_TILES_WIDTH:
-            while j < MAX_TILES_WIDTH:
-                if self.tiles_array[i][j] != None:
-                    return (i,j)
-                else:
-                    i += 1;
-            j += 1;
-            i = 0;
         
 
     # rotates the piece clockwise
