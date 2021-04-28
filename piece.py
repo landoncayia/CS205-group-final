@@ -265,8 +265,8 @@ class Piece:
                 if (self.tiles_array[col][row] != None):
                     x = self.tiles_array[col][row].get_location()[0]
                     y = self.tiles_array[col][row].get_location()[1]
-                    orig_x += 30*row
-                    orig_y += 30*col
+                    orig_x += 30*col
+                    orig_y += 30*row
                     self.tiles_array[col][row].set_location(orig_x,orig_y)
                 col += 1
             row += 1
