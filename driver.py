@@ -8,10 +8,10 @@ from piece import Shape
 from tile import Color
 from tile import Tile
 
-#  dimensions of the board
+# dimensions of the board
 BOARD_WIDTH, BOARD_HEIGHT = 800, 800
-#  order of play: 1 (Blue) -> 2 (Yellow) -> 3 (Red) -> 4 (Green)
-#  dict used to go to next color in order of play, as above
+# order of play: 1 (Blue) -> 2 (Yellow) -> 3 (Red) -> 4 (Green)
+# dict used to go to next color in order of play, as above
 NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,
               Color.RED: Color.GREEN, Color.GREEN: Color.BLUE}
 
@@ -34,7 +34,6 @@ class Player:
         self.tiles_set = create_set(start_x, start_y, color)
         self.score = -89  # Players start with -89 points, which goes up as pieces are played
 
-
 class GameState:
     def __init__(self):
         """
@@ -53,6 +52,7 @@ class GameState:
         self.state = 'waiting'          # NOTE: This should be changed to 'start' later, this is just for testing
         self.player = None              # The current player
         self.selected = None            # currently selected piece, if any
+        self.valid_moves = True
 
     def start_loop(self, events):
         """
@@ -75,8 +75,8 @@ class GameState:
                 for row in piece.tiles_array:  # Go through each row in the tile array
                     for tile in row:
                         if tile is not None:
-                            tile_x, tile_y = tile.get_location() # Get the x, y coordinates of the tile (top-left)
-                            if 800+tile_x < x < 800+tile_x+30 and tile_y < y < tile_y+30:
+                            tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
+                            if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:
                                 # Check if the mouse click location matches the range of this tile
                                 # If so, select the piece, change state to turn, and end the loop
                                 piece.select()
@@ -102,6 +102,13 @@ class GameState:
                             board.add_piece(self.selected, tile.board_x, tile.board_y)
                             self.player.score += self.selected.get_num_tiles()
                             self.player.tiles_set.remove(self.selected)
+                            # Below are some additional scoring rules
+                            if not self.player.tiles_set:
+                                # If player has placed all their pieces (list empty), +15 points
+                                self.player.score += 15
+                                if self.selected.shape == Shape.ONE:
+                                    # If the last piece played is the single square piece, +5 points
+                                    self.player.score += 5
                             self.selected.deselect()
                             self.state = 'waiting'
                             self.next_player()  # Go to next player
@@ -126,18 +133,14 @@ class GameState:
             if event.key == pygame.K_DOWN:
                 self.selected.flip_horiz()
 
-
     def end_loop(self, events):
         """
         The game has ended; display the winner
         """
         pass
 
-
-    """
-    Advances to the next player
-    """
     def next_player(self):
+        # Advances to the next player
         if self.player.number == 1:
             self.player = player_2
         elif self.player.number == 2:
@@ -147,11 +150,8 @@ class GameState:
         elif self.player.number == 4:
             self.player = player_1
 
-
-    """
-    This function will call other helper functions to handle input events accordingly, depending on the game state
-    """
     def handle_events(self, events):
+        # This function will call other helper functions to handle input events accordingly, depending on the game state
         # Call the proper function, depending on the game state
         if self.state == 'start':
             self.start_loop(events)
@@ -161,6 +161,17 @@ class GameState:
             self.turn_loop(events)
         elif self.state == 'end':
             self.end_loop(events)
+
+    """
+    This function will determine if there are any valid moves left for the player
+    """
+
+    def valid_moves_left(self):
+        for piece in self.player.tiles_set:
+            for tile in board.get_tiles():
+                if board.is_valid(self.player.tiles_set, piece, tile.get_location()[0], tile.get_location()[1]):
+                    return True
+        return False
 
 
 def draw_scores():
@@ -185,7 +196,7 @@ def clear_window():
 
 if __name__ == '__main__':
     pygame.init()
-    window = (1200, 900)
+    window = (1450, 800)
     screen = pygame.display.set_mode(window)
     pygame.display.set_caption('Blokus')
 
@@ -193,7 +204,7 @@ if __name__ == '__main__':
     screen.fill(Color.BG_GREY.value)
 
     #  Create other surfaces
-    pieces_surface = pygame.Surface((400, 800))
+    pieces_surface = pygame.Surface((700, 800))
     #  TODO: We might need to rethink how we do coordinate handling if we want this because it pushes everything down
     # top_banner_surface = pygame.Surface((1200, 50))
     score_surface = pygame.Surface((1200, 50))

@@ -10,7 +10,7 @@ TILE_WIDTH = 30
 NUM_ROWS = 20
 NUM_COLS = 20
 #TODO: update when more pieces are available from create_set
-MAX_PLAYER_PIECES = 2
+MAX_PLAYER_PIECES = 21
 
 class Board:
     def __init__(self):
@@ -63,6 +63,25 @@ class Board:
     def get_tiles(self):
         return self.tiles
 
+    def get_score(self):
+        blue_count = 0
+        red_count = 0
+        green_count = 0
+        yellow_count = 0
+        for x in range(20):
+            for y in range(20):
+                current_tile = self.tiles[x][y]
+                if current_tile.get_color() == Color.BLUE:
+                    blue_count += 1
+                elif current_tile.get_color() == Color.RED:
+                    red_count += 1
+                elif current_tile.get_color() == Color.GREEN:
+                    green_count += 1
+                elif current_tile.get_color() == Color.YELLOW:
+                    yellow_count += 1
+        # may want to get rid of 4 - tuple in future
+        return blue_count, yellow_count, red_count, green_count
+
     # Setters
     def set_tiles(self, tiles):
         self.tiles = tiles
@@ -80,11 +99,11 @@ class Board:
         for row in range(len(selected.get_tiles())):  # Should be 5
             for col in range(len(selected.get_tiles()[0])):  # Should be 5
                 if selected.get_tiles()[row][col] is not None:
-                    selected.get_tiles()[row][col].x = self.tiles[board_x+row][board_y].x
-                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y+col].y
-                    selected.get_tiles()[row][col].board_x = board_x+row
-                    selected.get_tiles()[row][col].board_y = board_y+col
-                    self.tiles[board_x+row][board_y+col] = selected.get_tiles()[row][col]
+                    selected.get_tiles()[row][col].x = self.tiles[board_x+col][board_y].x
+                    selected.get_tiles()[row][col].y = self.tiles[board_x][board_y+row].y
+                    selected.get_tiles()[row][col].board_x = board_x+col
+                    selected.get_tiles()[row][col].board_y = board_y+row
+                    self.tiles[board_x+col][board_y+row] = selected.get_tiles()[row][col]
 
 
     '''
@@ -146,28 +165,53 @@ def create_set(start_x, start_y, set_color):
     creates a set of pieces for player using a start x and y, and a color
     each set has one piece with each shape
     """
-    max_piece_width = 150
-    gap = 10
+    MAX_PIECE_WIDTH = 150
+    THREE_TILE_WIDTH = 90
+    FOUR_TILE_WIDTH = 120
+    GAP = 10
+    MAX_PIECE_DISTANCE = MAX_PIECE_WIDTH + GAP
+
+    # get the x values for each column
+    first_col_val = start_x
+    second_col_val = first_col_val + MAX_PIECE_WIDTH
+    third_col_val = second_col_val + MAX_PIECE_WIDTH
+    fourth_col_val = third_col_val + MAX_PIECE_WIDTH
+
+    # get the y values for each row
+    first_row_val = start_y
+    second_row_val = first_row_val + THREE_TILE_WIDTH + GAP
+    third_row_val = second_row_val + FOUR_TILE_WIDTH + GAP
+    fourth_row_val = third_row_val + FOUR_TILE_WIDTH + GAP
+    fifth_row_val = fourth_row_val + FOUR_TILE_WIDTH + GAP
+    sixth_row_val = fifth_row_val + MAX_PIECE_WIDTH
+
     set_of_pieces = list()
-    set_of_pieces.append(Piece(Shape.ONE, start_x, start_y, set_color))
-    set_of_pieces.append(Piece(Shape.TWO, start_x + max_piece_width, start_y, set_color))
-    # set_of_pieces.append(Piece(Shape.V3, Tile(start_x + 210, start_y, set_color)))
-    # set_of_pieces.append(Piece(Shape.I3, Tile(start_x, start_y + 90, set_color)))
-    # set_of_pieces.append(Piece(Shape.T4, Tile(start_x + 150, start_y + 90, set_color)))
-    # set_of_pieces.append(Piece(Shape.O, Tile(start_x, start_y + 180, set_color)))
-    # set_of_pieces.append(Piece(Shape.L4, Tile(start_x + 120, start_y + 180, set_color)))
-    # set_of_pieces.append(Piece(Shape.I4, Tile(start_x, start_y + 270, set_color)))
-    # set_of_pieces.append(Piece(Shape.Z4, Tile(start_x + 180, start_y + 270, set_color)))
-    # set_of_pieces.append(Piece(Shape.F, Tile(start_x + 30, start_y + 330, set_color)))
-    # set_of_pieces.append(Piece(Shape.X, Tile(start_x + 300, start_y + 60, set_color)))
-    # set_of_pieces.append(Piece(Shape.P, Tile(start_x + 300, start_y + 330, set_color)))
-    # set_of_pieces.append(Piece(Shape.W, Tile(start_x + 270, start_y + 180, set_color)))
-    # set_of_pieces.append(Piece(Shape.Z5, Tile(start_x + 120, start_y + 360, set_color)))
-    # set_of_pieces.append(Piece(Shape.Y, Tile(start_x, start_y + 450, set_color)))
-    # set_of_pieces.append(Piece(Shape.L5, Tile(start_x + 240, start_y + 450, set_color)))
-    # set_of_pieces.append(Piece(Shape.U, Tile(start_x + 120, start_y + 510, set_color)))
-    # set_of_pieces.append(Piece(Shape.T5, Tile(start_x + 30, start_y + 540, set_color)))
-    # set_of_pieces.append(Piece(Shape.V5, Tile(start_x + 270, start_y + 540, set_color)))
-    # set_of_pieces.append(Piece(Shape.N, Tile(start_x + 30, start_y + 660, set_color)))
-    # set_of_pieces.append(Piece(Shape.I5, Tile(start_x + 180, start_y + 660, set_color)))
+
+    # first row
+    set_of_pieces.append(Piece(Shape.ONE, first_col_val, first_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.TWO, second_col_val, first_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.V3, third_col_val, first_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.I3, fourth_col_val, first_row_val, set_color))
+    # second row
+    set_of_pieces.append(Piece(Shape.T4, first_col_val, second_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.O, second_col_val, second_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.L4, third_col_val, second_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.I4, fourth_col_val, second_row_val, set_color))
+    # third row
+    set_of_pieces.append(Piece(Shape.Z4, first_col_val, third_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.F, second_col_val, third_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.X, third_col_val, third_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.P, fourth_col_val, third_row_val, set_color))
+    # fourth row
+    set_of_pieces.append(Piece(Shape.W, first_col_val, fourth_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.Z5, second_col_val, fourth_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.Y, third_col_val, fourth_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.L5, fourth_col_val, fourth_row_val, set_color))
+    # fifth row
+    set_of_pieces.append(Piece(Shape.U, first_col_val, fifth_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.T5, second_col_val, fifth_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.V5, third_col_val, fifth_row_val, set_color))
+    set_of_pieces.append(Piece(Shape.N, fourth_col_val, fifth_row_val, set_color))
+    # sixth row
+    set_of_pieces.append(Piece(Shape.I5, first_col_val, sixth_row_val, set_color))
     return set_of_pieces
