@@ -49,19 +49,33 @@ class GameState:
             'g': Green
         Selected: represents the piece the player will place on the board
         """
-        self.state = 'waiting'          # NOTE: This should be changed to 'start' later, this is just for testing
+        self.state = 'start'            # NOTE: This should be changed to 'start' later, this is just for testing
+        self.num_players = 0            # Can be 1, 2, or 4 (could be 3, but our implementation does not include that)
         self.player = None              # The current player
         self.selected = None            # currently selected piece, if any
         self.valid_moves = True
 
     def start_loop(self, events):
         """
-        Beginning of game, in which number of players is specified. This will be part of Sprint Two
-        We could ask the player to use the number keys on their keyboard to select the number of players; this will highlight squares on-screen
-        Once they have selected their number of players, space could begin the game
-        For now, ignore this
+        Beginning of game, in which the title is displayed and the number of players is specified
         """
-        pass
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # Left mouse button pressed, get mouse position
+            x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
+            # Button coordinates and size
+            x_one, y_one = 400, 550
+            x_two, y_two = 675, 550
+            x_four, y_four = 950, 550
+            size = 150
+            if x_one < x < x_one+size and y_one < y < y_one+size:
+                self.num_players = 1
+                self.state = 'waiting'
+            if x_two < x < x_two+size and y_two < y < y_two+size:
+                self.num_players = 2
+                self.state = 'waiting'
+            if x_four < x < x_four+size and y_four < y < y_four+size:
+                self.num_players = 4
+                self.state = 'waiting'
 
     def waiting_loop(self, events):
         """
@@ -173,6 +187,33 @@ class GameState:
         return False
 
 
+def draw_start_screen():
+    start_surface.fill(Color.BG_GREY.value)
+    title_font = pygame.font.SysFont('Ubuntu', 72, bold=True)
+    subtitle_font = pygame.font.SysFont('Ubuntu', 48, bold=True)
+    regular_font = pygame.font.SysFont('Ubuntu', 30, bold=True)
+    title_text = title_font.render('Blokus', True, Color.EMPTY_GREY.value)
+    subtitle_text = subtitle_font.render('Landon Cayia, Isabelle Francke, and Echo Norcott',
+                                         True, Color.EMPTY_GREY.value)
+    start_surface.blit(title_text, (650, 200))
+    start_surface.blit(subtitle_text, (260, 300))
+    select_players_msg = regular_font.render('Select the number of (human) players:', True, Color.EMPTY_GREY.value)
+    start_surface.blit(select_players_msg, (500, 450))
+    pygame.draw.rect(start_surface, Color.EMPTY_GREY.value, (400, 550, 150, 150))
+    text_one_p = title_font.render('1', True, Color.BG_GREY.value)
+    start_surface.blit(text_one_p, (460, 580))
+    pygame.draw.rect(start_surface, Color.EMPTY_GREY.value, (675, 550, 150, 150))
+    text_two_p = title_font.render('2', True, Color.BG_GREY.value)
+    start_surface.blit(text_two_p, (735, 580))
+    pygame.draw.rect(start_surface, Color.EMPTY_GREY.value, (950, 550, 150, 150))
+    text_four_p = title_font.render('4', True, Color.BG_GREY.value)
+    start_surface.blit(text_four_p, (1010, 580))
+    text_one_p_color = regular_font.render('You are blue', True, Color.EMPTY_GREY.value)
+    start_surface.blit(text_one_p_color, (400, 720))
+    text_two_p_color = regular_font.render('You are blue and yellow', True, Color.EMPTY_GREY.value)
+    start_surface.blit(text_two_p_color, (600, 720))
+
+
 def draw_scores():
     """
     This function draws each player's scores above the board
@@ -195,11 +236,11 @@ def draw_pass_button():
     pieces_surface.blit(button_text, (270, 685))
 
 
-
 def clear_window():
     """
     This function runs every frame to wipe out what was on the board before with a grey rectangle
     """
+    pygame.draw.rect(screen, Color.BG_GREY.value, (0, 0, 1450, 900))
     pygame.draw.rect(pieces_surface, Color.BG_GREY.value, (0, 0, 400, 800))
     pygame.draw.rect(score_surface, Color.BG_GREY.value, (0, 0, 1200, 50))
 
@@ -213,6 +254,13 @@ if __name__ == '__main__':
     #  Main screen
     screen.fill(Color.BG_GREY.value)
 
+    #  Create the game state object
+    game_state = GameState()
+
+    # Start surface
+    start_surface = pygame.Surface((1450, 900))
+    draw_start_screen()
+
     #  Create other surfaces
     pieces_surface = pygame.Surface((700, 800))
     #  TODO: We might need to rethink how we do coordinate handling if we want this because it pushes everything down
@@ -224,9 +272,6 @@ if __name__ == '__main__':
     score_surface.fill(Color.BG_GREY.value)
 
     timer = pygame.time.Clock()
-
-    #  Create the game state object
-    game_state = GameState()
 
     #  Create and draw a board, then put it on the screen
     board = Board()
@@ -242,28 +287,24 @@ if __name__ == '__main__':
     #  The player whose turn it currently is
     game_state.player = player_1
 
-    # Draw player 1's pieces; they go first
-    for piece in game_state.player.tiles_set:
-        piece.draw_piece(pieces_surface)
-
-    screen.blit(board.get_surface(), (25, 25))
-    screen.blit(pieces_surface, (800, 0))  # NOTE: increased to 50 to make room for
-
-    pygame.display.flip()
-
     # Game loop
     while True:
         # Update the board every frame
         timer.tick(60)
-        clear_window()  # clear the board every frame
-        board.draw()
-        screen.blit(board.get_surface(), (25, 25))
-        for piece in game_state.player.tiles_set:
-            piece.draw_piece(pieces_surface)
-        draw_scores()
-        draw_pass_button()
-        screen.blit(pieces_surface, (800, 0))
-        screen.blit(score_surface, (30, 825))  # Scores below board
+        if game_state.state != 'start':
+            clear_window()  # clear the board every frame
+            board.draw()
+            screen.blit(board.get_surface(), (25, 25))
+            for piece in game_state.player.tiles_set:
+                piece.draw_piece(pieces_surface)
+            draw_scores()
+            draw_pass_button()
+            screen.blit(pieces_surface, (800, 0))
+            screen.blit(score_surface, (30, 825))  # Scores below board
+        else:
+            # Display start screen
+            screen.blit(start_surface, (0, 0))
+
         pygame.display.flip()
 
         # Escape quits the game
