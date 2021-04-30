@@ -281,7 +281,7 @@ def clear_window():
     This function runs every frame to wipe out what was on the board before with a grey rectangle
     """
     pygame.draw.rect(screen, Color.BG_GREY.value, (0, 0, 1450, 900))
-    pygame.draw.rect(pieces_surface, Color.BG_GREY.value, (0, 0, 400, 800))
+    pygame.draw.rect(pieces_surface, Color.BG_GREY.value, (0, 0, 700, 800))
     pygame.draw.rect(score_surface, Color.BG_GREY.value, (0, 0, 1400, 50))
 
 
