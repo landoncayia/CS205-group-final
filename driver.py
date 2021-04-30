@@ -34,6 +34,7 @@ class Player:
         self.tiles_set = create_set(start_x, start_y, color)
         self.score = -89  # Players start with -89 points, which goes up as pieces are played
 
+
 class GameState:
     def __init__(self):
         """
@@ -55,7 +56,7 @@ class GameState:
         self.selected = None            # currently selected piece, if any
         self.valid_moves = True
 
-    def start_loop(self, events):
+    def start_loop(self):
         """
         Beginning of game, in which the title is displayed and the number of players is specified
         """
@@ -77,7 +78,7 @@ class GameState:
                 self.num_players = 4
                 self.state = 'waiting'
 
-    def waiting_loop(self, events):
+    def waiting_loop(self):
         """
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
         Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
@@ -101,7 +102,7 @@ class GameState:
                 # Pass button was pressed
                 self.next_player()
 
-    def turn_loop(self, events):
+    def turn_loop(self):
         """
         We are waiting on whomever's turn it currently is to place their piece somewhere on the board
         This will involve a calculation as to whether a move is legal or not
@@ -146,12 +147,6 @@ class GameState:
             if event.key == pygame.K_RIGHT:
                 self.selected.rotate_cw()
 
-    def end_loop(self, events):
-        """
-        The game has ended; display the winner
-        """
-        pass
-
     def next_player(self):
         # Advances to the next player
         if self.player.number == 1:
@@ -163,17 +158,16 @@ class GameState:
         elif self.player.number == 4:
             self.player = player_1
 
-    def handle_events(self, events):
+    def handle_events(self):
         # This function will call other helper functions to handle input events accordingly, depending on the game state
         # Call the proper function, depending on the game state
         if self.state == 'start':
-            self.start_loop(events)
+            self.start_loop()
         elif self.state == 'waiting':
-            self.waiting_loop(events)
+            self.waiting_loop()
         elif self.state == 'turn':
-            self.turn_loop(events)
-        elif self.state == 'end':
-            self.end_loop(events)
+            self.turn_loop()
+        # If state is end, no need to have a loop here, just wait for user to quit
 
     """
     This function will determine if there are any valid moves left for the player
@@ -214,6 +208,23 @@ def draw_start_screen():
     start_surface.blit(text_two_p_color, (600, 720))
 
 
+def draw_end_screen():
+    """
+    The game has ended; display the winner
+    """
+    font = pygame.font.SysFont('Ubuntu', 30, bold=True)
+    text_game_over = font.render('GAME OVER', True, Color.EMPTY_GREY.value)
+    score_surface.blit(text_game_over, (800, 0))
+    player_index = {0: 'Player 1', 1: 'Player 2', 2: 'Player 3', 3: 'Player 4'}
+    final_scores = [player_1.score, player_2.score, player_3.score, player_4.score]
+    highest_score = max(final_scores)
+    if final_scores.count(highest_score) == 1:
+        winning_player_idx = final_scores.index(highest_score)
+        text_winner = font.render(player_index[winning_player_idx] + ' wins, with ' + str(highest_score) + ' points!',
+                                  True, Color.EMPTY_GREY.value)
+        score_surface.blit(text_winner, (1000, 0))
+
+
 def draw_scores():
     """
     This function draws each player's scores above the board
@@ -242,7 +253,7 @@ def clear_window():
     """
     pygame.draw.rect(screen, Color.BG_GREY.value, (0, 0, 1450, 900))
     pygame.draw.rect(pieces_surface, Color.BG_GREY.value, (0, 0, 400, 800))
-    pygame.draw.rect(score_surface, Color.BG_GREY.value, (0, 0, 1200, 50))
+    pygame.draw.rect(score_surface, Color.BG_GREY.value, (0, 0, 1400, 50))
 
 
 if __name__ == '__main__':
@@ -265,7 +276,7 @@ if __name__ == '__main__':
     pieces_surface = pygame.Surface((700, 800))
     #  TODO: We might need to rethink how we do coordinate handling if we want this because it pushes everything down
     # top_banner_surface = pygame.Surface((1200, 50))
-    score_surface = pygame.Surface((1200, 50))
+    score_surface = pygame.Surface((1400, 50))
 
     #  Fill surfaces with grey color
     pieces_surface.fill(Color.BG_GREY.value)
@@ -291,8 +302,15 @@ if __name__ == '__main__':
     while True:
         # Update the board every frame
         timer.tick(60)
-        if game_state.state != 'start':
-            clear_window()  # clear the board every frame
+        clear_window()  # clear the board every frame
+        if game_state.state == 'start':
+            # Display start screen
+            screen.blit(start_surface, (0, 0))
+        else:
+            if game_state.state == 'end':
+                # Final scores are contained within score surface
+                draw_end_screen()
+            # waiting or turn
             board.draw()
             screen.blit(board.get_surface(), (25, 25))
             for piece in game_state.player.tiles_set:
@@ -301,9 +319,6 @@ if __name__ == '__main__':
             draw_pass_button()
             screen.blit(pieces_surface, (800, 0))
             screen.blit(score_surface, (30, 825))  # Scores below board
-        else:
-            # Display start screen
-            screen.blit(start_surface, (0, 0))
 
         pygame.display.flip()
 
@@ -313,6 +328,4 @@ if __name__ == '__main__':
                 raise SystemExit
             if event.type == pygame.QUIT:
                 raise SystemExit
-            game_state.handle_events(pygame.event.get())
-    
-    pygame.quit()
+            game_state.handle_events()
