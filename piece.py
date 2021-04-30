@@ -315,7 +315,7 @@ class Piece:
             return 5
 
     #when a piece is rotated or flipped, the tiles move in the array but the pixel values have to change as well
-    def reset_distances(self):
+    def reset_distances(self, orig_x, orig_y):
         row = 0
         col = 0
         shift_rows = self.get_first_row()
@@ -323,8 +323,8 @@ class Piece:
         #moves the tiles as far up and to the left as they can go
         self.tiles_array = np.roll(self.tiles_array, -shift_rows, axis=0).tolist()
         self.tiles_array = np.roll(self.tiles_array, -shift_cols, axis=1).tolist()
-        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
-        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
+        # orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        # orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
         #all pixel values are relative to first tile in the array
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
@@ -390,8 +390,10 @@ class Piece:
 
     # rotates the piece clockwise
     def rotate_cw(self):
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
         self.tiles_array = np.rot90(self.tiles_array).tolist()
-        self.reset_distances()
+        self.reset_distances(orig_x, orig_y)
         
 
     # rotates the piece counterclockwise
