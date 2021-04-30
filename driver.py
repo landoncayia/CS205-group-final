@@ -17,14 +17,15 @@ NEXT_COLOR = {Color.BLUE: Color.YELLOW, Color.YELLOW: Color.RED,
 
 
 class Player:
-    def __init__(self, number, color):
+    def __init__(self, number, color, is_human):
         """
         An instance of a player; each player has:
         * Number
         * Color
-            1: Blue, 2: Yellow, 3: Red, 4: Green
+            1: Blue, 2: Yellow, 3: Red, 4: Green if there are four players
         * Set of tiles that they can place on the board
         * Score
+        * Human vs. Computer: if True, player is a human; if False, controlled by our "A.I" function
         """
         #  These are the starting positions (in pixels) for the set of pieces that the player can select from
         start_x = 10
@@ -33,6 +34,7 @@ class Player:
         self.color = color
         self.tiles_set = create_set(start_x, start_y, color)
         self.score = -89  # Players start with -89 points, which goes up as pieces are played
+        self.is_human = is_human  # Defaults to human, because there is always at least one human player
 
 
 class GameState:
@@ -70,13 +72,11 @@ class GameState:
             size = 150
             if x_one < x < x_one+size and y_one < y < y_one+size:
                 self.num_players = 1
-                self.state = 'waiting'
             if x_two < x < x_two+size and y_two < y < y_two+size:
                 self.num_players = 2
-                self.state = 'waiting'
             if x_four < x < x_four+size and y_four < y < y_four+size:
                 self.num_players = 4
-                self.state = 'waiting'
+            self.state = 'waiting'
 
     def waiting_loop(self):
         """
@@ -225,6 +225,32 @@ def draw_end_screen():
         score_surface.blit(text_winner, (1000, 0))
 
 
+def create_players():
+    """
+    This function creates human/computer players, depending on what the user selected in the beginning
+    :return: p1, p2, p3, p4: four players, some mix of human(s)/computer(s)
+    """
+    if game_state.num_players == 1:
+        #  If there is one human player (blue, 1), then yellow (2), red (3), and green (4) are computers
+        p1 = Player(1, Color.BLUE, is_human=True)
+        p2 = Player(2, Color.YELLOW, is_human=False)
+        p3 = Player(3, Color.RED, is_human=False)
+        p4 = Player(4, Color.GREEN, is_human=False)
+    elif game_state.num_players == 2:
+        #  If there are two human players, one gets blue (1) and yellow (2), the other gets red (3) and green (4)
+        p1 = Player(1, Color.BLUE, is_human=True)
+        p2 = Player(2, Color.YELLOW, is_human=True)
+        p3 = Player(3, Color.RED, is_human=False)
+        p4 = Player(4, Color.GREEN, is_human=False)
+    else:  # 4 players
+        #  If there are four human players, all players stay at the default (human)
+        p1 = Player(1, Color.BLUE, is_human=True)
+        p2 = Player(2, Color.YELLOW, is_human=True)
+        p3 = Player(3, Color.RED, is_human=True)
+        p4 = Player(4, Color.GREEN, is_human=True)
+    return p1, p2, p3, p4
+
+
 def draw_scores():
     """
     This function draws each player's scores above the board
@@ -288,37 +314,42 @@ if __name__ == '__main__':
     board = Board()
     board.draw()
 
-    #  Create players
-    player_1 = Player(1, Color.BLUE)
-    player_2 = Player(2, Color.YELLOW)
-    player_3 = Player(3, Color.RED)
-    player_4 = Player(4, Color.GREEN)
-    all_players = [player_1, player_2, player_3, player_4]  # list of all players to make score updating simpler
+    # Initialization loop
+    while game_state.num_players == 0:  # this is the initial value, so loop with this until it is modified
+        timer.tick(60)
+        clear_window()
+        screen.blit(start_surface, (0, 0))
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                raise SystemExit
+            if event.type == pygame.QUIT:
+                raise SystemExit
+            game_state.handle_events()
 
+    # Initializes players, based on the user's selection
+    player_1, player_2, player_3, player_4 = create_players()
     #  The player whose turn it currently is
     game_state.player = player_1
+    all_players = [player_1, player_2, player_3, player_4]  # list of all players to make score updating simpler
 
-    # Game loop
+    # Game loop, after players are initialized (this is 'waiting', 'turn', or 'end')
     while True:
         # Update the board every frame
         timer.tick(60)
         clear_window()  # clear the board every frame
-        if game_state.state == 'start':
-            # Display start screen
-            screen.blit(start_surface, (0, 0))
-        else:
-            if game_state.state == 'end':
-                # Final scores are contained within score surface
-                draw_end_screen()
-            # waiting or turn
-            board.draw()
-            screen.blit(board.get_surface(), (25, 25))
-            for piece in game_state.player.tiles_set:
-                piece.draw_piece(pieces_surface)
-            draw_scores()
-            draw_pass_button()
-            screen.blit(pieces_surface, (800, 0))
-            screen.blit(score_surface, (30, 825))  # Scores below board
+        if game_state.state == 'end':
+            # Final scores are contained within score surface
+            draw_end_screen()
+        # waiting or turn
+        board.draw()
+        screen.blit(board.get_surface(), (25, 25))
+        for piece in game_state.player.tiles_set:
+            piece.draw_piece(pieces_surface)
+        draw_scores()
+        draw_pass_button()
+        screen.blit(pieces_surface, (800, 0))
+        screen.blit(score_surface, (30, 825))  # Scores below board
 
         pygame.display.flip()
 
