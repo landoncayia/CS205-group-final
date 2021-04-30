@@ -23,6 +23,7 @@ class Color(Enum):
     GREEN_SELECTED = (100, 255, 100)
     BLUE_SELECTED = (100, 100, 255)
     YELLOW_SELECTED = (255, 255, 170)
+    GREY_VALID = (200,200,215)
 
 
 # each tile will have left, top, color, width, height, location
@@ -76,3 +77,15 @@ class Tile:
     # OTHER FUNCTIONS
     def draw_tile(self, surface):
         pygame.draw.rect(surface, self.color.value, (self.x, self.y, self.width, self.height))
+
+    def make_valid(self):
+        if self.get_color() == Color.BLUE:
+            self.set_color(Color.BLUE_SELECTED)
+        elif self.get_color() == Color.YELLOW:
+            self.set_color(Color.YELLOW_SELECTED)
+        elif self.get_color() == Color.RED:
+            self.set_color(Color.RED_SELECTED)
+        elif self.get_color() == Color.GREEN:
+            self.set_color(Color.GREEN_SELECTED)
+        elif self.get_color() == Color.EMPTY_GREY:
+            self.set_color(Color.GREY_VALID)

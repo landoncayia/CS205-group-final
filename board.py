@@ -159,6 +159,20 @@ class Board:
                             valid = True
         return valid
 
+    def is_valid_tile(self, player_pieces, selected, board_x, board_y):
+        print(selected.get_last_col())
+        if(len(player_pieces) == MAX_PLAYER_PIECES):
+            if board_x == 0:
+                if board_y == 0:
+                    valid = True
+                elif board_y == 19:
+                    valid = True
+            elif board_y == 19:
+                if board_x == 0:
+                    valid = True
+                elif board_x == 19:
+                     valid = True
+
 
 def create_set(start_x, start_y, set_color):
     """

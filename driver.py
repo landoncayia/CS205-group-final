@@ -83,7 +83,7 @@ class GameState:
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
         Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
         """
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+
             # Left mouse button pressed, get mouse position
             x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
             for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
@@ -182,6 +182,14 @@ class GameState:
                 if board.is_valid(self.player.tiles_set, piece, tile.get_location()[0], tile.get_location()[1]):
                     return True
         return False
+    
+    def display_valid_moves(self, player_pieces, selected, board_x, board_y):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            for board_row in board.tiles:
+                for tile in board_row:
+                    if(board.is_valid_tile(player_pieces, selected, tile.board_x, tile.board_y)):
+                        
+
 
 
 def draw_start_screen():
