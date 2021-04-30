@@ -314,22 +314,29 @@ class Piece:
         else:
             return 5
 
+    #when a piece is rotated or flipped, the tiles move in the array but the pixel values have to change as well
     def reset_distances(self, orig_x, orig_y):
         row = 0
         col = 0
+        shift_rows = self.get_first_row()
+        shift_cols = self.get_first_col()
+        #moves the tiles as far up and to the left as they can go
+        self.tiles_array = np.roll(self.tiles_array, -shift_rows, axis=0).tolist()
+        self.tiles_array = np.roll(self.tiles_array, -shift_cols, axis=1).tolist()
+        # orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        # orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
+        #all pixel values are relative to first tile in the array
         while (row < MAX_TILES_WIDTH):
             while (col < MAX_TILES_WIDTH):
                 if (self.tiles_array[row][col] != None):
-                    x = self.tiles_array[row][col].get_location()[0]
-                    y = self.tiles_array[row][col].get_location()[1]
-                    x = x + 30*row
-                    y = y + 30*col
-                    self.tiles_array[row][col].set_location(x,y)
+                    new_x = orig_x + 30*col
+                    new_y = orig_y + 30*row
+                    self.tiles_array[row][col].set_location(new_x,new_y)
                 col += 1
             row += 1
             col = 0
 
-
+    #draws each tile in the piece
     def draw_piece(self, surface):
         row = 0
         col = 0
@@ -341,8 +348,34 @@ class Piece:
             row += 1
             col = 0
 
+    #returns the first row that has a tile in it (topmost tile)
+    def get_first_row(self):
+        i = 0;
+        j = 0;
+        while i < MAX_TILES_WIDTH:
+            while j < MAX_TILES_WIDTH:
+                if self.tiles_array[i][j] != None:
+                    return i
+                else:
+                    j += 1;
+            i += 1;
+            j = 0;
+
+    #returns the first column that has a tile in it (leftmost tile)
+    def get_first_col(self):
+        i = 0;
+        j = 0;
+        while j < MAX_TILES_WIDTH:
+            while i < MAX_TILES_WIDTH:
+                if self.tiles_array[i][j] != None:
+                    return j
+                else:
+                    i += 1;
+            j += 1;
+            i = 0;
+    
+    #returns the first tile in the array
     def get_first_tile(self):
-        #look for first entry in array
         i = 0;
         j = 0;
         while i < MAX_TILES_WIDTH:
@@ -353,23 +386,34 @@ class Piece:
                     j += 1;
             i += 1;
             j = 0;
+        
 
     # rotates the piece clockwise
-    # 90 degree rotation: T(x,y) -> T(-y,x)
-    #A point (a, b) rotated around a point (x, y) 90 degrees will transform to point
-    # (-(b-y) + x, (a-x) + y)
-
     def rotate_cw(self):
-        print("Original array:")
-        print(self.tiles_array)
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
         self.tiles_array = np.rot90(self.tiles_array).tolist()
-        self.reset_distances(self.get_first_tile().get_location()[0],self.get_first_tile().get_location()[1])
-        print("Rotated array:")
-        print(self.tiles_array)
+        self.reset_distances(orig_x, orig_y)
+        
 
     # rotates the piece counterclockwise
-    # 270 degree rotation: T(x,y) -> T(y,-x)
-    #
     def rotate_ccw(self):
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
         self.tiles_array = np.rot90(self.tiles_array, 3).tolist()
-        self.reset_distances(self.get_first_tile().get_location()[0],self.get_first_tile().get_location()[1])
+        self.reset_distances(orig_x, orig_y)
+    
+    #flips the piece vertically
+    #this rotates them for some reason too???
+    def flip_vert(self):
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
+        self.tiles_array = np.flip(self.tiles_array, 0).tolist()
+        self.reset_distances(orig_x, orig_y)
+
+    #flips the piece horizontally
+    def flip_horiz(self):
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
+        self.tiles_array = np.flip(self.tiles_array, 1).tolist()
+        self.reset_distances(orig_x, orig_y)
