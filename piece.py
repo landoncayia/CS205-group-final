@@ -398,16 +398,22 @@ class Piece:
 
     # rotates the piece counterclockwise
     def rotate_ccw(self):
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
         self.tiles_array = np.rot90(self.tiles_array, 3).tolist()
-        self.reset_distances()
+        self.reset_distances(orig_x, orig_y)
     
     #flips the piece vertically
     #this rotates them for some reason too???
     def flip_vert(self):
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
         self.tiles_array = np.flip(self.tiles_array, 0).tolist()
-        self.reset_distances()
+        self.reset_distances(orig_x, orig_y)
 
     #flips the piece horizontally
     def flip_horiz(self):
+        orig_x = self.get_first_tile().get_location()[0]-30*self.get_first_row()
+        orig_y = self.get_first_tile().get_location()[1]-30*self.get_first_col()
         self.tiles_array = np.flip(self.tiles_array, 1).tolist()
-        self.reset_distances()
+        self.reset_distances(orig_x, orig_y)
