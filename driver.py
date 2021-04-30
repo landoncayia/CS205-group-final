@@ -97,7 +97,6 @@ class GameState:
                                 piece.select()
                                 self.selected = piece
                                 self.state = 'turn'
-                            break
             if 1050 < x < 1150 and 675 < y < 725:
                 # Pass button was pressed
                 self.next_player()
