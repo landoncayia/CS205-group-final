@@ -49,36 +49,39 @@ class Player:
         num_tries = 0
         while not found and num_tries < 10:
             # Choose piece randomly from the top 2/3 in size
-            choice_idx = random.randint(len(self.tiles_set)*2//3, len(self.tiles_set))
+            choice_idx = random.randint(len(self.tiles_set)//2, len(self.tiles_set)-1)
             game_state.selected = self.tiles_set[choice_idx]
             game_state.selected.select()
-            for tile in board.get_tiles():
-                if board.is_valid_tile(self.tiles_set, game_state.selected, tile.board_x, tile.board_y):
-                    found = True
-                    board.add_piece(game_state.selected, tile.board_x, tile.board_y)
-                    self.piece_class_rem[game_state.selected.get_num_tiles()] -= 1
-                    self.score += game_state.selected.get_num_tiles()
-                    self.tiles_set.remove(game_state.selected)
-                    # Below are some additional scoring rules
-                    if not self.tiles_set:
-                        # If player has placed all their pieces (list empty), +15 points
-                        self.score += 15
-                        if game_state.selected.shape == Shape.ONE:
-                            # If the last piece played is the single square piece, +5 points
-                            self.score += 5
-                    game_state.selected.deselect()
-                    game_state.state = 'waiting'
-                    self.passed_last = False  # Player did not pass; ensure game does not end
-                    game_state.next_player()  # Go to next player
-                    placed = True
-                tile.deselect()
-            else:
-                game_state.selected.deselect()
-                game_state.selected = None
+            for row in board.get_tiles():
+                for tile in row:
+                    if not found:
+                        if board.is_valid_tile(self.tiles_set, game_state.selected, tile.board_x, tile.board_y):
+                            found = True
+                            board.add_piece(game_state.selected, tile.board_x, tile.board_y)
+                            self.piece_class_rem[game_state.selected.get_num_tiles()] -= 1
+                            self.score += game_state.selected.get_num_tiles()
+                            self.tiles_set.pop(choice_idx)
+                            # Below are some additional scoring rules
+                            if not self.tiles_set:
+                                # If player has placed all their pieces (list empty), +15 points
+                                self.score += 15
+                                if game_state.selected.shape == Shape.ONE:
+                                    # If the last piece played is the single square piece, +5 points
+                                    self.score += 5
+                            game_state.selected.deselect()
+                            game_state.state = 'waiting'
+                            self.passed_last = False  # Player did not pass; ensure game does not end
+                            game_state.next_player()  # Go to next player
+                            placed = True
+                        tile.deselect()
+                
+            game_state.selected.deselect()
+            game_state.selected = None
             num_tries += 1
-        for piece_option in self.tiles_set.reverse():
-            # same as above, check if valid, place if so (include placed = True)
-            pass
+        if not found:
+            for piece_option in self.tiles_set.reverse():
+                # same as above, check if valid, place if so (include placed = True)
+                pass
         if not placed:
             # If no piece was placed, the A.I. passes
             self.passed_last = True
@@ -158,7 +161,7 @@ class GameState:
         """
         if not self.player.is_human:
             # A.I. here; stay in waiting state
-            pass
+            self.player.select_piece()
         else:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 # Left mouse button pressed, get mouse position
