@@ -96,7 +96,7 @@ class GameState:
                                 # If so, select the piece, change state to turn, and end the loop
                                 piece.select()
                                 self.selected = piece
-                                self.display_valid_moves(self.player.tiles_set, self.selected, tile.board_x, tile.board_y)
+                                self.display_valid_moves()
                                 self.state = 'turn'
             if 1050 < x < 1150 and 675 < y < 725:
                 # Pass button was pressed
@@ -131,8 +131,7 @@ class GameState:
                             self.state = 'waiting'
                             self.next_player()  # Go to next player
                             placed = True
-                    else:
-                        tile.deselect()
+                    tile.deselect()
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             # Right mouse button pressed; unselect current piece and go back to waiting state
@@ -146,12 +145,16 @@ class GameState:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 self.selected.rotate_ccw()
+                self.display_valid_moves()
             if event.key == pygame.K_RIGHT:
                 self.selected.rotate_cw()
+                self.display_valid_moves()
             if event.key == pygame.K_UP:
                 self.selected.flip_vert()
+                self.display_valid_moves()
             if event.key == pygame.K_DOWN:
                 self.selected.flip_horiz()
+                self.display_valid_moves()
 
     def next_player(self):
         # Advances to the next player
@@ -186,12 +189,13 @@ class GameState:
                     return True
         return False
     
-    def display_valid_moves(self, player_pieces, selected, board_x, board_y):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            for board_row in board.tiles:
-                for tile in board_row:
-                    if(board.is_valid_tile(player_pieces, selected, tile.board_x, tile.board_y)):
-                        tile.select()
+    def display_valid_moves(self):
+        for board_row in board.tiles:
+            for tile in board_row:
+                if(board.is_valid_tile(self.player.tiles_set, self.selected, tile.board_x, tile.board_y)):
+                    tile.select()
+                else:
+                    tile.deselect()
 
 def draw_start_screen():
     start_surface.fill(Color.BG_GREY.value)
