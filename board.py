@@ -113,6 +113,7 @@ class Board:
     3) Edge-to-edge contact is allowed between pieces of different colors
     4) Pieces cannot overlap
     '''
+    '''
     def is_valid(self, player_pieces, selected, board_x, board_y):
         valid = False
         for i in range(len(selected.get_tiles())):
@@ -149,7 +150,7 @@ class Board:
                         if check_x < 0 or check_y < 0 or check_x > 21 or check_y > 21:
                             return False
                         #check that it doesn't overlap with anything
-                        if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY:
+                        if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY or check_tiles[check_x][check_y].get_color() != Color.GREY_VALID:
                             return False
                         #check that it does not touch a piece of same color edgewise
                         if selected.get_color() == check_tiles[check_x-1][check_y].get_color() or selected.get_color() == check_tiles[check_x+1][check_y].get_color() or selected.get_color() == check_tiles[check_x][check_y-1].get_color() or selected.get_color() == check_tiles[check_x][check_y+1].get_color():
@@ -158,6 +159,60 @@ class Board:
                         if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
                             valid = True
         return valid
+        '''
+
+    def is_valid_tile(self, player_pieces, selected, tile_x, tile_y):
+        #need to highlight top/leftmost point they can place relative to four corners
+        #for top left: always 0,0
+        #for top right: x = 19-last_col, y = 0
+        #for bottom left: x = 0, y = 19-last_row
+        #for bottom right: x = 19-last_col, y = 19,last_row
+        valid = False;
+        last_col = selected.get_last_col()
+        last_row = selected.get_last_row()
+        if len(player_pieces) == MAX_PLAYER_PIECES:
+            if tile_x == 0:
+                if tile_y == 0:
+                    if selected.get_tiles()[0][0] is not None and (self.tiles[0][0].get_color() == Color.EMPTY_GREY or self.tiles[0][0].get_color() == Color.GREY_VALID):
+                        valid = True
+                if tile_y == 19-last_row:
+                    if selected.get_tiles()[0][last_row] is not None and (self.tiles[0][19].get_color() == Color.EMPTY_GREY or self.tiles[0][19].get_color() == Color.GREY_VALID):
+                        valid = True
+            elif tile_x == 19-last_col:
+                if tile_y == 0:
+                    if selected.get_tiles()[0][last_col] is not None and (self.tiles[19][0].get_color() == Color.EMPTY_GREY or self.tiles[19][0].get_color() == Color.GREY_VALID):
+                        valid = True
+                if tile_y == 19-last_row:
+                    if selected.get_tiles()[last_row][last_col] is not None and (self.tiles[19][19].get_color() == Color.EMPTY_GREY or self.tiles[19][19].get_color() == Color.GREY_VALID):
+                        valid = True
+        else:
+            for piece_row in range(len(selected.get_tiles())):
+                for piece_col in range(len(selected.get_tiles()[piece_row])):
+                    if(selected.get_tiles()[piece_row][piece_col] is not None):
+                    #create new array with extra rows and columns to prevent array out of bounds errors
+                        check_tiles = [[Tile(0,0,Color.EMPTY_GREY)]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
+                        for row in range(1,NUM_ROWS+1):
+                            for col in range(1, NUM_COLS+1):
+                                check_tiles[row][col] = self.tiles[row-1][col-1]
+                        check_x = tile_x+1+piece_col
+                        check_y = tile_y+1+piece_row
+                        #check that nothing is out of bounds
+                        if check_x <= 0 or check_y <= 0 or check_x >= 21 or check_y >= 21:
+                            return False
+                        #check that it doesn't overlap with anything
+                        if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY and check_tiles[check_x][check_y].get_color() != Color.GREY_VALID:
+                            return False
+                        #check that it does not touch a piece of same color edgewise
+                        if selected.get_color() == check_tiles[check_x-1][check_y].get_color() or selected.get_color() == check_tiles[check_x+1][check_y].get_color() or selected.get_color() == check_tiles[check_x][check_y-1].get_color() or selected.get_color() == check_tiles[check_x][check_y+1].get_color():
+                            return False
+                            #check that it does touch piece of same color diagonally
+                        if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
+                            valid = True   
+        if not valid:
+            self.tiles[tile_x][tile_y].deselect()
+        return valid
+
+        
 
 
 def create_set(start_x, start_y, set_color):

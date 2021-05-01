@@ -104,6 +104,7 @@ class GameState:
                                 # If so, select the piece, change state to turn, and end the loop
                                 piece.select()
                                 self.selected = piece
+                                self.display_valid_moves()
                                 self.state = 'turn'
             if 1050 < x < 1150 and 675 < y < 725:
                 # Pass button was pressed
@@ -124,7 +125,7 @@ class GameState:
             for row in board.tiles:
                 for tile in row:
                     if 30+tile.x < x < 60+tile.x and 30+tile.y < y < 60+tile.y and not placed:
-                        if board.is_valid(self.player.tiles_set, self.selected, tile.board_x, tile.board_y):
+                        if board.is_valid_tile(self.player.tiles_set, self.selected, tile.board_x, tile.board_y):
                             board.add_piece(self.selected, tile.board_x, tile.board_y)
                             self.player.score += self.selected.get_num_tiles()
                             self.player.tiles_set.remove(self.selected)
@@ -140,6 +141,7 @@ class GameState:
                             self.player.passed_last = False  # Player did not pass; ensure game does not end
                             self.next_player()  # Go to next player
                             placed = True
+                    tile.deselect()
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             # Right mouse button pressed; unselect current piece and go back to waiting state
@@ -153,12 +155,16 @@ class GameState:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 self.selected.rotate_ccw()
+                self.display_valid_moves()
             if event.key == pygame.K_RIGHT:
                 self.selected.rotate_cw()
+                self.display_valid_moves()
             if event.key == pygame.K_UP:
                 self.selected.flip_vert()
+                self.display_valid_moves()
             if event.key == pygame.K_DOWN:
                 self.selected.flip_horiz()
+                self.display_valid_moves()
 
     def next_player(self):
         # Advances to the next player
@@ -189,10 +195,17 @@ class GameState:
         """
         for piece in self.player.tiles_set:
             for tile in board.get_tiles():
-                if board.is_valid(self.player.tiles_set, piece, tile.get_location()[0], tile.get_location()[1]):
+                if board.is_valid_tile(self.player.tiles_set, piece, tile.board_x, tile.board_y):
                     return True
         return False
-
+    
+    def display_valid_moves(self):
+        for board_row in board.tiles:
+            for tile in board_row:
+                if(board.is_valid_tile(self.player.tiles_set, self.selected, tile.board_x, tile.board_y)):
+                    tile.select()
+                else:
+                    tile.deselect()
 
 def draw_start_screen():
     start_surface.fill(Color.BG_GREY.value)
