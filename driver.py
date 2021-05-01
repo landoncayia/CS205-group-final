@@ -52,15 +52,16 @@ class GameState:
             'g': Green
         Selected: represents the piece the player will place on the board
         """
-        self.state = 'start'            # NOTE: This should be changed to 'start' later, this is just for testing
-        self.num_players = 0            # Can be 1, 2, or 4 (could be 3, but our implementation does not include that)
+        self.state = 'start'            # 'start' is our initial state, where the number of players is selected
+        self.num_players = 0            # 2 or 4 for our implementation; some combination of humans and computers
+        self.num_humans = 0             # 1, 2, or 4 human players
         self.player = None              # The current player
         self.selected = None            # currently selected piece, if any
         self.valid_moves = True
 
     def start_loop(self):
         """
-        Beginning of game, in which the title is displayed and the number of players is specified
+        Beginning of game, in which the title is displayed and the number of human players is specified
         """
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Left mouse button pressed, get mouse position
@@ -71,10 +72,16 @@ class GameState:
             x_four, y_four = 950, 550
             size = 150
             if x_one < x < x_one+size and y_one < y < y_one+size:
-                self.num_players = 1
+                # 1 human + 1 computer = 2 players
+                self.num_humans = 1
+                self.num_players = 2
             if x_two < x < x_two+size and y_two < y < y_two+size:
+                # 2 humans + 0 computers = 2 players
+                self.num_humans = 2
                 self.num_players = 2
             if x_four < x < x_four+size and y_four < y < y_four+size:
+                # 4 humans + 0 computers = 4 players
+                self.num_humans = 4
                 self.num_players = 4
             self.state = 'waiting'
 
@@ -152,13 +159,13 @@ class GameState:
 
     def next_player(self):
         # Advances to the next player
-        if self.player.number == 1:
+        if self.player == player_1:
             self.player = player_2
-        elif self.player.number == 2:
+        elif self.player == player_2:
             self.player = player_3
-        elif self.player.number == 3:
+        elif self.player == player_3:
             self.player = player_4
-        elif self.player.number == 4:
+        elif self.player == player_4:
             self.player = player_1
 
     def handle_events(self):
@@ -231,22 +238,28 @@ def draw_end_screen():
 def create_players():
     """
     This function creates human/computer players, depending on what the user selected in the beginning
-    :return: p1, p2, p3, p4: four players, some mix of human(s)/computer(s)
+    In our implementation, a "player" represents one of the colored sets of pieces; the game can be played
+    in such a way that one player controls multiple "players"
+    Options include:
+        * 1 Player:  1 human vs 1 computer
+        * 2 Players: 2 humans
+        * 4 Players: 4 humans
+    :return: p1, p2, p3, p4: four player instances, some mix of human(s)/computer(s)
     """
-    if game_state.num_players == 1:
-        #  If there is one human player (blue, 1), then yellow (2), red (3), and green (4) are computers
+    if game_state.num_humans == 1:
+        #  Blue and yellow are the human's (1) colors; red and green are the computer's (2) colors
         p1 = Player(1, Color.BLUE, is_human=True)
-        p2 = Player(2, Color.YELLOW, is_human=False)
-        p3 = Player(3, Color.RED, is_human=False)
-        p4 = Player(4, Color.GREEN, is_human=False)
-    elif game_state.num_players == 2:
-        #  If there are two human players, one gets blue (1) and yellow (2), the other gets red (3) and green (4)
+        p2 = Player(1, Color.YELLOW, is_human=True)
+        p3 = Player(2, Color.RED, is_human=False)
+        p4 = Player(2, Color.GREEN, is_human=False)
+    elif game_state.num_humans == 2:
+        #  Blue and yellow are the human's (1) colors; red and green are the other human's (2) colors
         p1 = Player(1, Color.BLUE, is_human=True)
-        p2 = Player(2, Color.YELLOW, is_human=True)
-        p3 = Player(3, Color.RED, is_human=False)
-        p4 = Player(4, Color.GREEN, is_human=False)
+        p2 = Player(1, Color.YELLOW, is_human=True)
+        p3 = Player(2, Color.RED, is_human=True)
+        p4 = Player(2, Color.GREEN, is_human=True)
     else:  # 4 players
-        #  If there are four human players, all players stay at the default (human)
+        #  If there are four human players each player gets a separate color
         p1 = Player(1, Color.BLUE, is_human=True)
         p2 = Player(2, Color.YELLOW, is_human=True)
         p3 = Player(3, Color.RED, is_human=True)
@@ -259,9 +272,21 @@ def draw_scores():
     This function draws each player's scores above the board
     """
     font = pygame.font.SysFont('Ubuntu', 24)
-    for p in range(len(all_players)):
+    total_scores = {}  # dictionary, where keys are player numbers and values are their total scores
+    # Go through each player, and if necessary, sum up the scores (necessary in two player mode, since one person
+    #                                                              controls multiple players)
+    if game_state.num_players == 2:
+        # P1's score is blue, P2's score is red
+        player_colors = [Color.BLUE.value, Color.RED.value]
+    else:  # num_players == 4
+        player_colors = [Color.BLUE.value, Color.YELLOW.value, Color.RED.value, Color.GREEN.value]
+    for player in all_players:
+        if player.number not in total_scores:
+            total_scores[player.number] = 0
+        total_scores[player.number] += player.score
+    for p in range(game_state.num_players):
         #  Should run four times, because there are four players
-        text_score = font.render("Player "+str(p+1)+": "+str(all_players[p].score), True, all_players[p].color.value)
+        text_score = font.render("Player "+str(p+1)+": "+str(total_scores[p+1]), True, player_colors[p])
         #  Draw along the bottom of the board, moving 200 pixels for each player
         score_surface.blit(text_score, (p*200, 0))
 
