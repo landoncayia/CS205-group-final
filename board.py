@@ -113,6 +113,7 @@ class Board:
     3) Edge-to-edge contact is allowed between pieces of different colors
     4) Pieces cannot overlap
     '''
+    '''
     def is_valid(self, player_pieces, selected, board_x, board_y):
         valid = False
         for i in range(len(selected.get_tiles())):
@@ -158,6 +159,7 @@ class Board:
                         if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
                             valid = True
         return valid
+        '''
 
     def is_valid_tile(self, player_pieces, selected, tile_x, tile_y):
         #need to highlight top/leftmost point they can place relative to four corners
@@ -205,8 +207,7 @@ class Board:
                             return False
                             #check that it does touch piece of same color diagonally
                         if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
-                            valid = True
-                        
+                            valid = True   
         if not valid:
             self.tiles[tile_x][tile_y].deselect()
         return valid

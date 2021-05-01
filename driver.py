@@ -116,7 +116,7 @@ class GameState:
             for row in board.tiles:
                 for tile in row:
                     if 30+tile.x < x < 60+tile.x and 30+tile.y < y < 60+tile.y and not placed:
-                        if board.is_valid_tile(self.player.tiles_set, self.selected, tile.board_x, tile.board_y): #board.is_valid(self.player.tiles_set, self.selected, tile.board_x, tile.board_y):
+                        if board.is_valid_tile(self.player.tiles_set, self.selected, tile.board_x, tile.board_y):
                             board.add_piece(self.selected, tile.board_x, tile.board_y)
                             self.player.score += self.selected.get_num_tiles()
                             self.player.tiles_set.remove(self.selected)
@@ -185,7 +185,7 @@ class GameState:
     def valid_moves_left(self):
         for piece in self.player.tiles_set:
             for tile in board.get_tiles():
-                if board.is_valid(self.player.tiles_set, piece, tile.get_location()[0], tile.get_location()[1]):
+                if board.is_valid_tile(self.player.tiles_set, piece, tile.board_x, tile.board_y):
                     return True
         return False
     
