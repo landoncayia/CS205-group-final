@@ -9,8 +9,8 @@ COL_LETTERS = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8
 TILE_WIDTH = 30
 NUM_ROWS = 20
 NUM_COLS = 20
-#TODO: update when more pieces are available from create_set
 MAX_PLAYER_PIECES = 21
+
 
 class Board:
     def __init__(self):
