@@ -363,8 +363,8 @@ class Piece:
     
     #returns the last row that has a tile in it (bottommmost tile)
     def get_last_row(self):
-        i = MAX_TILES_WIDTH;
-        j = MAX_TILES_WIDTH;
+        i = MAX_TILES_WIDTH-1;
+        j = MAX_TILES_WIDTH-1;
         while i >= 0:
             while j >= 0:
                 if self.tiles_array[i][j] != None:
@@ -372,7 +372,7 @@ class Piece:
                 else:
                     j -= 1;
             i -= 1;
-            j = MAX_TILES_WIDTH;
+            j = MAX_TILES_WIDTH-1;
 
     #returns the first column that has a tile in it (leftmost tile)
     def get_first_col(self):
@@ -388,16 +388,16 @@ class Piece:
             i = 0;
 
     def get_last_col(self):
-        i = MAX_TILES_WIDTH;
-        j = MAX_TILES_WIDTH;
-        while i >= 0:
-            while j >= 0:
+        i = MAX_TILES_WIDTH-1;
+        j = MAX_TILES_WIDTH-1;
+        while j >= 0:
+            while i >= 0:
                 if self.tiles_array[i][j] != None:
                     return j
                 else:
                     i -= 1;
             j -= 1;
-            i = MAX_TILES_WIDTH;
+            i = MAX_TILES_WIDTH-1;
     
     #returns the first tile in the array
     def get_first_tile(self):

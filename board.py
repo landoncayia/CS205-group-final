@@ -159,19 +159,35 @@ class Board:
                             valid = True
         return valid
 
-    def is_valid_tile(self, player_pieces, selected, board_x, board_y):
-        print(selected.get_last_col())
-        if(len(player_pieces) == MAX_PLAYER_PIECES):
-            if board_x == 0:
-                if board_y == 0:
-                    valid = True
-                elif board_y == 19:
-                    valid = True
-            elif board_y == 19:
-                if board_x == 0:
-                    valid = True
-                elif board_x == 19:
-                     valid = True
+    def is_valid_tile(self, player_pieces, selected, tile_x, tile_y):
+        #need to highlight top/leftmost point they can place relative to four corners
+        #for top left: always 0,0
+        #for top right: x = 19-last_col, y = 0
+        #for bottom left: x = 0, y = 19-last_row
+        #for bottom right: x = 19-last_col, y = 19,last_row
+        valid = False;
+        last_col = selected.get_last_col()
+        last_row = selected.get_last_row()
+        if len(player_pieces) == MAX_PLAYER_PIECES:
+            if tile_x == 0:
+                if tile_y == 0:
+                    if selected.get_tiles()[0][0] is not None and self.tiles[0][0].get_color() == Color.EMPTY_GREY:
+                        valid = True
+                if tile_y == 19-last_row:
+                    if selected.get_tiles()[0][last_row] is not None and self.tiles[0][19].get_color() == Color.EMPTY_GREY:
+                        valid = True
+            elif tile_x == 19-last_col:
+                if tile_y == 0:
+                    if selected.get_tiles()[0][last_col] is not None and self.tiles[19][0].get_color() == Color.EMPTY_GREY:
+                        valid = True
+                if tile_y == 19-last_row:
+                    if selected.get_tiles()[last_row][last_col] is not None and self.tiles[19][19].get_color() == Color.EMPTY_GREY:
+                        valid = True
+        if not valid:
+            self.tiles[tile_x][tile_y].deselect()
+        return valid
+
+        
 
 
 def create_set(start_x, start_y, set_color):

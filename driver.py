@@ -96,6 +96,7 @@ class GameState:
                                 # If so, select the piece, change state to turn, and end the loop
                                 piece.select()
                                 self.selected = piece
+                                self.display_valid_moves(self.player.tiles_set, self.selected, tile.board_x, tile.board_y)
                                 self.state = 'turn'
             if 1050 < x < 1150 and 675 < y < 725:
                 # Pass button was pressed
@@ -182,14 +183,13 @@ class GameState:
                 if board.is_valid(self.player.tiles_set, piece, tile.get_location()[0], tile.get_location()[1]):
                     return True
         return False
-    '''
+    
     def display_valid_moves(self, player_pieces, selected, board_x, board_y):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for board_row in board.tiles:
                 for tile in board_row:
                     if(board.is_valid_tile(player_pieces, selected, tile.board_x, tile.board_y)):
-                        
-'''
+                        tile.select()
 
 def draw_start_screen():
     start_surface.fill(Color.BG_GREY.value)
