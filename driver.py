@@ -63,6 +63,7 @@ class Player:
 
         
 
+        self.passed_last = False  # If player passed last turn, this is True; else, it's False
 
 
 class GameState:
@@ -135,6 +136,7 @@ class GameState:
                                 self.state = 'turn'
             if 1050 < x < 1150 and 675 < y < 725:
                 # Pass button was pressed
+                self.player.passed_last = True  # Player passed, so set this to reflect that for game-end purposes
                 self.next_player()
 
     def turn_loop(self):
@@ -164,6 +166,7 @@ class GameState:
                                     self.player.score += 5
                             self.selected.deselect()
                             self.state = 'waiting'
+                            self.player.passed_last = False  # Player did not pass; ensure game does not end
                             self.next_player()  # Go to next player
                             placed = True
                     tile.deselect()
@@ -213,11 +216,11 @@ class GameState:
             self.turn_loop()
         # If state is end, no need to have a loop here, just wait for user to quit
 
-    """
-    This function will determine if there are any valid moves left for the player
-    """
 
     def valid_moves_left(self):
+        """
+        This function will determine if there are any valid moves left for the player
+        """
         for piece in self.player.tiles_set:
             for tile in board.get_tiles():
                 if board.is_valid_tile(self.player.tiles_set, piece, tile.board_x, tile.board_y):
@@ -369,8 +372,6 @@ if __name__ == '__main__':
 
     #  Create other surfaces
     pieces_surface = pygame.Surface((700, 800))
-    #  TODO: We might need to rethink how we do coordinate handling if we want this because it pushes everything down
-    # top_banner_surface = pygame.Surface((1200, 50))
     score_surface = pygame.Surface((1400, 50))
 
     #  Fill surfaces with grey color
@@ -407,6 +408,9 @@ if __name__ == '__main__':
         # Update the board every frame
         timer.tick(60)
         clear_window()  # clear the board every frame
+        # If all players passed on their last turn, assume no further moves are possible and end the game
+        if all([p.passed_last for p in all_players]):
+            game_state.state = 'end'
         if game_state.state == 'end':
             # Final scores are contained within score surface
             draw_end_screen()
