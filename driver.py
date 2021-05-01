@@ -62,11 +62,6 @@ class Player:
             return -1
 
 
-        
-
-        self.passed_last = False  # If player passed last turn, this is True; else, it's False
-
-
 class GameState:
     def __init__(self):
         """
