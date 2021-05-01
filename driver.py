@@ -1,6 +1,7 @@
 import sys
 import pygame
 import pygame.locals
+import random
 from board import Board
 from board import create_set
 from piece import Piece
@@ -35,6 +36,33 @@ class Player:
         self.tiles_set = create_set(start_x, start_y, color)
         self.score = -89  # Players start with -89 points, which goes up as pieces are played
         self.is_human = is_human  # Defaults to human, because there is always at least one human player
+        self.placeable_pieces = 5
+    
+    # selects piece randomly in descending order of # of tiles
+    # ex: places all pieces with 5 tiles until no moves are possible from any piece in that group
+    # then checks for pieces with 4 tiles etc
+    def select_piece(self):
+        pass
+    def select_corner(self):
+        available_corners = ["upleft","upright","downleft","downright"]
+        
+        if board.get_tiles()[0][0].get_color() != Color.EMPTY_GREY:
+            available_corners.remove("upleft")
+        if board.get_tiles()[0][19].get_color() != Color.EMPTY_GREY:
+            available_corners.remove("upright")
+        if board.get_tiles()[19][0].get_color() != Color.EMPTY_GREY:
+            available_corners.remove("downleft")
+        if board.get_tiles()[19][19].get_color() != Color.EMPTY_GREY:
+            available_corners.remove("downright")
+
+        if len(available_corners) != 0:
+            return available_corners[random.randint(0, len(available_corners))]
+        else:
+            return -1
+
+
+        
+
 
 
 class GameState:
