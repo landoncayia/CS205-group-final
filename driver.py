@@ -60,6 +60,11 @@ class Player:
             return available_corners[random.randint(0, len(available_corners))]
         else:
             return -1
+    def make_move(self):
+        if len(self.tiles_set) == 21:
+            board_placement = self.select_corner()
+        else:
+
 
 
 class GameState:
