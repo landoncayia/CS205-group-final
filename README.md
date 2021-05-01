@@ -91,7 +91,7 @@ same directory (this should happen automatically if this repository is cloned), 
 player's (blue's) pieces, and a pass button. Players can select pieces and place them on the board, and can rotate or
 flip pieces to place them on the board as they wish. Details on how to control the game can be found below.
 4. After a player makes his/her move, gameplay moves to the next player. This continues until every player has placed
-all their pieces or has no remaining valid moves.
+all their pieces or every player passes.
 
 ### Controls
 
