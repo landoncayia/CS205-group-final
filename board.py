@@ -194,19 +194,18 @@ class Board:
                                 check_tiles[row][col] = self.tiles[row-1][col-1]
                         check_x = tile_x+1+piece_col
                         check_y = tile_y+1+piece_row
+                        #check that nothing is out of bounds
                         if check_x <= 0 or check_y <= 0 or check_x >= 21 or check_y >= 21:
                             return False
-                        #check that it does touch piece of same color diagonally
-                        if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
-                            valid = True
-                        #check that nothing is out of bounds
-                        
                         #check that it doesn't overlap with anything
                         if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY and check_tiles[check_x][check_y].get_color() != Color.GREY_VALID:
                             return False
                         #check that it does not touch a piece of same color edgewise
                         if selected.get_color() == check_tiles[check_x-1][check_y].get_color() or selected.get_color() == check_tiles[check_x+1][check_y].get_color() or selected.get_color() == check_tiles[check_x][check_y-1].get_color() or selected.get_color() == check_tiles[check_x][check_y+1].get_color():
                             return False
+                            #check that it does touch piece of same color diagonally
+                        if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
+                            valid = True
                         
         if not valid:
             self.tiles[tile_x][tile_y].deselect()
