@@ -23,6 +23,7 @@ class Color(Enum):
     GREEN_SELECTED = (100, 255, 100)
     BLUE_SELECTED = (100, 100, 255)
     YELLOW_SELECTED = (255, 255, 170)
+    GREY_VALID = (220,220,235)
 
 
 # each tile will have left, top, color, width, height, location
@@ -35,9 +36,7 @@ class Tile:
     def __init__(self, x, y, color, board_x=None, board_y=None):
         self.x = x
         self.y = y
-        #if board_x is not None:
         self.board_x = board_x
-        #if board_y is not None:
         self.board_y = board_y
         self.color = color
 
@@ -76,3 +75,27 @@ class Tile:
     # OTHER FUNCTIONS
     def draw_tile(self, surface):
         pygame.draw.rect(surface, self.color.value, (self.x, self.y, self.width, self.height))
+
+    def select(self):
+        if self.get_color() == Color.BLUE:
+            self.set_color(Color.BLUE_SELECTED)
+        elif self.get_color() == Color.YELLOW:
+            self.set_color(Color.YELLOW_SELECTED)
+        elif self.get_color() == Color.RED:
+            self.set_color(Color.RED_SELECTED)
+        elif self.get_color() == Color.GREEN:
+            self.set_color(Color.GREEN_SELECTED)
+        elif self.get_color() == Color.EMPTY_GREY:
+            self.set_color(Color.GREY_VALID)
+        
+    def deselect(self):
+        if self.get_color() == Color.BLUE_SELECTED:
+            self.set_color(Color.BLUE)
+        elif self.get_color() == Color.YELLOW_SELECTED:
+            self.set_color(Color.YELLOW)
+        elif self.get_color() == Color.RED_SELECTED:
+            self.set_color(Color.RED)
+        elif self.get_color() == Color.GREEN_SELECTED:
+            self.set_color(Color.GREEN)
+        elif self.get_color() == Color.GREY_VALID:
+            self.set_color(Color.EMPTY_GREY)
