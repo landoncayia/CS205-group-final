@@ -37,6 +37,7 @@ class Player:
         self.score = -89  # Players start with -89 points, which goes up as pieces are played
         self.is_human = is_human  # Defaults to human, because there is always at least one human player
         self.placeable_pieces = 5
+        self.passed_last = False
     
     # selects piece randomly in descending order of # of tiles
     # ex: places all pieces with 5 tiles until no moves are possible from any piece in that group
@@ -44,16 +45,16 @@ class Player:
     def select_piece(self):
         pass
     def select_corner(self):
-        available_corners = ["upleft","upright","downleft","downright"]
+        available_corners = [board.get_tiles()[0][0],board.get_tiles()[0][19],board.get_tiles()[19][0],board.get_tiles()[19][19]]
         
         if board.get_tiles()[0][0].get_color() != Color.EMPTY_GREY:
-            available_corners.remove("upleft")
+            available_corners.remove(board.get_tiles()[0][0])
         if board.get_tiles()[0][19].get_color() != Color.EMPTY_GREY:
-            available_corners.remove("upright")
+            available_corners.remove(board.get_tiles()[0][19])
         if board.get_tiles()[19][0].get_color() != Color.EMPTY_GREY:
-            available_corners.remove("downleft")
+            available_corners.remove(board.get_tiles()[19][0])
         if board.get_tiles()[19][19].get_color() != Color.EMPTY_GREY:
-            available_corners.remove("downright")
+            available_corners.remove(board.get_tiles()[19][19])
 
         if len(available_corners) != 0:
             return available_corners[random.randint(0, len(available_corners))]
