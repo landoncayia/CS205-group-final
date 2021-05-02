@@ -110,69 +110,13 @@ class Board:
                     selected.get_tiles()[row][col].board_y = board_y+row
                     self.tiles[board_x+col][board_y+row] = selected.get_tiles()[row][col]
 
-
-    '''
-    This function will implement the following rules:
-    1) The first tile played by each player must be placed in one of the four corners
-    2) After the first play, pieces must be placed so at least one of the corners touches another of the same color and there is no edge-to-edge contact
-    3) Edge-to-edge contact is allowed between pieces of different colors
-    4) Pieces cannot overlap
-    '''
-    '''
-    def is_valid(self, player_pieces, selected, board_x, board_y):
-        valid = False
-        for i in range(len(selected.get_tiles())):
-            for j in range(len(selected.get_tiles()[i])):
-                if(selected.get_tiles()[i][j] is not None):
-                    #first piece placed
-                    if(len(player_pieces) == MAX_PLAYER_PIECES):
-                        check_x = board_x+j
-                        check_y = board_y+i
-                        #check that nothing is out of bounds
-                        if check_x < 0 or check_y < 0 or check_x > 19 or check_y > 19:
-                            return False
-                        #check each corner
-                        if check_x == 0:
-                            if check_y == 0:
-                                valid = True
-                            elif check_y == 19:
-                                valid = True
-                        elif check_x == 19:
-                            if check_y == 0:
-                                valid = True
-                            elif check_y == 19:
-                                valid = True
-                    #all pieces afterward
-                    else:
-                        #create new array with extra rows and columns to prevent array out of bounds errors
-                        check_tiles = [[Tile(0,0,Color.EMPTY_GREY)]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
-                        for row in range(1,NUM_ROWS+1):
-                            for col in range(1, NUM_COLS+1):
-                                check_tiles[row][col] = self.tiles[row-1][col-1]
-                        check_x = board_x+1+j
-                        check_y = board_y+1+i
-                        #check that nothing is out of bounds
-                        if check_x < 0 or check_y < 0 or check_x > 21 or check_y > 21:
-                            return False
-                        #check that it doesn't overlap with anything
-                        if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY or check_tiles[check_x][check_y].get_color() != Color.GREY_VALID:
-                            return False
-                        #check that it does not touch a piece of same color edgewise
-                        if selected.get_color() == check_tiles[check_x-1][check_y].get_color() or selected.get_color() == check_tiles[check_x+1][check_y].get_color() or selected.get_color() == check_tiles[check_x][check_y-1].get_color() or selected.get_color() == check_tiles[check_x][check_y+1].get_color():
-                            return False
-                        #check that it does touch piece of same color diagonally
-                        if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
-                            valid = True
-        return valid
-        '''
-
     def is_valid_tile(self, player_pieces, selected, tile_x, tile_y):
         #need to highlight top/leftmost point they can place relative to four corners
         #for top left: always 0,0
         #for top right: x = 19-last_col, y = 0
         #for bottom left: x = 0, y = 19-last_row
         #for bottom right: x = 19-last_col, y = 19,last_row
-        valid = False;
+        valid = False
         last_col = selected.get_last_col()
         last_row = selected.get_last_row()
         if len(player_pieces) == MAX_PLAYER_PIECES:

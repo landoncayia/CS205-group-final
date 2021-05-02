@@ -47,6 +47,7 @@ class Player:
         placed = False
         found = False
         num_tries = 0
+        
         while not found and num_tries < 10:
             # Choose piece randomly from the top 2/3 in size
             choice_idx = random.randint(len(self.tiles_set)//2, len(self.tiles_set)-1)
@@ -57,37 +58,18 @@ class Player:
             game_state.selected.deselect()
             game_state.selected = None
             num_tries += 1
-        if not found:
-            for piece_option in range(len(self.tiles_set), 0):
+        
+        for piece_option in range(len(self.tiles_set)-1, 0, -1):
+            if not found:
                 game_state.selected = self.tiles_set[piece_option]
                 game_state.selected.select()
                 found = self.place_tile(piece_option)
+                game_state.selected.deselect()
+                game_state.selected = None
         if not found:
             # If no piece was placed, the A.I. passes
             self.passed_last = True
             game_state.next_player()
-
-    def select_corner(self):
-        available_corners = [board.get_tiles()[0][0],board.get_tiles()[0][19],board.get_tiles()[19][0],board.get_tiles()[19][19]]
-
-        if board.get_tiles()[0][0].get_color() != Color.EMPTY_GREY:
-            available_corners.remove(board.get_tiles()[0][0])
-        if board.get_tiles()[0][19].get_color() != Color.EMPTY_GREY:
-            available_corners.remove(board.get_tiles()[0][19])
-        if board.get_tiles()[19][0].get_color() != Color.EMPTY_GREY:
-            available_corners.remove(board.get_tiles()[19][0])
-        if board.get_tiles()[19][19].get_color() != Color.EMPTY_GREY:
-            available_corners.remove(board.get_tiles()[19][19])
-
-        if len(available_corners) != 0:
-            return available_corners[random.randint(0, len(available_corners))]
-        else:
-            return -1
-    def make_move(self):
-        if len(self.tiles_set) == 21:
-            board_placement = self.select_corner()
-        else:
-
 
     def place_tile(self, selected_idx):
         found = False
