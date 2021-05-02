@@ -36,7 +36,7 @@ class Player:
         self.tiles_set = create_set(start_x, start_y, color)
         self.piece_class_rem = {1: 1, 2: 1, 3: 2, 4: 5, 5: 12}
         self.score = -89  # Players start with -89 points, which goes up as pieces are played
-        self.is_human = True  # Defaults to human, because there is always at least one human player
+        self.is_human = is_human  # Defaults to human, because there is always at least one human player
         self.placeable_pieces = 5
         self.passed_last = False
     

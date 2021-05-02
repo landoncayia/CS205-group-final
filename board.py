@@ -168,11 +168,8 @@ class Board:
         #for bottom left: x = 0, y = 19-last_row
         #for bottom right: x = 19-last_col, y = 19,last_row
         valid = False
-        print("placing " + repr(selected.get_shape()) + " at [" + str(tile_x) + "][" + str(tile_y) + "]")
         last_col = selected.get_last_col()
         last_row = selected.get_last_row()
-        print(last_col)
-        print(last_row)
         if len(player_pieces) == MAX_PLAYER_PIECES:
             if tile_x == 0:
                 if tile_y == 0:
@@ -184,7 +181,6 @@ class Board:
                     if selected.get_tiles()[last_row][0] is not None and \
                             (self.tiles[0][19].get_color() == Color.EMPTY_GREY or
                              self.tiles[0][19].get_color() == Color.GREY_VALID):
-                        print(selected.get_tiles()[0][last_row])
                         valid = True
             elif tile_x == 19-last_col:
                 if tile_y == 0:
@@ -204,23 +200,23 @@ class Board:
                     #create new array with extra rows and columns to prevent array out of bounds errors
                         check_tiles = [[Tile(0,0,Color.EMPTY_GREY)]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
                     for row in range(1, NUM_ROWS + 1):
-                            for col in range(1, NUM_COLS+1):
-                                check_tiles[row][col] = self.tiles[row-1][col-1]
+                        for col in range(1, NUM_COLS + 1):
+                            check_tiles[row][col] = self.tiles[row - 1][col - 1]
                         check_x = tile_x+1+piece_col
                         check_y = tile_y+1+piece_row
                         #check that nothing is out of bounds
                         if check_x <= 0 or check_y <= 0 or check_x >= 21 or check_y >= 21:
-                            return False
+                            valid = False
                         #check that it doesn't overlap with anything
                     if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY and \
                             check_tiles[check_x][check_y].get_color() != Color.GREY_VALID:
-                            return False
+                        valid = False
                         #check that it does not touch a piece of same color edgewise
                     if selected.get_color() == check_tiles[check_x - 1][check_y].get_color() or \
                             selected.get_color() == check_tiles[check_x + 1][check_y].get_color() or \
                             selected.get_color() == check_tiles[check_x][check_y - 1].get_color() or \
                             selected.get_color() == check_tiles[check_x][check_y + 1].get_color():
-                            return False
+                        valid = False
                             #check that it does touch piece of same color diagonally
                     if selected.get_color() == check_tiles[check_x - 1][check_y - 1].get_color() or \
                             selected.get_color() == check_tiles[check_x + 1][check_y - 1].get_color() or \
