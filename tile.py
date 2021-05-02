@@ -36,9 +36,7 @@ class Tile:
     def __init__(self, x, y, color, board_x=None, board_y=None):
         self.x = x
         self.y = y
-        #if board_x is not None:
         self.board_x = board_x
-        #if board_y is not None:
         self.board_y = board_y
         self.color = color
 

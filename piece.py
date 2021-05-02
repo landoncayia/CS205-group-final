@@ -41,10 +41,7 @@ class Piece:
         self.x = x
         self.y = y
         self.color = color
-        # self.table_tiles = list()  # tiles used on board - incremented by 1
-        # self.printing_tiles = list()  # tiles used to display on side - incremented by 30
         self.tiles_array = [[None] * MAX_TILES_WIDTH for _ in range(MAX_TILES_WIDTH)] # tiles will be added here
-        # self.center = center
         self.set_tiles()
         self.selected = False
 
@@ -350,67 +347,67 @@ class Piece:
 
     #returns the first row that has a tile in it (topmost tile)
     def get_first_row(self):
-        i = 0;
-        j = 0;
+        i = 0
+        j = 0
         while i < MAX_TILES_WIDTH:
             while j < MAX_TILES_WIDTH:
                 if self.tiles_array[i][j] != None:
                     return i
                 else:
-                    j += 1;
-            i += 1;
-            j = 0;
+                    j += 1
+            i += 1
+            j = 0
     
     #returns the last row that has a tile in it (bottommmost tile)
     def get_last_row(self):
-        i = MAX_TILES_WIDTH-1;
-        j = MAX_TILES_WIDTH-1;
+        i = MAX_TILES_WIDTH - 1
+        j = MAX_TILES_WIDTH - 1
         while i >= 0:
             while j >= 0:
                 if self.tiles_array[i][j] != None:
                     return i
                 else:
-                    j -= 1;
-            i -= 1;
-            j = MAX_TILES_WIDTH-1;
+                    j -= 1
+            i -= 1
+            j = MAX_TILES_WIDTH - 1
 
     #returns the first column that has a tile in it (leftmost tile)
     def get_first_col(self):
-        i = 0;
-        j = 0;
+        i = 0
+        j = 0
         while j < MAX_TILES_WIDTH:
             while i < MAX_TILES_WIDTH:
                 if self.tiles_array[i][j] != None:
                     return j
                 else:
-                    i += 1;
-            j += 1;
-            i = 0;
+                    i += 1
+            j += 1
+            i = 0
 
     def get_last_col(self):
-        i = MAX_TILES_WIDTH-1;
-        j = MAX_TILES_WIDTH-1;
+        i = MAX_TILES_WIDTH - 1
+        j = MAX_TILES_WIDTH - 1
         while j >= 0:
             while i >= 0:
                 if self.tiles_array[i][j] != None:
                     return j
                 else:
-                    i -= 1;
-            j -= 1;
-            i = MAX_TILES_WIDTH-1;
+                    i -= 1
+            j -= 1
+            i = MAX_TILES_WIDTH - 1
     
     #returns the first tile in the array
     def get_first_tile(self):
-        i = 0;
-        j = 0;
+        i = 0
+        j = 0
         while i < MAX_TILES_WIDTH:
             while j < MAX_TILES_WIDTH:
                 if self.tiles_array[i][j] != None:
                     return self.tiles_array[i][j]
                 else:
-                    j += 1;
-            i += 1;
-            j = 0;
+                    j += 1
+            i += 1
+            j = 0
         
 
     # rotates the piece clockwise

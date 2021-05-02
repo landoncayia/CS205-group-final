@@ -11,7 +11,12 @@ NUM_ROWS = 20
 NUM_COLS = 20
 MAX_PLAYER_PIECES = 21
 
-
+'''
+TODO BEFORE SUBMIT:
+fix bug scores not displaying properly?
+make sure AI is actually going through every piece when it runs out of randoms
+stop AI from placing pieces on top of each other
+'''
 class Board:
     def __init__(self):
         """
@@ -173,17 +178,25 @@ class Board:
         if len(player_pieces) == MAX_PLAYER_PIECES:
             if tile_x == 0:
                 if tile_y == 0:
-                    if selected.get_tiles()[0][0] is not None and (self.tiles[0][0].get_color() == Color.EMPTY_GREY or self.tiles[0][0].get_color() == Color.GREY_VALID):
+                    if selected.get_tiles()[0][0] is not None and (
+                            self.tiles[0][0].get_color() == Color.EMPTY_GREY or self.tiles[0][
+                        0].get_color() == Color.GREY_VALID):
                         valid = True
                 if tile_y == 19-last_row:
-                    if selected.get_tiles()[0][last_row] is not None and (self.tiles[0][19].get_color() == Color.EMPTY_GREY or self.tiles[0][19].get_color() == Color.GREY_VALID):
+                    if selected.get_tiles()[last_row][0] is not None and (
+                            self.tiles[0][19].get_color() == Color.EMPTY_GREY or self.tiles[0][
+                        19].get_color() == Color.GREY_VALID):
                         valid = True
             elif tile_x == 19-last_col:
                 if tile_y == 0:
-                    if selected.get_tiles()[0][last_col] is not None and (self.tiles[19][0].get_color() == Color.EMPTY_GREY or self.tiles[19][0].get_color() == Color.GREY_VALID):
+                    if selected.get_tiles()[0][last_col] is not None and (
+                            self.tiles[19][0].get_color() == Color.EMPTY_GREY or self.tiles[19][
+                        0].get_color() == Color.GREY_VALID):
                         valid = True
                 if tile_y == 19-last_row:
-                    if selected.get_tiles()[last_row][last_col] is not None and (self.tiles[19][19].get_color() == Color.EMPTY_GREY or self.tiles[19][19].get_color() == Color.GREY_VALID):
+                    if selected.get_tiles()[last_row][last_col] is not None and (
+                            self.tiles[19][19].get_color() == Color.EMPTY_GREY or self.tiles[19][
+                        19].get_color() == Color.GREY_VALID):
                         valid = True
         else:
             for piece_row in range(len(selected.get_tiles())):
@@ -191,54 +204,59 @@ class Board:
                     if(selected.get_tiles()[piece_row][piece_col] is not None):
                     #create new array with extra rows and columns to prevent array out of bounds errors
                         check_tiles = [[Tile(0,0,Color.EMPTY_GREY)]*(NUM_COLS+2) for _ in range(NUM_ROWS+2)]
-                        for row in range(1,NUM_ROWS+1):
-                            for col in range(1, NUM_COLS+1):
-                                check_tiles[row][col] = self.tiles[row-1][col-1]
-                        check_x = tile_x+1+piece_col
-                        check_y = tile_y+1+piece_row
-                        #check that nothing is out of bounds
-                        if check_x <= 0 or check_y <= 0 or check_x >= 21 or check_y >= 21:
+                        for row in range(1, NUM_ROWS + 1):
+                            for col in range(1, NUM_COLS + 1):
+                                check_tiles[row][col] = self.tiles[row - 1][col - 1]
+                            check_x = tile_x+1+piece_col
+                            check_y = tile_y+1+piece_row
+                            #check that nothing is out of bounds
+                            if check_x <= 0 or check_y <= 0 or check_x >= 21 or check_y >= 21:
+                                return False
+                            #check that it doesn't overlap with anything
+                        if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY and check_tiles[check_x][
+                            check_y].get_color() != Color.GREY_VALID:
                             return False
-                        #check that it doesn't overlap with anything
-                        if check_tiles[check_x][check_y].get_color() != Color.EMPTY_GREY and check_tiles[check_x][check_y].get_color() != Color.GREY_VALID:
+                            #check that it does not touch a piece of same color edgewise
+                        if selected.get_color() == check_tiles[check_x - 1][check_y].get_color() or selected.get_color() == \
+                                check_tiles[check_x + 1][check_y].get_color() or selected.get_color() == \
+                                check_tiles[check_x][check_y - 1].get_color() or selected.get_color() == \
+                                check_tiles[check_x][check_y + 1].get_color():
                             return False
-                        #check that it does not touch a piece of same color edgewise
-                        if selected.get_color() == check_tiles[check_x-1][check_y].get_color() or selected.get_color() == check_tiles[check_x+1][check_y].get_color() or selected.get_color() == check_tiles[check_x][check_y-1].get_color() or selected.get_color() == check_tiles[check_x][check_y+1].get_color():
-                            return False
-                            #check that it does touch piece of same color diagonally
-                        if selected.get_color() == check_tiles[check_x-1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y-1].get_color() or selected.get_color() == check_tiles[check_x-1][check_y+1].get_color() or selected.get_color() == check_tiles[check_x+1][check_y+1].get_color():
-                            valid = True   
+                                #check that it does touch piece of same color diagonally
+                        if selected.get_color() == check_tiles[check_x - 1][
+                            check_y - 1].get_color() or selected.get_color() == check_tiles[check_x + 1][
+                            check_y - 1].get_color() or selected.get_color() == check_tiles[check_x - 1][
+                            check_y + 1].get_color() or selected.get_color() == check_tiles[check_x + 1][
+                            check_y + 1].get_color():
+                            valid = True
         if not valid:
             self.tiles[tile_x][tile_y].deselect()
         return valid
 
         
-
-
 def create_set(start_x, start_y, set_color):
     """
     creates a set of pieces for player using a start x and y, and a color
     each set has one piece with each shape
     """
-    MAX_PIECE_WIDTH = 150
-    THREE_TILE_WIDTH = 90
-    FOUR_TILE_WIDTH = 120
-    GAP = 10
-    MAX_PIECE_DISTANCE = MAX_PIECE_WIDTH + GAP
+    max_piece_width = 150
+    three_tile_width = 90
+    four_tile_width = 120
+    gap = 10
 
     # get the x values for each column
     first_col_val = start_x
-    second_col_val = first_col_val + MAX_PIECE_WIDTH
-    third_col_val = second_col_val + MAX_PIECE_WIDTH
-    fourth_col_val = third_col_val + MAX_PIECE_WIDTH
+    second_col_val = first_col_val + max_piece_width
+    third_col_val = second_col_val + max_piece_width
+    fourth_col_val = third_col_val + max_piece_width
 
     # get the y values for each row
     first_row_val = start_y
-    second_row_val = first_row_val + THREE_TILE_WIDTH + GAP
-    third_row_val = second_row_val + FOUR_TILE_WIDTH + GAP
-    fourth_row_val = third_row_val + FOUR_TILE_WIDTH + GAP
-    fifth_row_val = fourth_row_val + FOUR_TILE_WIDTH + GAP
-    sixth_row_val = fifth_row_val + MAX_PIECE_WIDTH
+    second_row_val = first_row_val + three_tile_width + gap
+    third_row_val = second_row_val + four_tile_width + gap
+    fourth_row_val = third_row_val + four_tile_width + gap
+    fifth_row_val = fourth_row_val + four_tile_width + gap
+    sixth_row_val = fifth_row_val + max_piece_width
 
     set_of_pieces = list()
 
