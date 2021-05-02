@@ -40,16 +40,16 @@ class Player:
         self.placeable_pieces = 5
         self.passed_last = False
     
-    # selects piece randomly in descending order of # of tiles
-    # ex: places all pieces with 5 tiles until no moves are possible from any piece in that group
-    # then checks for pieces with 4 tiles etc
+    # selects piece randomly from top 1/2 of the list
+    # since pieces are ordered by number of tiles, it's picking from the pieces with the most tiles
+    # after 10 tries if it can't find one with a valid move, it goes through the entire list and searches for a piece that works
     def select_piece(self):
         placed = False
         found = False
         num_tries = 0
         
         while not found and num_tries < 10:
-            # Choose piece randomly from the top 2/3 in size
+            # Choose piece randomly from the top 1/2 in size
             choice_idx = random.randint(len(self.tiles_set)//2, len(self.tiles_set)-1)
             game_state.selected = self.tiles_set[choice_idx]
             game_state.selected.select()
@@ -58,14 +58,16 @@ class Player:
             game_state.selected = None
             num_tries += 1
         
-        for piece_option in range(len(self.tiles_set)-1, 0, -1):
-            if not found:
-                game_state.selected = self.tiles_set[piece_option]
-                game_state.selected.select()
-                
-                found = self.place_tile(piece_option)
-                game_state.selected.deselect()
-                game_state.selected = None
+        piece_option = len(self.tiles_set)-1
+        while piece_option >= 0 and not found:
+            #go through the rest of the list and find one that works
+            game_state.selected = self.tiles_set[piece_option]
+            game_state.selected.select()
+            found = self.place_tile(piece_option)
+            game_state.selected.deselect()
+            game_state.selected = None
+            piece_option -= 1
+
         if not found:
             # If no piece was placed, the A.I. passes
             self.passed_last = True
@@ -222,6 +224,7 @@ class GameState:
                     self.state = 'waiting'
                     break
 
+        # flip and rotate keyboard input
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 self.selected.rotate_ccw()
@@ -282,7 +285,7 @@ def draw_start_screen():
     start_surface.fill(Color.BG_GREY.value)
     title_font = pygame.font.SysFont('Ubuntu', 72, bold=True)
     subtitle_font = pygame.font.SysFont('Ubuntu', 48, bold=True)
-    regular_font = pygame.font.SysFont('Ubuntu', 30, bold=True)
+    regular_font = pygame.font.SysFont('Ubuntu', 28, bold=True)
     title_text = title_font.render('Blokus', True, Color.EMPTY_GREY.value)
     subtitle_text = subtitle_font.render('Landon Cayia, Isabelle Francke, and Echo Norcott',
                                          True, Color.EMPTY_GREY.value)
@@ -299,10 +302,12 @@ def draw_start_screen():
     pygame.draw.rect(start_surface, Color.EMPTY_GREY.value, (950, 550, 150, 150))
     text_four_p = title_font.render('4', True, Color.BG_GREY.value)
     start_surface.blit(text_four_p, (1010, 580))
-    text_one_p_color = regular_font.render('You are blue and yellow', True, Color.EMPTY_GREY.value)
-    start_surface.blit(text_one_p_color, (400, 720))
-    text_two_p_color = regular_font.render('Player 1 is blue and yellow', True, Color.EMPTY_GREY.value)
+    text_one_p_color = regular_font.render('Player: blue and yellow', True, Color.EMPTY_GREY.value)
+    start_surface.blit(text_one_p_color, (250, 720))
+    text_two_p_color = regular_font.render('Player 1: blue and yellow', True, Color.EMPTY_GREY.value)
     start_surface.blit(text_two_p_color, (600, 720))
+    text_two_p_color_2 = regular_font.render('Player 2: red and green', True, Color.EMPTY_GREY.value)
+    start_surface.blit(text_two_p_color_2, (600, 770))
 
 
 def draw_end_screen():

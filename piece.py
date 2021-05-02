@@ -370,6 +370,7 @@ class Piece:
             j += 1
             i = 0
 
+    #returns the rightmost column 
     def get_last_col(self):
         i = MAX_TILES_WIDTH - 1
         j = MAX_TILES_WIDTH - 1

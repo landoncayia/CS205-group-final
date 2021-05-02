@@ -106,10 +106,6 @@ class Board:
 
     def is_valid_tile(self, player_pieces, selected, tile_x, tile_y):
         #need to highlight top/leftmost point they can place relative to four corners
-        #for top left: always 0,0
-        #for top right: x = 19-last_col, y = 0
-        #for bottom left: x = 0, y = 19-last_row
-        #for bottom right: x = 19-last_col, y = 19,last_row
         valid = False
         last_col = selected.get_last_col()
         last_row = selected.get_last_row()
