@@ -69,6 +69,8 @@ class Piece:
         for row in self.tiles_array:
             for tile in row:
                 if tile is not None:
+                    tile.select()
+                    '''
                     if tile.get_color() == Color.BLUE:
                         tile.set_color(Color.BLUE_SELECTED)
                     elif tile.get_color() == Color.YELLOW:
@@ -77,12 +79,15 @@ class Piece:
                         tile.set_color(Color.RED_SELECTED)
                     elif tile.get_color() == Color.GREEN:
                         tile.set_color(Color.GREEN_SELECTED)
+                    '''
 
     def deselect(self):
         self.selected = False
         for row in self.tiles_array:
             for tile in row:
                 if tile is not None:
+                    tile.deselect()
+                    '''
                     if tile.get_color() == Color.BLUE_SELECTED:
                         tile.set_color(Color.BLUE)
                     elif tile.get_color() == Color.YELLOW_SELECTED:
@@ -91,6 +96,7 @@ class Piece:
                         tile.set_color(Color.RED)
                     elif tile.get_color() == Color.GREEN_SELECTED:
                         tile.set_color(Color.GREEN)
+                    '''
 
     def is_selected(self):
         return self.selected

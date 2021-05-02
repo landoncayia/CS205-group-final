@@ -54,7 +54,6 @@ class Player:
             game_state.selected = self.tiles_set[choice_idx]
             game_state.selected.select()
             found = self.place_tile(choice_idx)
-
             game_state.selected.deselect()
             game_state.selected = None
             num_tries += 1
@@ -63,12 +62,14 @@ class Player:
             if not found:
                 game_state.selected = self.tiles_set[piece_option]
                 game_state.selected.select()
+                
                 found = self.place_tile(piece_option)
                 game_state.selected.deselect()
                 game_state.selected = None
         if not found:
             # If no piece was placed, the A.I. passes
             self.passed_last = True
+            pygame.time.delay(1500)
             game_state.next_player()
 
     def place_tile(self, selected_idx):
@@ -298,9 +299,9 @@ def draw_start_screen():
     pygame.draw.rect(start_surface, Color.EMPTY_GREY.value, (950, 550, 150, 150))
     text_four_p = title_font.render('4', True, Color.BG_GREY.value)
     start_surface.blit(text_four_p, (1010, 580))
-    text_one_p_color = regular_font.render('You are blue', True, Color.EMPTY_GREY.value)
+    text_one_p_color = regular_font.render('You are blue and yellow', True, Color.EMPTY_GREY.value)
     start_surface.blit(text_one_p_color, (400, 720))
-    text_two_p_color = regular_font.render('You are blue and yellow', True, Color.EMPTY_GREY.value)
+    text_two_p_color = regular_font.render('Player 1 is blue and yellow', True, Color.EMPTY_GREY.value)
     start_surface.blit(text_two_p_color, (600, 720))
 
 

@@ -11,12 +11,6 @@ NUM_ROWS = 20
 NUM_COLS = 20
 MAX_PLAYER_PIECES = 21
 
-'''
-TODO BEFORE SUBMIT:
-fix bug scores not displaying properly?
-make sure AI is actually going through every piece when it runs out of randoms
-stop AI from placing pieces on top of each other
-'''
 class Board:
     def __init__(self):
         """
