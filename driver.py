@@ -52,37 +52,17 @@ class Player:
             choice_idx = random.randint(len(self.tiles_set)//2, len(self.tiles_set)-1)
             game_state.selected = self.tiles_set[choice_idx]
             game_state.selected.select()
-            for row in board.get_tiles():
-                for tile in row:
-                    if not found:
-                        if board.is_valid_tile(self.tiles_set, game_state.selected, tile.board_x, tile.board_y):
-                            found = True
-                            board.add_piece(game_state.selected, tile.board_x, tile.board_y)
-                            self.piece_class_rem[game_state.selected.get_num_tiles()] -= 1
-                            self.score += game_state.selected.get_num_tiles()
-                            self.tiles_set.pop(choice_idx)
-                            # Below are some additional scoring rules
-                            if not self.tiles_set:
-                                # If player has placed all their pieces (list empty), +15 points
-                                self.score += 15
-                                if game_state.selected.shape == Shape.ONE:
-                                    # If the last piece played is the single square piece, +5 points
-                                    self.score += 5
-                            game_state.selected.deselect()
-                            game_state.state = 'waiting'
-                            self.passed_last = False  # Player did not pass; ensure game does not end
-                            game_state.next_player()  # Go to next player
-                            placed = True
-                        tile.deselect()
+            found = self.place_tile(choice_idx)
                 
             game_state.selected.deselect()
             game_state.selected = None
             num_tries += 1
         if not found:
-            for piece_option in self.tiles_set.reverse():
-                # same as above, check if valid, place if so (include placed = True)
-                pass
-        if not placed:
+            for piece_option in range(len(self.tiles_set), 0):
+                game_state.selected = self.tiles_set[piece_option]
+                game_state.selected.select()
+                found = self.place_tile(piece_option)
+        if not found:
             # If no piece was placed, the A.I. passes
             self.passed_last = True
             game_state.next_player()
@@ -104,6 +84,32 @@ class Player:
             return available_corners[random.randint(0, len(available_corners))]
         else:
             return -1
+    
+    def place_tile(self, selected_idx):
+        found = False
+        for row in board.get_tiles():
+            for tile in row:
+                if not found:
+                    if board.is_valid_tile(self.tiles_set, game_state.selected, tile.board_x, tile.board_y):
+                        found = True
+                        board.add_piece(game_state.selected, tile.board_x, tile.board_y)
+                        self.piece_class_rem[game_state.selected.get_num_tiles()] -= 1
+                        self.score += game_state.selected.get_num_tiles()
+                        self.tiles_set.pop(selected_idx)
+                         # Below are some additional scoring rules
+                        if not self.tiles_set:
+                            # If player has placed all their pieces (list empty), +15 points
+                            self.score += 15
+                            if game_state.selected.shape == Shape.ONE:
+                                # If the last piece played is the single square piece, +5 points
+                                self.score += 5
+                        game_state.selected.deselect()
+                        game_state.state = 'waiting'
+                        self.passed_last = False  # Player did not pass; ensure game does not end
+                        game_state.next_player()  # Go to next player
+                        placed = True
+                    tile.deselect()
+        return found
 
 
 class GameState:
