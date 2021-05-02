@@ -36,7 +36,7 @@ class Player:
         self.tiles_set = create_set(start_x, start_y, color)
         self.piece_class_rem = {1: 1, 2: 1, 3: 2, 4: 5, 5: 12}
         self.score = -89  # Players start with -89 points, which goes up as pieces are played
-        self.is_human = is_human  # Defaults to human, because there is always at least one human player
+        self.is_human = True  # Defaults to human, because there is always at least one human player
         self.placeable_pieces = 5
         self.passed_last = False
     
@@ -66,7 +66,6 @@ class Player:
             # If no piece was placed, the A.I. passes
             self.passed_last = True
             game_state.next_player()
-
 
     def select_corner(self):
         available_corners = [board.get_tiles()[0][0],board.get_tiles()[0][19],board.get_tiles()[19][0],board.get_tiles()[19][19]]
@@ -165,32 +164,33 @@ class GameState:
         We are waiting on whomever's turn it currently is to select a piece for placement on the board
         Allow players to select pieces by clicking on them; we will have to figure this out geometrically with Echo's code
         """
-        if not self.player.is_human:
-            # A.I. here; stay in waiting state
-            self.player.select_piece()
-        else:
-            if self.valid_moves_left():
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    # Left mouse button pressed, get mouse position
-                    x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
-                    for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
-                        for row in piece.tiles_array:  # Go through each row in the tile array
-                            for tile in row:
-                                if tile is not None:
-                                    tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
-                                    if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:
-                                        # Check if the mouse click location matches the range of this tile
-                                        # If so, select the piece, change state to turn, and end the loop
-                                        piece.select()
-                                        self.selected = piece
-                                        self.display_valid_moves()
-                                        self.state = 'turn'
-                    if 1050 < x < 1150 and 675 < y < 725:
-                        # Pass button was pressed
-                        self.player.passed_last = True  # Player passed, so set this to reflect that for game-end purposes
-                        self.next_player()
+        if self.player != None:
+            if not self.player.is_human:
+                # A.I. here; stay in waiting state
+                self.player.select_piece()
             else:
-                self.state = 'end'
+                if self.valid_moves_left():
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                        # Left mouse button pressed, get mouse position
+                        x, y = pygame.mouse.get_pos()  # (x, y) where x and y are the number of pixels away from the top-left corner
+                        for piece in self.player.tiles_set:  # Go through each piece in the tile set that is currently on-screen
+                            for row in piece.tiles_array:  # Go through each row in the tile array
+                                for tile in row:
+                                    if tile is not None:
+                                        tile_x, tile_y = tile.get_location()  # Get the x, y coordinates of the tile (top-left)
+                                        if 800 + tile_x < x < 800 + tile_x + 30 and tile_y < y < tile_y + 30:
+                                            # Check if the mouse click location matches the range of this tile
+                                            # If so, select the piece, change state to turn, and end the loop
+                                            piece.select()
+                                            self.selected = piece
+                                            self.display_valid_moves()
+                                            self.state = 'turn'
+                        if 1050 < x < 1150 and 675 < y < 725:
+                            # Pass button was pressed
+                            self.player.passed_last = True  # Player passed, so set this to reflect that for game-end purposes
+                            self.next_player()
+                else:
+                    self.state = 'end'
 
     def turn_loop(self):
         """
@@ -275,9 +275,10 @@ class GameState:
         This function will determine if there are any valid moves left for the player
         """
         for piece in self.player.tiles_set:
-            for tile in board.get_tiles():
-                if board.is_valid_tile(self.player.tiles_set, piece, tile.board_x, tile.board_y):
-                    return True
+            for row in board.get_tiles():
+                for tile in row:
+                    if board.is_valid_tile(self.player.tiles_set, piece, tile.board_x, tile.board_y):
+                        return True
         return False
 
     def display_valid_moves(self):
